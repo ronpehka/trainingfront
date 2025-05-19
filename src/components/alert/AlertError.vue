@@ -1,7 +1,7 @@
 
 <template>
-<div class="alert alert-warning" role="alert">
-  siia tuleb error
+<div v-if="errorMessage !==null && errorMessage.length > 0" class="alert alert-warning" role="alert">
+  {{errorMessage}}
 </div>
 </template>
 

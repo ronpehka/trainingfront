@@ -4,7 +4,7 @@ export default {
     sendLoginRequest(email, password) {
         return axios.get('/login', {
                 params: {
-                    username: email,
+                    email: email,
                     password: password
                 }
             }
