@@ -14,7 +14,7 @@
           <input v-model="password" type="password" class="form-control">
         </div>
 
-        <button @click="sendLoginRequest" type="button" class="btn btn-outline-secondary">Logi sisse</button>
+        <button @click="login" type="button" class="btn btn-outline-secondary">Logi sisse</button>
       </div>
     </div>
 
@@ -48,28 +48,44 @@ export default {
     }
   },
   methods: {
-    sendLoginRequest() {
-      if(this.email.length > 0 && this.password.length > 0 ){
-        LoginService.sendLoginRequest(this.email, this.password)
-            .then(response => {
-              this.handleLoginRequest(response);
-            }).catch(error => {
-          let httpStatusCode = error.response.status
-          this.errorResponse = error.response.data
-          if (httpStatusCode === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_CREDENTIALS) {
-            this.errorMessage = this.errorResponse.message
-          }
-        })
 
+    login(){
+      if(this.allFieldsAreWithCorrectInput()) {
+        this.sendLoginRequest()
+      }else{
+        this.errorMessage='Täida kõik väljad'
+        setTimeout(this.resetErrorMessage, 4000)
       }
+
+    },
+     sendLoginRequest() {
+
+        LoginService.sendLoginRequest(this.email, this.password)
+            .then(response => this.handleLoginRequest(response))
+            .catch(error => this.handleIncorrectCredentials(error))
+    },
+    allFieldsAreWithCorrectInput() {
+      return this.email.length > 0 && this.password.length > 0;
     },
     handleLoginRequest(response) {
       this.loginResponse = response.data
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
     },
+     handleIncorrectCredentials(error) {
+      let httpStatusCode = error.response.status
+      this.errorResponse = error.response.data
+      if (this.isIncorrectCredentials(httpStatusCode)) {
+        this.errorMessage = this.errorResponse.message
+        setTimeout(this.resetErrorMessage, 4000)
+      }
+    },
 
-    resetErrorMeassage() {
+    isIncorrectCredentials(httpStatusCode) {
+      return httpStatusCode === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_CREDENTIALS;
+    },
+
+    resetErrorMessage() {
       this.errorMessage = ''
     }
   },
