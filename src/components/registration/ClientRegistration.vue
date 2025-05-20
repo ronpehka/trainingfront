@@ -3,53 +3,37 @@
     <div class="row justify-content-center">
       <div class="col col-3">
         <div class="col col-2 input-group mb-3">
-          <div>
-            <label class="form-label">Eesnimi</label>
-            <input type="text" class="form-control" placeholder="Eesnimi">
-          </div>
+          <FirstNameInput/>
 
         </div>
         <div class="input-group mb-3">
-          <label class="form-label">Perekonnanimi</label>
-          <input type="text" class="form-control" placeholder="Perekonnanimi">
+          <LastNameInput/>
         </div>
         <div class="input-group mb-3">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-control" placeholder="email">
+          <EmailInput/>
         </div>
         <div class="input-group mb-3">
-          <label class="form-label">Sünnikuupäev</label>
-          <input type="date" class="form-control" placeholder="date">
+          <DateOfBirthInput/>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-          <label class="form-check-label" for="flexRadioDefault1">
-            Mees
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-          <label class="form-check-label" for="flexRadioDefault2">
-            Naine
-          </label>
-        </div>
+        <GenderInput/>
 
-        <div class="input-group mb-3">
-          <label class="form-label">Parool</label>
-          <input type="password" class="form-control" placeholder="Parool">
-        </div>
-        <div class="input-group mb-3">
-          <label class="form-label">Parool uuesti</label>
-          <input type="password" class="form-control" placeholder="Parool">
-        </div>
+        <PasswordInput/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import FirstNameInput from "@/components/registration/FirstNameInput.vue";
+import LastNameInput from "@/components/registration/LastNameInput.vue";
+import EmailInput from "@/components/registration/EmailInput.vue";
+import DateOfBirthInput from "@/components/registration/DateOfBirthInput.vue";
+import GenderInput from "@/components/registration/GenderInput.vue";
+import PasswordInput from "@/components/registration/PasswordInput.vue";
+
 export default {
   name: 'ClientRegistration',
+  components: {PasswordInput, GenderInput, DateOfBirthInput, EmailInput, LastNameInput, FirstNameInput},
   props: {
     customerProfile: Object
   }
