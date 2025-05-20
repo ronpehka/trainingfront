@@ -3,8 +3,11 @@
     <div class="row justify-content-center">
       <div class="col col-3">
         <div class="col col-2 input-group mb-3">
-          <label class="form-label">Eesnimi</label>
-          <input type="text" class="form-control" placeholder="Eesnimi">
+          <div>
+            <label class="form-label">Eesnimi</label>
+            <input type="text" class="form-control" placeholder="Eesnimi">
+          </div>
+
         </div>
         <div class="input-group mb-3">
           <label class="form-label">Perekonnanimi</label>
@@ -46,6 +49,9 @@
 
 <script>
 export default {
-  name: 'ClientRegistration'
+  name: 'ClientRegistration',
+  props: {
+    customerProfile: Object
+  }
 }
 </script>
