@@ -3,21 +3,27 @@
     <div class="row justify-content-center">
       <div class="col col-3">
         <div class="col col-2 input-group mb-3">
-          <FirstNameInput/>
-
+          <FirstNameInput :first-name="customerProfile.firstName"
+                          @event-update-firstname="$emit('event-update-firstname', $event)"/>
         </div>
         <div class="input-group mb-3">
-          <LastNameInput/>
+          <LastNameInput :last-name="customerProfile.lastName"
+                         @event-update-lastname="$emit('event-update-lastname',$event)"/>
         </div>
         <div class="input-group mb-3">
-          <EmailInput/>
+          <EmailInput
+              :email="customerProfile.email"
+              @event-update-email="$emit('event-update-email',$event)"/>
         </div>
         <div class="input-group mb-3">
-          <DateOfBirthInput/>
+          <DateOfBirthInput :date-of-birth="customerProfile.dateOfBirth"
+                            @event-update-date-of-birth="$emit('event-update-date-of-birth',$event)"/>
         </div>
-        <GenderInput/>
-
-        <PasswordInput/>
+        <GenderInput :gender="customerProfile.gender"
+                     @event-update-gender="$emit('event-update-gender',$event)"/>
+        <PasswordInput :password="customerProfile.password" :password-retype="passwordRetype"
+                       @event-update-password="$emit('event-update-password', $event)"
+                       @event-update-retyped-password="$emit('event-update-retyped-password',$event)"/>
       </div>
     </div>
   </div>
@@ -35,6 +41,7 @@ export default {
   name: 'ClientRegistration',
   components: {PasswordInput, GenderInput, DateOfBirthInput, EmailInput, LastNameInput, FirstNameInput},
   props: {
+    passwordRetype: String,
     customerProfile: Object
   }
 }

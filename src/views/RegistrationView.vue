@@ -2,7 +2,16 @@
 <template>
   <div>
     <h1>Loo uus konto</h1>
-    <ClientRegistration :customer-profile="customerProfile"/>
+    <ClientRegistration :customer-profile="customerProfile"
+                        :password-retype="passwordRetype"
+                        @event-update-firstname="setCustomerProfileFirstName"
+                        @event-update-lastname="setCustomerProfileLastName"
+                        @event-update-email = "setCustomerProfileEmail"
+                        @event-update-date-of-birth="setCustomerProfileDateOfBirth"
+                        @event-update-gender="setCustomerProfileGender"
+                        @event-update-password="setCustomerProfilePassword"
+                        @event-update-retyped-password="setRetypedPassword"
+    />
     <button type="button" class="btn btn-outline-secondary">Loo konto</button>
   </div>
 
@@ -17,6 +26,7 @@ export default {
   components: {ClientRegistration},
   data(){
     return {
+      passwordRetype: '',
       customerProfile: {
         firstName: '',
         lastName: '',
@@ -28,6 +38,28 @@ export default {
       }
     }
   },
-  methods:{}
+  methods:{
+    setCustomerProfileGender(gender){
+      this.customerProfile.gender = gender
+    },
+    setCustomerProfileFirstName(firstName){
+      this.customerProfile.firstName = firstName
+    },
+    setCustomerProfileLastName(lastName){
+      this.customerProfile.lastName = lastName
+    },
+    setCustomerProfileEmail(email){
+      this.customerProfile.email = email
+    },
+    setCustomerProfileDateOfBirth(dateOfBirth){
+      this.customerProfile.dateOfBirth = dateOfBirth
+    },
+    setCustomerProfilePassword(password){
+      this.customerProfile.password = password
+    },
+    setRetypedPassword(passwordRetype){
+      this.passwordRetype = passwordRetype
+    }
+  }
 }
 </script>
