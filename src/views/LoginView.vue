@@ -15,6 +15,11 @@
         </div>
 
         <button @click="login" type="button" class="btn btn-outline-secondary">Logi sisse</button>
+
+        <div class="m-3">
+        <button @click="registrationView" type="button" class="btn btn-outline-secondary">Loo konto</button>
+        <button @click="coachRegistration" type="button" class="btn btn-outline-secondary">Registreeri teenerina</button>
+        </div>
       </div>
     </div>
 
@@ -27,9 +32,16 @@
 import LoginService from "@/services/LoginService";
 import ErrorCodes from "@/errors/ErrorCodes";
 import AlertError from "@/components/alert/AlertError.vue";
+import Navigation from "@/navigation/navigation";
+import registrationView from "@/views/RegistrationView.vue";
 
 export default {
   name: 'LoginView',
+  computed: {
+    registrationView() {
+      Navigation.navigateToRegistrationView();
+    }
+  },
   components: {AlertError},
 
   data() {
@@ -71,6 +83,7 @@ export default {
       this.loginResponse = response.data
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
+      Navigation.navigatetoTrainingInfo()
     },
      handleIncorrectCredentials(error) {
       let httpStatusCode = error.response.status
@@ -79,6 +92,7 @@ export default {
         this.errorMessage = this.errorResponse.message
         setTimeout(this.resetErrorMessage, 4000)
       }
+
     },
 
     isIncorrectCredentials(httpStatusCode) {

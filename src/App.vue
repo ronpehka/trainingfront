@@ -1,8 +1,10 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
+    <router-link to="/">Kodu</router-link> |
+    <router-link to="/about">Meist</router-link> |
+    <router-link to="/training-info">Treeningud</router-link> |
     <router-link to="/login">Logi sisse</router-link>
+
   </nav>
   <router-view/>
 </template>

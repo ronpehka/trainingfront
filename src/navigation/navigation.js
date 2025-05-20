@@ -1,0 +1,12 @@
+import router from "@/router";
+
+export default {
+
+    navigatetoTrainingInfo() {
+        router.push({name:'trainingInfoRoute'})
+    },
+    navigateToRegistrationView() {
+        router.push({name:'registrationRoute'})
+    },
+
+}
