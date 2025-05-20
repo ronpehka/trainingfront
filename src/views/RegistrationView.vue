@@ -15,7 +15,6 @@
     <button @click="addNewCustomer" type="button" class="btn btn-outline-secondary">Loo konto</button>
   </div>
 
-
 </template>
 
 <script>
@@ -68,16 +67,17 @@ export default {
     setRetypedPassword(passwordRetype) {
       this.passwordRetype = passwordRetype
     },
+    handleAddNewCustomerErrorResponse(error) {
+      this.errorResponse = error.response.data
+      if (error.response.status === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_EMAIL_UNAVAILABLE) {
+        this.setTimedOutErrorMessage(this.errorResponse.message)
+      }
+    },
     addNewCustomer() {
       this.validateUserCorrectInput()
       if (this.errorMessage === '') {
         RegistrationServices.sendPostNewCustomerRequest(this.customerProfile)
-            .then(() => this.handleAddNewCustomerResponse()).catch(error => {
-          this.errorResponse = error.response.data
-          if (error.response.status === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_EMAIL_UNAVAILABLE){
-            this.setTimedOutErrorMessage(this.errorResponse.message)
-          }
-        })
+            .then(() => this.handleAddNewCustomerResponse()).catch(error => this.handleAddNewCustomerErrorResponse(error))
       }
     },
     handleAddNewCustomerResponse() {
