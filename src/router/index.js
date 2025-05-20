@@ -28,7 +28,7 @@ const routes = [
     component: TrainingInfoView
   },
   {
-    path: '/registration',
+    path: '/customer-registration',
     name: 'registrationRoute',
     component: RegistrationView
   },
