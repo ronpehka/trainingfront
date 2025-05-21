@@ -8,5 +8,8 @@ export default {
     navigateToRegistrationView() {
         router.push({name:'registrationRoute'})
     },
+    navigateToCoachRegistrationView() {
+        router.push({name:'coachRegistrationRoute'})
+    },
 
 }

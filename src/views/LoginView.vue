@@ -18,7 +18,7 @@
 
         <div class="m-3">
         <button @click="registrationView" type="button" class="btn btn-outline-secondary">Loo konto</button>
-        <button @click="coachRegistration" type="button" class="btn btn-outline-secondary">Registreeri teenerina</button>
+        <button @click="coachRegistrationView" type="button" class="btn btn-outline-secondary">Registreeri teenerina</button>
         </div>
       </div>
     </div>
@@ -34,10 +34,14 @@ import ErrorCodes from "@/errors/ErrorCodes";
 import AlertError from "@/components/alert/AlertError.vue";
 import Navigation from "@/navigation/navigation";
 import registrationView from "@/views/RegistrationView.vue";
+import coachRegistrationView from "@/views/CoachRegistrationView.vue";
 
 export default {
   name: 'LoginView',
   computed: {
+    coachRegistrationView() {
+      Navigation.navigateToCoachRegistrationView()
+    },
     registrationView() {
       Navigation.navigateToRegistrationView();
     }
