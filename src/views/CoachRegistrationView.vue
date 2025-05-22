@@ -140,15 +140,14 @@ export default {
         this.setTimedOutErrorMessage('Sünnikuupäev on valimata')
       } else if (this.coachProfile.gender.length === 0) {
         this.setTimedOutErrorMessage('Sugu on valimata')
-      } else if (this.coachProfile.password.length && this.isPasswordValid(this.coachProfile.password)) {
+      } else if (this.isPasswordValid(this.coachProfile.password)) {
         this.setTimedOutErrorMessage('Paroolid peab olema vähemalt 8 tähemärki')
       } else if (this.passwordRetype !== this.coachProfile.password) {
         this.setTimedOutErrorMessage('Paroolid ei kattu')
-      } else if (this.coachProfile.description.length > 10) {
+      } else if (this.coachProfile.description.length < 10) {
         this.setTimedOutErrorMessage('Kirjeldus peab olema vähemalt 10 tähemärki!')
-      } else if (this.coachProfile.phoneNumber.length > 5 && this.isPhoneValid(this.coachProfile.phoneNumber)) {
+      } else if (this.isPhoneValid(this.coachProfile.phoneNumber)) {
         this.setTimedOutErrorMessage('Sisesta korrektne number')
-aa
       }
 
 
