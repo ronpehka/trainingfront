@@ -1,7 +1,11 @@
 
 <template>
+
   <div>
-    <span class="input-group-text" id="basic-addon1"></span>
+    <label class="form-label">
+      Tutvustus
+    </label>
+    <span class="input-group"></span>
     <input :value="description"
            @input="$emit('event-update-description-input',$event.target.value)"
            type="text" class="form-control">
@@ -10,8 +14,11 @@
 </template>
 
 <script>
+import LastNameInput from "@/components/registration/LastNameInput.vue";
+
 export default {
   name: 'CoachDescriptionInput',
+  components: {LastNameInput},
   props:{
     description:""
   }

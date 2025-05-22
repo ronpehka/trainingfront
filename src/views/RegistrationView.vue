@@ -12,8 +12,11 @@
                         @event-update-password="setCustomerProfilePassword"
                         @event-update-retyped-password="setRetypedPassword"
     />
+
     <button @click="addNewCustomer" type="button" class="btn btn-outline-secondary">Loo konto</button>
   </div>
+
+
 
 </template>
 
