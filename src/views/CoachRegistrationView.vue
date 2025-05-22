@@ -146,7 +146,7 @@ export default {
         this.setTimedOutErrorMessage('Paroolid ei kattu')
       } else if (this.coachProfile.description.length < 10) {
         this.setTimedOutErrorMessage('Kirjeldus peab olema vähemalt 10 tähemärki!')
-      } else if (this.isPhoneValid(this.coachProfile.phoneNumber)) {
+      } else if (this.coachProfile.phoneNumber.length > 5&& !this .isPhoneValid(this.coachProfile.phoneNumber)) {
         this.setTimedOutErrorMessage('Sisesta korrektne number')
       }
 
