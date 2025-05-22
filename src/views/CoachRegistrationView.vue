@@ -1,28 +1,28 @@
 <template>
   <div>
     <AlertError
-    :error-message="errorMessage"
+        :error-message="errorMessage"
     />
 
-    <ClientRegistration :customer-profile="customerProfile"
+    <ClientRegistration :customer-profile="coachProfile"
                         :password-retype="passwordRetype"
-                        @event-update-firstname="setCustomerProfileFirstName"
-                        @event-update-lastname="setCustomerProfileLastName"
-                        @event-update-email="setCustomerProfileEmail"
-                        @event-update-date-of-birth="setCustomerProfileDateOfBirth"
-                        @event-update-gender="setCustomerProfileGender"
-                        @event-update-password="setCustomerProfilePassword"
+                        @event-update-firstname="setCoachProfileFirstName"
+                        @event-update-lastname="setCoachProfileLastName"
+                        @event-update-email="setCoachProfileEmail"
+                        @event-update-date-of-birth="setCoachProfileDateOfBirth"
+                        @event-update-gender="setCoachProfileGender"
+                        @event-update-password="setCoachProfilePassword"
                         @event-update-retyped-password="setRetypedPassword"
     />
 
     <CoachRegistration
         :coach-profile="coachProfile"
-        @event-update-description="setCoachDescription"
-        @event-update-phoneNumber="setPhoneNumber"
-        @event-update-coachImage="setCoachImage"
+        @event-update-description="setCoachProfileDescription"
+        @event-update-phone-number="setCoachProfilePhoneNumber"
+        @event-new-image-selected="setCoachProfileCoachImage"
     />
 
-    <CoachImage/>
+    <CoachImage :image-data="coachProfile.imageData"/>
 
     <button @click="addNewCoach" type="button" class="btn btn-outline-secondary">Loo konto</button>
   </div>
@@ -48,15 +48,6 @@ export default {
 
       passwordRetype: '',
       errorMessage: '',
-      customerProfile: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        phoneNumber: '',
-        dateOfBirth: '',
-        gender: '',
-        password: ''
-      },
 
       errorResponse: {
         message: '',
@@ -64,8 +55,14 @@ export default {
       },
 
       coachProfile: {
-        description: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        dateOfBirth: '',
+        gender: '',
+        password: '',
         phoneNumber: '',
+        description: '',
         imageData: '',
       },
 
@@ -74,32 +71,32 @@ export default {
   },
   methods: {
 
-    setCoachDescription(description) {
-      this.CoachRegistration.description = description
+    setCoachProfileDescription(description) {
+      this.coachProfile.description = description
     },
-    setPhoneNumber(phoneNumber) {
-      this.CoachRegistration.phoneNumber = phoneNumber
+    setCoachProfilePhoneNumber(phoneNumber) {
+      this.coachProfile.phoneNumber = phoneNumber
     },
-    setCoachImage(coachImage) {
-      this.CoachRegistration.coachImage = coachImage
+    setCoachProfileCoachImage(coachImage) {
+      this.coachProfile.imageData = coachImage
     },
-    setCustomerProfileGender(gender) {
-      this.customerProfile.gender = gender
+    setCoachProfileGender(gender) {
+      this.coachProfile.gender = gender
     },
-    setCustomerProfileFirstName(firstName) {
-      this.customerProfile.firstName = firstName
+    setCoachProfileFirstName(firstName) {
+      this.coachProfile.firstName = firstName
     },
-    setCustomerProfileLastName(lastName) {
-      this.customerProfile.lastName = lastName
+    setCoachProfileLastName(lastName) {
+      this.coachProfile.lastName = lastName
     },
-    setCustomerProfileEmail(email) {
-      this.customerProfile.email = email
+    setCoachProfileEmail(email) {
+      this.coachProfile.email = email
     },
-    setCustomerProfileDateOfBirth(dateOfBirth) {
-      this.customerProfile.dateOfBirth = dateOfBirth
+    setCoachProfileDateOfBirth(dateOfBirth) {
+      this.coachProfile.dateOfBirth = dateOfBirth
     },
-    setCustomerProfilePassword(password) {
-      this.customerProfile.password = password
+    setCoachProfilePassword(password) {
+      this.coachProfile.password = password
     },
     setRetypedPassword(passwordRetype) {
       this.passwordRetype = passwordRetype
@@ -113,7 +110,7 @@ export default {
     addNewCoach() {
       this.validateUserCorrectInput()
       if (this.errorMessage === '') {
-        RegistrationServices.sendPostNewCoachRequest(this.customerProfile, this.coachProfile)
+        RegistrationServices.sendPostNewCoachRequest(this.coachProfile)
             .then(() => this.handleAddNewCustomerResponse()).catch(error => this.handleAddNewCustomerErrorResponse(error))
       }
     },
@@ -121,40 +118,40 @@ export default {
       this.resetAllFields()
     },
     resetAllFields() {
-      this.customerProfile.firstName = ''
-      this.customerProfile.lastName = ''
-      this.customerProfile.email = ''
-      this.customerProfile.dateOfBirth = ''
-      this.customerProfile.gender = ''
-      this.customerProfile.password = ''
+      this.coachProfile.firstName = ''
+      this.coachProfile.lastName = ''
+      this.coachProfile.email = ''
+      this.coachProfile.dateOfBirth = ''
+      this.coachProfile.gender = ''
+      this.coachProfile.password = ''
       this.passwordRetype = ''
       this.coachProfile.description = ''
       this.coachProfile.phoneNumber = ''
       this.coachProfile.coachImage = ''
     },
     validateUserCorrectInput() {
-      if (!this.isNameValid(this.customerProfile.firstName)) {
+      if (!this.isNameValid(this.coachProfile.firstName)) {
         this.setTimedOutErrorMessage('Eesnimi peab olema vähemalt 3 tähemärki ja tohib sisldada tähti ning vajadusel sidekriipsu')
-      } else if (this.customerProfile.lastName.length < 3 && !this.isNameValid(this.customerProfile.lastName)) {
+      } else if (this.coachProfile.lastName.length < 3 && !this.isNameValid(this.coachProfile.lastName)) {
         this.setTimedOutErrorMessage('Perekonnanimi peab olema vähemalt 3 tähemärki ja tohib sisldada tähti ning vajadusel sidekriipsu')
-      } else if (!this.isEmailValid(this.customerProfile.email)) {
+      } else if (!this.isEmailValid(this.coachProfile.email)) {
         this.setTimedOutErrorMessage('Ebakorrektne emaili aadress')
-      } else if (this.customerProfile.dateOfBirth.length === 0) {
+      } else if (this.coachProfile.dateOfBirth.length === 0) {
         this.setTimedOutErrorMessage('Sünnikuupäev on valimata')
-      } else if (this.customerProfile.gender.length === 0) {
+      } else if (this.coachProfile.gender.length === 0) {
         this.setTimedOutErrorMessage('Sugu on valimata')
-      // } else if (this.customerProfile.password.length && this.isPasswordValid(this.customerProfile.password) ) {
-      //   this.setTimedOutErrorMessage('Paroolid peab olema vähemalt 8 tähemärki')
-      } else if (this.passwordRetype !== this.customerProfile.password) {
+      } else if (this.coachProfile.password.length && this.isPasswordValid(this.coachProfile.password)) {
+        this.setTimedOutErrorMessage('Paroolid peab olema vähemalt 8 tähemärki')
+      } else if (this.passwordRetype !== this.coachProfile.password) {
         this.setTimedOutErrorMessage('Paroolid ei kattu')
       } else if (this.coachProfile.description.length > 10) {
-        this.setTimedOutErrorMessage('Kirjeldus peab olema vähemalt 100 tähemärki!')
+        this.setTimedOutErrorMessage('Kirjeldus peab olema vähemalt 10 tähemärki!')
       } else if (this.coachProfile.phoneNumber.length > 5 && this.isPhoneValid(this.coachProfile.phoneNumber)) {
         this.setTimedOutErrorMessage('Sisesta korrektne number')
+aa
       }
-      // else if (this.coachProfile.coachImage !== 0) {
-      //   this.setTimedOutErrorMessage('Pilt peab olema lisatud')
-      // }
+
+
     },
     isNameValid(name) {
       return /^[\p{L}\s-]+$/u.test(name)

@@ -7,7 +7,7 @@
     </label>
     <span class="input-group"></span>
     <input :value="description"
-           @input="$emit('event-update-description-input',$event.target.value)"
+           @input="$emit('event-update-description',$event.target.value)"
            type="text" class="form-control">
   </div>
 

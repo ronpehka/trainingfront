@@ -7,14 +7,21 @@
       <div>
 
         <div class="col col-2 input-group mb-3">
-          <CoachDescriptionInput/>
+          <CoachDescriptionInput :description="coachProfile.description"
+          @event-update-description="$emit('event-update-description', $event)"
+          />
         </div>
         <div class="col col-2 input-group mb-3">
-          <phone-number-input/>
+          <PhoneNumberInput :coach-phone-number="coachProfile.phoneNumber"
+                              @event-update-phone-number="$emit('event-update-phone-number', $event)"
+
+          />
         </div>
 
         <div class="col col-2 input-group mb-3">
-          <CoachImageInput/>
+          <CoachImageInput :coach-image="coachProfile.imageData"
+          @event-new-image-selected="$emit('event-new-image-selected', $event)"
+          />
         </div>
       </div>
 
