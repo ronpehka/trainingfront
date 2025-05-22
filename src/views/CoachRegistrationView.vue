@@ -1,5 +1,9 @@
 <template>
   <div>
+    <AlertError
+    :error-message="errorMessage"
+    />
+
     <ClientRegistration :customer-profile="customerProfile"
                         :password-retype="passwordRetype"
                         @event-update-firstname="setCustomerProfileFirstName"
@@ -109,7 +113,7 @@ export default {
     addNewCoach() {
       this.validateUserCorrectInput()
       if (this.errorMessage === '') {
-        RegistrationServices.sendPostNewCoachRequest(this.customerProfile,this.coachProfile)
+        RegistrationServices.sendPostNewCoachRequest(this.customerProfile, this.coachProfile)
             .then(() => this.handleAddNewCustomerResponse()).catch(error => this.handleAddNewCustomerErrorResponse(error))
       }
     },
@@ -139,6 +143,8 @@ export default {
         this.setTimedOutErrorMessage('Sünnikuupäev on valimata')
       } else if (this.customerProfile.gender.length === 0) {
         this.setTimedOutErrorMessage('Sugu on valimata')
+      // } else if (this.customerProfile.password.length && this.isPasswordValid(this.customerProfile.password) ) {
+      //   this.setTimedOutErrorMessage('Paroolid peab olema vähemalt 8 tähemärki')
       } else if (this.passwordRetype !== this.customerProfile.password) {
         this.setTimedOutErrorMessage('Paroolid ei kattu')
       } else if (this.coachProfile.description.length > 10) {
@@ -158,6 +164,9 @@ export default {
     },
     isPhoneValid(phoneNumber) {
       return /^[^[5-9][0-9]{6,7}$/.test(phoneNumber)
+    },
+    isPasswordValid(password) {
+      return /^.{8,}$/.test(password)
     },
 
 
