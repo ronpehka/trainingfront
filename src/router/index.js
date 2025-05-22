@@ -34,8 +34,8 @@ const routes = [
     component: RegistrationView
   },
   {
-    path: '/location',
-    name: 'locationRoute',
+    path: '/locations',
+    name: 'locationsRoute',
     component: LocationView
   },
 ]

@@ -2,7 +2,7 @@
   <nav>
     <router-link to="/">Avaleht</router-link> |
     <router-link to="/about">Meist</router-link> |
-    <router-link to="/location">Asukohad</router-link> |
+    <router-link to="/locations">Asukohad</router-link> |
     <router-link to="/training-info">Treeningud</router-link> |
     <router-link to="/login">Logi sisse</router-link>
 
