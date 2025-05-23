@@ -46,7 +46,6 @@ export default {
   data() {
     return {
 
-      passwordRetype: '',
       errorMessage: '',
 
       errorResponse: {
@@ -127,7 +126,8 @@ export default {
       this.passwordRetype = ''
       this.coachProfile.description = ''
       this.coachProfile.phoneNumber = ''
-      this.coachProfile.coachImage = ''
+      this.coachProfile.imageData = ''
+
     },
     validateUserCorrectInput() {
       if (!this.isNameValid(this.coachProfile.firstName)) {
@@ -146,8 +146,10 @@ export default {
         this.setTimedOutErrorMessage('Paroolid ei kattu')
       } else if (this.coachProfile.description.length < 10) {
         this.setTimedOutErrorMessage('Kirjeldus peab olema vähemalt 10 tähemärki!')
-      } else if (this.coachProfile.phoneNumber.length > 5&& !this .isPhoneValid(this.coachProfile.phoneNumber)) {
+      } else if (this.coachProfile.phoneNumber.length < 5 && !this.isPhoneValid(this.coachProfile.phoneNumber)) {
         this.setTimedOutErrorMessage('Sisesta korrektne number')
+      } else if (this.coachProfile.imageData == null || this.coachProfile.imageData === '') {
+        this.setTimedOutErrorMessage('Pilt peab olema lisatud');
       }
 
 
