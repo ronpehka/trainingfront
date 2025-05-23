@@ -1,8 +1,8 @@
 <template>
   <div class="row">
     <div class="col-md-6 mb-4" v-for="location in locations" :key="location.locationId">
-      <div class="card">
-        <div class="card-body">
+      <div class="card w-75 mx-auto">
+        <div class="card-body text-start">
           <h3 class="card-title">{{ location.locationName }}</h3>
           <table class="table">
             <tbody>
@@ -13,6 +13,10 @@
             <tr>
               <th>Aadress</th>
               <td>{{ location.locationAddress }}</td>
+            </tr>
+            <tr>
+              <th>Avatud</th>
+              <td>{{ location.openingHours }}</td>
             </tr>
             </tbody>
           </table>
