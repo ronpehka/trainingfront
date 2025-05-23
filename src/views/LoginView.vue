@@ -17,8 +17,9 @@
         <button @click="login" type="button" class="btn btn-outline-secondary">Logi sisse</button>
 
         <div class="m-3">
-        <button @click="registrationView" type="button" class="btn btn-outline-secondary">Loo konto</button>
-        <button @click="coachRegistration" type="button" class="btn btn-outline-secondary">Registreeri teenerina</button>
+          <button @click="registrationView" type="button" class="btn btn-outline-secondary">Loo konto</button>
+          <button @click="coachRegistrationView" type="button" class="btn btn-outline-secondary">Registreeri teenerina
+          </button>
         </div>
       </div>
     </div>
@@ -33,11 +34,13 @@ import LoginService from "@/services/LoginService";
 import ErrorCodes from "@/errors/ErrorCodes";
 import AlertError from "@/components/alert/AlertError.vue";
 import Navigation from "@/navigation/navigation";
-import registrationView from "@/views/RegistrationView.vue";
 
 export default {
   name: 'LoginView',
   computed: {
+    coachRegistrationView() {
+      Navigation.navigateToCoachRegistrationView()
+    },
     registrationView() {
       Navigation.navigateToRegistrationView();
     }
@@ -61,20 +64,20 @@ export default {
   },
   methods: {
 
-    login(){
-      if(this.allFieldsAreWithCorrectInput()) {
+    login() {
+      if (this.allFieldsAreWithCorrectInput()) {
         this.sendLoginRequest()
-      }else{
-        this.errorMessage='Täida kõik väljad'
+      } else {
+        this.errorMessage = 'Täida kõik väljad'
         setTimeout(this.resetErrorMessage, 4000)
       }
 
     },
-     sendLoginRequest() {
+    sendLoginRequest() {
 
-        LoginService.sendLoginRequest(this.email, this.password)
-            .then(response => this.handleLoginRequest(response))
-            .catch(error => this.handleIncorrectCredentials(error))
+      LoginService.sendLoginRequest(this.email, this.password)
+          .then(response => this.handleLoginRequest(response))
+          .catch(error => this.handleIncorrectCredentials(error))
     },
     allFieldsAreWithCorrectInput() {
       return this.email.length > 0 && this.password.length > 0;
@@ -85,7 +88,7 @@ export default {
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
       Navigation.navigatetoTrainingInfo()
     },
-     handleIncorrectCredentials(error) {
+    handleIncorrectCredentials(error) {
       let httpStatusCode = error.response.status
       this.errorResponse = error.response.data
       if (this.isIncorrectCredentials(httpStatusCode)) {
