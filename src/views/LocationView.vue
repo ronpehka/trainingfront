@@ -39,14 +39,14 @@ export default {
   data() {
     return {
       locations: [
-        // {
-        //   locationId: 0,
-        //   locationName: '',
-        //   locationAddress: '',
-        //   imageData: '',
-        //   districtId: 0,
-        //   districtName: ''
-        // }
+        {
+          locationId: 0,
+          locationName: '',
+          locationAddress: '',
+          imageData: '',
+          districtId: 0,
+          districtName: ''
+        }
       ]
     }
   },

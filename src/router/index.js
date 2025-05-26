@@ -6,6 +6,7 @@ import RegistrationView from "@/views/RegistrationView.vue";
 import LocationView from "@/views/LocationView.vue";
 import CoachRegistrationView from "@/views/CoachRegistrationView.vue";
 import AddNewTrainingView from "@/views/AddNewTrainingView.vue";
+import ErrorView from "@/views/ErrorView.vue";
 
 const routes = [
   {
@@ -49,6 +50,10 @@ const routes = [
     path: '/add-new-training',
     name: 'AddNewTrainingRoute',
     component: AddNewTrainingView
+  },{
+    path: '/error-view',
+    name: 'ErrorViewRoute',
+    component: ErrorView
   },
 ]
 
