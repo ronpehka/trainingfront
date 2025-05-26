@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    siia tuleb tabel
+
   </div>
 </template>
 
