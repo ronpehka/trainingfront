@@ -2,6 +2,7 @@
   <div>
     <h1>Loo uus konto</h1>
     <AlertError :error-message="errorMessage"/>
+    <AlertSuccess :success-message="successMessage"/>
     <ClientRegistration :customer-profile="customerProfile"
                         :password-retype="passwordRetype"
                         @event-update-firstname="setCustomerProfileFirstName"
@@ -17,7 +18,6 @@
   </div>
 
 
-
 </template>
 
 <script>
@@ -25,14 +25,16 @@ import ClientRegistration from "@/components/registration/ClientRegistration.vue
 import AlertError from "@/components/alert/AlertError.vue";
 import RegistrationServices from "@/services/RegistrationServices";
 import ErrorCodes from "@/errors/ErrorCodes";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 export default {
   name: 'RegistrationView',
-  components: {AlertError, ClientRegistration},
+  components: {AlertError, ClientRegistration, AlertSuccess},
   data() {
     return {
       passwordRetype: '',
       errorMessage: '',
+      successMessage: '',
       customerProfile: {
         firstName: '',
         lastName: '',
@@ -84,6 +86,7 @@ export default {
       }
     },
     handleAddNewCustomerResponse() {
+      this.setTimedOutSuccessMessage("Klient edukalt lisatud")
       this.resetAllFields()
     },
     resetAllFields() {
@@ -122,8 +125,13 @@ export default {
       this.errorMessage = message
       setTimeout(this.resetMessage, 4000)
     },
+    setTimedOutSuccessMessage(message) {
+      this.successMessage = message
+      setTimeout(this.resetMessage, 4000)
+    },
     resetMessage() {
       this.errorMessage = ''
+      this.successMessage = ''
     }
   }
 }

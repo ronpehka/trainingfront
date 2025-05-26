@@ -3,6 +3,7 @@
     <AlertError
         :error-message="errorMessage"
     />
+    <AlertSuccess :success-message="successMessage"/>
 
     <ClientRegistration :customer-profile="coachProfile"
                         :password-retype="passwordRetype"
@@ -38,15 +39,17 @@ import ClientRegistration from "@/components/registration/ClientRegistration.vue
 import ErrorCodes from "@/errors/ErrorCodes";
 import RegistrationServices from "@/services/RegistrationServices";
 import CoachImage from "@/components/image/CoachImage.vue";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 export default {
   name: 'CoachRegistrationView',
-  components: {CoachImage, ClientRegistration, AlertError, CoachRegistration},
+  components: {CoachImage, ClientRegistration, AlertError, CoachRegistration, AlertSuccess},
 
   data() {
     return {
 
       errorMessage: '',
+      successMessage: '',
 
       errorResponse: {
         message: '',
@@ -114,6 +117,7 @@ export default {
       }
     },
     handleAddNewCustomerResponse() {
+      this.setTimedOudSuccessMessage('Uus treener edukalt lisatud')
       this.resetAllFields()
     },
     resetAllFields() {
@@ -127,6 +131,7 @@ export default {
       this.coachProfile.description = ''
       this.coachProfile.phoneNumber = ''
       this.coachProfile.imageData = ''
+
 
     },
     validateUserCorrectInput() {
@@ -172,8 +177,14 @@ export default {
       this.errorMessage = message
       setTimeout(this.resetMessage, 4000)
     },
+
+    setTimedOudSuccessMessage(message){
+      this.successMessage = message
+      setTimeout(this.resetMessage,4000)
+    },
     resetMessage() {
       this.errorMessage = ''
+      this.successMessage = ''
     }
 
 
