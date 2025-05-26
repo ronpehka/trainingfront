@@ -14,13 +14,13 @@
     </div>
 
 
-    <div v-for="weekDay in addNewTraining.trainingDays" :key="weekDay.weekDayId"
+    <div v-for="weekDay in addNewTraining.trainingDays" :key="weekDay.weekdayId"
          class="form-check d-flex align-items-center">
       <input type="checkbox" class="form-check-input me-2"
-             :checked="weekDay.isAvailable"
+             :checked="weekDay.available"
              @change="$emit('event-update-weekday', {
                weekdayId: weekDay.weekdayId,
-               isAvailable: $event.target.checked
+               available: $event.target.checked
              })"
       >
       <label class="form-check-label">
