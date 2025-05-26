@@ -1,34 +1,45 @@
 <template>
   <div class="col col-2">
-    <SportsDropdown :sportType="sportTypes" :selected-sport-type="trainingInfo.sportType"
-                    @event-new-sport.selected="setSportTypeId()"/>
+    <SportsDropdown :sportInfos="sportInfos"
+                    :selected-sport-id="sportInfo.sportId"
+                    @event-new-sport-selected="setSportId"/>
 
   </div>
-  <div v-for="trainingInfo in trainingInfos" :key="trainingInfo.trainingId">
+
   <table class="table-bordered">
-     <tr class="active">
+    <thead>
+    <tr class="active">
       <th style="width: 200px;">Spordiala</th>
       <th style="width: 200px;">Vanuserühm</th>
       <th style="width: 200px;">Asukoht</th>
       <th style="width: 200px;">Treener</th>
-      <th style="width: 200px;">Treeningajad</th>
-    </tr>
+      <th style="width: 200px;">Trenniajad</th>
 
-    <tr class="active">
-      <td>{{ trainingInfo.sportType}}</td>
-      <td>{{ trainingInfo.trainingName}} </td>
-      <td>{{trainingInfo.locationName}}</td>
-      <td>{{trainingInfo.coachFullName}}</td>
-      <td>{{trainingInfo.trainingDays}}{{trainingInfo.startTime}}{{trainingInfo.endTime}}</td>
     </tr>
+    </thead>
+
+    <tbody>
+    <tr v-for="trainingInfo in getFilteredTrainingInfos()" :key="trainingInfo.trainingId" class="active">
+      <td>{{ trainingInfo.sportType }}</td>
+      <td>{{ trainingInfo.trainingName }}</td>
+      <td>{{ trainingInfo.locationName }}</td>
+      <td>{{ trainingInfo.coachFullName }}</td>
+      <td>
+        {{ trainingInfo.trainingDays.map(day => day.weekday).join(', ') }}
+        {{ trainingInfo.startTime }} - {{ trainingInfo.endTime }}
+      </td>
+
+    </tr>
+    </tbody>
   </table>
-  </div>
+
 </template>
 
 
 <script>
 import TrainingInfoService from "@/services/TrainingInfoService";
 import SportsDropdown from "@/components/training/SportsDropdown.vue";
+import sportService from "@/services/SportService";
 
 export default {
   name: 'TrainingInfoView',
@@ -36,41 +47,52 @@ export default {
   data() {
     return {
       trainingInfos: [],
-      trainingInfo: {
-        coachUserId: 0,
-        trainingId: 0,
-        trainingName: '',
-        coachFullName: '',
-        trainingDescription: '',
-        trainingGender: '',
-        startDate: '',
-        endDate: '',
-        trainingDays: [],
-        startTime: '',
-        endTime: '',
-        locationName: '',
-        address: '',
-        districtName: '',
-        sportType: '',
-        maxLimit: 0
-
-      }
-    }
+      sportInfos: [],
+      sportInfo: {
+        sportId: 0,
+        sportName: ''
+      },
+    };
   },
+
   methods: {
+
     getAllTrainingInfo() {
       TrainingInfoService.sendGetTrainingInfoRequest()
           .then(response => {
             this.trainingInfos = response.data;
-              })
+          })
           .catch(error => console.error("Failed to load training info", error));
     },
-    setSportTypeId() {
+    getAllSports() {
+      sportService.sendGetSportsInfoRequest()
+          .then(response => {
+            this.sportInfos = response.data;
+          })
+          .catch(error => console.error("Failed to load sports info", error));
+    },
 
+    setSportId(selectedSportId) {
+      this.sportInfo.sportId = selectedSportId;
+    },
+    getFilteredTrainingInfos() {
+      if (this.sportInfo.sportId === 0) {
+        return this.trainingInfos;
+      }
+      const selectedSport = this.sportInfos.find(
+          s => s.sportId === this.sportInfo.sportId
+      );
+
+      if (!selectedSport) return [];
+
+      return this.trainingInfos.filter(
+          (info) => info.sportType === selectedSport.sportName
+      );
     },
   },
   mounted() {
     this.getAllTrainingInfo()
-  }
+    this.getAllSports()
+    }
 }
 </script>
