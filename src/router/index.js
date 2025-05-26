@@ -43,7 +43,7 @@ const routes = [
     path: '/coach-registration',
     name: 'coachRegistrationRoute',
     component: CoachRegistrationView
-  },
+  }
 ]
 
 const router = createRouter({
