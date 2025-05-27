@@ -47,8 +47,8 @@ const routes = [
   },
   {
     path: '/coach-info',
-    name: 'coachRoute',
-    component: CoachView
+    name: 'coachInfoRoute',
+    component: CoachInfoView
   },
 ]
 
