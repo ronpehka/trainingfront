@@ -3,7 +3,7 @@
     <!--  esimene rida  -->
     <div class="row justify-content-center">
       <div class="col col-2">
-        pilt
+        Pilt
       </div>
       <div class="col col-2">
         Nimi
@@ -12,29 +12,29 @@
         Email
       </div>
       <div class="col col-2">
-        Spordialad
+        Telefon
       </div>
       <div class="col col-2">
-        Telefon
+        Spordialad
       </div>
     </div>
 
     <!--    kõik ülejöönud read dynaamiliselt coaches pealt, row for loopi-->
-    <div class="row justify-content-center">
+    <div v-for="coach in coaches" :key="coach.coachUserId" class="row justify-content-center">
       <div class="col col-2">
-        pilt placeholder
+        {{coach.imageData}}
       </div>
       <div class="col col-2">
-        Nimi placeholder
+        {{coach.fullName}}
       </div>
       <div class="col col-2">
-        Email placeholder
+        {{coach.email}}
       </div>
       <div class="col col-2">
-        Spordialad placeholder
+        {{coach.phoneNumber}}
       </div>
       <div class="col col-2">
-        Telefon placeholder
+        {{coach.sports.sportType}}
       </div>
     </div>
 
@@ -42,8 +42,15 @@
 </template>
 
 <script>
+import CoachImage from "../image/CoachImage.vue";
+
 export default {
   name: 'CoachesTable',
+  computed: {
+    CoachImage() {
+      return CoachImage
+    }
+  },
   props: {
     coaches: Array
   }

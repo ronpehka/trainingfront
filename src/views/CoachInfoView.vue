@@ -10,10 +10,11 @@
 
 <script>
 import ThumbnailImage from "@/components/image/ThumbnailImage.vue";
-import CoachesTable from "@/components/CoachesTable.vue";
+import CoachesTable from "@/components/coaches/CoachesTable.vue";
+import CoachInfoService from "@/services/CoachInfoService";
 
 export default {
-  name: 'CoachView',
+  name: 'CoachInfoView',
   components: {CoachesTable, ThumbnailImage},
   data() {
     return {
@@ -33,5 +34,26 @@ export default {
       ]
     }
   },
+  methods: {
+
+    sendGetCoachesInfoRequest() {
+      CoachInfoService.sendGetCoachInfoRequest()
+          .then(response => {this.coaches = response.data})
+          .catch(error => {this.errorResponse = error.errorResponse})
+    }
+
+
+  },
+
+
+
+
+  beforeMount() {
+
+    this.sendGetCoachesInfoRequest()
+  },
+
 }
+
+
 </script>
