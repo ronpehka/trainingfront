@@ -25,7 +25,7 @@
         {{coach.imageData}}
       </div>
       <div class="col col-2">
-        {{coach.fullName}}
+        {{coach.coachFullName}}
       </div>
       <div class="col col-2">
         {{coach.email}}
