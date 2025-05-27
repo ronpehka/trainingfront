@@ -92,11 +92,12 @@ export default {
           this.setTimedOutErrorMessage('Palun vali sihtgrupp')
         } else if (new Date(this.addNewTraining.startDate) > new Date(this.addNewTraining.endDate)) {
           this.setTimedOutErrorMessage('Alguskuupäev ei saa olla hiljem kui lõppkuupäev')
-        } else if () {
-          this.setTimedOutErrorMessage('Sugu on valimata')
-        } else if () {
-          this.setTimedOutErrorMessage('Paroolid ei kattu')
-        }
+        } else if (this.addNewTraining.trainingDays.available || this.addNewTraining.trainingDays.length === 0) {
+          this.setTimedOutErrorMessage('Vali nädalapäev/Nädalapäevad')
+        } else if (new Time(this.addNewTraining.startTime) > new Time(this.addNewTraining.endTime)) {
+          this.setTimedOutErrorMessage('Trenn ei saa lõppeda ennem kui algab')
+        } else if(this.addNewTraining.maxLimit < 1){
+          this.setTimedOutErrorMessage('Trenni peab saama registreerida vähemalt 1 õpilane')}
     },
     handlePostTrainingRequest() {
       this.setTimedOutSuccessMessage("Treening edukalt lisatud")
