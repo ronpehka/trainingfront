@@ -9,10 +9,9 @@ export  default {
             return this.isLoggedIn() && roleName === 'admin'
         },
 
-        isCoach(){
-            let roleName = sessionStorage.getItem('roleName')
-            return this.isLoggedIn() && roleName === 'coach'
-        }
-
+    isCoach() {
+        let roleName = sessionStorage.getItem('roleName')
+        return this.isLoggedIn() && roleName === 'coach'
+    },
 
 }
