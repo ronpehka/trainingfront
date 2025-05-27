@@ -19,13 +19,13 @@
     </thead>
 
     <tbody>
-    <tr v-for="trainingInfo in getFilteredTrainingInfos()" :key="trainingInfo.trainingId" class="active">
+    <tr v-for="trainingInfo in trainingInfos" :key="trainingInfo.trainingId" class="active">
       <td>{{ trainingInfo.sportType }}</td>
       <td>{{ trainingInfo.trainingName }}</td>
       <td>{{ trainingInfo.locationName }}</td>
       <td>{{ trainingInfo.coachFullName }}</td>
       <td>
-        {{ trainingInfo.trainingDays.map(day => day.weekday).join(', ') }}
+        {{ (trainingInfo.trainingDays || []).map(day => day.weekday).join(', ') }}
         {{ trainingInfo.startTime }} - {{ trainingInfo.endTime }}
       </td>
 
@@ -57,13 +57,14 @@ export default {
 
   methods: {
 
-    getAllTrainingInfo() {
-      TrainingInfoService.sendGetTrainingInfoRequest()
+    getTrainingInfos() {
+      TrainingInfoService.sendGetTrainingInfoRequest(this.sportInfo.sportId)
           .then(response => {
             this.trainingInfos = response.data;
           })
           .catch(error => console.error("Failed to load training info", error));
     },
+
     getAllSports() {
       sportService.sendGetSportsInfoRequest()
           .then(response => {
@@ -74,24 +75,26 @@ export default {
 
     setSportId(selectedSportId) {
       this.sportInfo.sportId = selectedSportId;
+      this.getTrainingInfos();
     },
-    getFilteredTrainingInfos() {
-      if (this.sportInfo.sportId === 0) {
-        return this.trainingInfos;
-      }
-      const selectedSport = this.sportInfos.find(
-          s => s.sportId === this.sportInfo.sportId
-      );
 
-      if (!selectedSport) return [];
-
-      return this.trainingInfos.filter(
-          (info) => info.sportType === selectedSport.sportName
-      );
-    },
+    // getFilteredTrainingInfos() {
+    //   if (this.sportInfo.sportId === 0) {
+    //     return this.trainingInfos;
+    //   }
+    //   const selectedSport = this.sportInfos.find(
+    //       s => s.sportId === this.sportInfo.sportId
+    //   );
+    //
+    //   if (!selectedSport) return [];
+    //
+    //   return this.trainingInfos.filter(
+    //       (info) => info.sportType === selectedSport.sportName
+    //   );
+    // },
   },
   mounted() {
-    this.getAllTrainingInfo()
+    this.getTrainingInfos()
     this.getAllSports()
     }
 }
