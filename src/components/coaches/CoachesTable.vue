@@ -22,7 +22,7 @@
     <!--    kõik ülejöönud read dynaamiliselt coaches pealt, row for loopi-->
     <div v-for="coach in coaches" :key="coach.coachUserId" class="row justify-content-center">
       <div class="col col-2">
-        {{coach.imageData}}
+        <img :src="coach.imageData" alt="Treeneri pilt" class="img-fluid rounded" />
       </div>
       <div class="col col-2">
         {{coach.coachFullName}}
