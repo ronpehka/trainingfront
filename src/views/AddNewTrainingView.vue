@@ -83,21 +83,21 @@ export default {
         this.setTimedOutErrorMessage(this.errorResponse.message)
       }
     },
-    validateUserInput(){
-        if (this.addNewTraining.trainingName.length < 4) {
-          this.setTimedOutErrorMessage('Sisesta treeningule nimi, vähemalt 4 tähemärki')
-        } else if (this.addNewTraining.trainingDescription.length < 8) {
-          this.setTimedOutErrorMessage('Sisesta treeningule kirjeldus palun, vähemalt 8 tähemärki')
-        } else if (!this.addNewTraining.trainingGender) {
-          this.setTimedOutErrorMessage('Palun vali sihtgrupp')
-        } else if (new Date(this.addNewTraining.startDate) > new Date(this.addNewTraining.endDate)) {
-          this.setTimedOutErrorMessage('Alguskuupäev ei saa olla hiljem kui lõppkuupäev')
-        } else if () {
-          this.setTimedOutErrorMessage('Sugu on valimata')
-        } else if () {
-          this.setTimedOutErrorMessage('Paroolid ei kattu')
-        }
-    },
+    // validateUserInput(){
+    //     if (this.addNewTraining.trainingName.length < 4) {
+    //       this.setTimedOutErrorMessage('Sisesta treeningule nimi, vähemalt 4 tähemärki')
+    //     } else if (this.addNewTraining.trainingDescription.length < 8) {
+    //       this.setTimedOutErrorMessage('Sisesta treeningule kirjeldus palun, vähemalt 8 tähemärki')
+    //     } else if (!this.addNewTraining.trainingGender) {
+    //       this.setTimedOutErrorMessage('Palun vali sihtgrupp')
+    //     } else if (new Date(this.addNewTraining.startDate) > new Date(this.addNewTraining.endDate)) {
+    //       this.setTimedOutErrorMessage('Alguskuupäev ei saa olla hiljem kui lõppkuupäev')
+    //     } else if () {
+    //       this.setTimedOutErrorMessage('Sugu on valimata')
+    //     } else if () {
+    //       this.setTimedOutErrorMessage('Paroolid ei kattu')
+    //     }
+    // },
     handlePostTrainingRequest() {
       this.setTimedOutSuccessMessage("Treening edukalt lisatud")
       this.resetFields();

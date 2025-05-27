@@ -23,6 +23,8 @@
         @event-new-image-selected="setCoachProfileCoachImage"
     />
 
+    <SportInput/>
+
     <CoachImage :image-data="coachProfile.imageData"/>
 
     <button @click="addNewCoach" type="button" class="btn btn-outline-secondary">Loo konto</button>
@@ -40,10 +42,11 @@ import ErrorCodes from "@/errors/ErrorCodes";
 import RegistrationServices from "@/services/RegistrationServices";
 import CoachImage from "@/components/image/CoachImage.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
+import SportInput from "@/components/traininginfo/SportInput.vue";
 
 export default {
   name: 'CoachRegistrationView',
-  components: {CoachImage, ClientRegistration, AlertError, CoachRegistration, AlertSuccess},
+  components: {SportInput, CoachImage, ClientRegistration, AlertError, CoachRegistration, AlertSuccess},
 
   data() {
     return {
