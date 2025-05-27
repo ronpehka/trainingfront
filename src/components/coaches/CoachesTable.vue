@@ -34,7 +34,7 @@
         {{coach.phoneNumber}}
       </div>
       <div class="col col-2">
-        {{coach.sports.sportType}}
+        {{ coach.sports.map(s => s.sportType).join(', ') }}
       </div>
     </div>
 
@@ -48,6 +48,7 @@ export default {
   name: 'CoachesTable',
   computed: {
     CoachImage() {
+
       return CoachImage
     }
   },
@@ -57,7 +58,3 @@ export default {
 }
 </script>
 
-
-<style scoped>
-
-</style>
