@@ -5,7 +5,7 @@ import TrainingInfoView from "@/views/TrainingInfoView.vue";
 import RegistrationView from "@/views/RegistrationView.vue";
 import LocationView from "@/views/LocationView.vue";
 import CoachRegistrationView from "@/views/CoachRegistrationView.vue";
-import CoachView from "@/views/CoachView.vue";
+import CoachInfoView from "@/views/CoachInfoView.vue";
 
 const routes = [
   {
