@@ -4,6 +4,7 @@
     <router-link to="/about">Meist</router-link> |
     <router-link to="/locations">Asukohad</router-link> |
     <router-link to="/training-info">Treeningud</router-link> |
+    <router-link to="/coach-info">Treenerid</router-link> |
     <router-link to="/login">Logi sisse</router-link>
 
   </nav>

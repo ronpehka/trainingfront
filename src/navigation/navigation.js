@@ -11,5 +11,8 @@ export default {
     navigateToCoachRegistrationView() {
         router.push({name:'coachRegistrationRoute'})
     },
+    navigateToCoachView() {
+        router.push({name:'coachRoute'})
+    },
 
 }
