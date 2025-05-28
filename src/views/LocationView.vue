@@ -43,7 +43,7 @@ export default {
           locationId: 0,
           locationName: '',
           locationAddress: '',
-          imageData: '',
+          imageUrl: '',
           districtId: 0,
           districtName: ''
         }

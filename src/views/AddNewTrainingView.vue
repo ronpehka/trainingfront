@@ -1,9 +1,13 @@
 <template>
   <div>
-    <h1>Lisa uus trenn</h1>
+    <h1 v-if="modalIsOpen">Lisa uus trenn</h1>
+    <h1 v-if="!modalIsOpen">Lisa trenni asukoht</h1>
+    <LocationModal :modal-is-open="modalIsOpen"
+                   @event-close-modal="setModalIsClosed"
+    ></LocationModal>
     <AlertError :error-message="errorMessage"/>
     <AlertSuccess :success-message="successMessage"/>
-    <NewTraining :add-new-training="addNewTraining" :sports="sports" :selected-sport-id="selectedSportId"
+    <NewTraining v-if="!modalIsOpen" :add-new-training="addNewTraining" :sports="sports" :selected-sport-id="selectedSportId"
                  @event-new-sport-selected="setSportId"
                  @event-update-weekday="setWeekdays"
                  @event-update-gender="setGender"
@@ -15,8 +19,8 @@
                  @event-new-end-time="setEndTime"
                  @event-new-max-limit="setMaxLimit"
     />
-    <button @click="saveTraining" type="button" class="btn btn-outline-secondary">Salvesta trenn</button>
-    <LocationModal />
+    <button v-if="!modalIsOpen" @click="saveTraining" type="button" class="btn btn-outline-secondary">Salvesta trenn</button>
+    <button @click="setModalIsOpen">Modal</button>
   </div>
 
 </template>
@@ -80,7 +84,6 @@ export default {
         TrainingService.sendPostTrainingRequest(this.addNewTraining).then(() =>
             this.handlePostTrainingRequest()).catch(error => this.handlePostTrainingError(error))
       }
-
     },
     handlePostTrainingError(error) {
       this.errorResponse = error.response.data
@@ -114,6 +117,13 @@ export default {
     handlePostTrainingRequest() {
       this.setTimedOutSuccessMessage("Treening edukalt lisatud")
       this.resetFields();
+      this.setModalIsOpen()
+    },
+    setModalIsOpen(){
+      this.modalIsOpen = true
+    },
+    setModalIsClosed(){
+      this.modalIsOpen = false
     },
     setTimedOutSuccessMessage(message) {
       this.successMessage = message

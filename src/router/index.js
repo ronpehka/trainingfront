@@ -48,7 +48,7 @@ const routes = [
     component: CoachRegistrationView
   },
   {
-    path: '/add-new-training',
+    path: '/new-training',
     name: 'AddNewTrainingRoute',
     component: AddNewTrainingView
   },{

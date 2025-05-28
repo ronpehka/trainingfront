@@ -28,8 +28,7 @@
         {{ (trainingInfo.trainingDays || []).map(day => day.weekday).join(', ') }}
         {{ trainingInfo.startTime }} - {{ trainingInfo.endTime }}
       </td>
-
-    </tr>
+      </tr>
     </tbody>
   </table>
 
