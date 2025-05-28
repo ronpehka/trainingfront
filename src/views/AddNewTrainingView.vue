@@ -31,6 +31,7 @@ import AlertError from "@/components/alert/AlertError.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import TrainingService from "@/services/TrainingService";
 import ErrorCodes from "@/errors/ErrorCodes";
+import TimeConverter from "@/util/TimeConverter";
 
 export default {
   name: 'AddNewTrainingView',
@@ -73,9 +74,12 @@ export default {
     }
   },
   methods: {
-     saveTraining() {
-      TrainingService.sendPostTrainingRequest(this.addNewTraining).then(() =>
-          this.handlePostTrainingRequest()).catch(error =>this.handlePostTrainingError(error))
+    saveTraining() {
+      if(this.validateUserInput()){
+        TrainingService.sendPostTrainingRequest(this.addNewTraining).then(() =>
+            this.handlePostTrainingRequest()).catch(error => this.handlePostTrainingError(error))
+      }
+
     },
     handlePostTrainingError(error) {
       this.errorResponse = error.response.data
@@ -83,32 +87,39 @@ export default {
         this.setTimedOutErrorMessage(this.errorResponse.message)
       }
     },
-    validateUserInput(){
-        if (this.addNewTraining.trainingName.length < 4) {
-          this.setTimedOutErrorMessage('Sisesta treeningule nimi, vähemalt 4 tähemärki')
-        } else if (this.addNewTraining.trainingDescription.length < 8) {
-          this.setTimedOutErrorMessage('Sisesta treeningule kirjeldus palun, vähemalt 8 tähemärki')
-        } else if (!this.addNewTraining.trainingGender) {
-          this.setTimedOutErrorMessage('Palun vali sihtgrupp')
-        } else if (new Date(this.addNewTraining.startDate) > new Date(this.addNewTraining.endDate)) {
-          this.setTimedOutErrorMessage('Alguskuupäev ei saa olla hiljem kui lõppkuupäev')
-        } else if (this.addNewTraining.trainingDays.available || this.addNewTraining.trainingDays.length === 0) {
-          this.setTimedOutErrorMessage('Vali nädalapäev/Nädalapäevad')
-        } else if (new Time(this.addNewTraining.startTime) > new Time(this.addNewTraining.endTime)) {
-          this.setTimedOutErrorMessage('Trenn ei saa lõppeda ennem kui algab')
-        } else if(this.addNewTraining.maxLimit < 1){
-          this.setTimedOutErrorMessage('Trenni peab saama registreerida vähemalt 1 õpilane')}
+    validateUserInput() {
+      if (this.addNewTraining.trainingName.length < 4) {
+        this.setTimedOutErrorMessage('Sisesta treeningule nimi, vähemalt 4 tähemärki')
+      } else if (this.addNewTraining.trainingDescription.length < 8) {
+        this.setTimedOutErrorMessage('Sisesta treeningule kirjeldus palun, vähemalt 8 tähemärki')
+      } else if (!this.addNewTraining.sportId) {
+        this.setTimedOutErrorMessage("Palun vali spordiala")
+      } else if (!this.addNewTraining.trainingGender) {
+        this.setTimedOutErrorMessage('Palun vali sihtgrupp')
+      } else if (new Date(this.addNewTraining.startDate) > new Date(this.addNewTraining.endDate) ||
+          new Date(this.addNewTraining.startDate).toDateString() === new Date(this.addNewTraining.endDate).toDateString()) {
+        this.setTimedOutErrorMessage('Alguskuupäev ei saa olla hiljem kui lõppkuupäev ja trennid ei saa kesta ainult ühe päeva')
+      } else if (!this.addNewTraining.trainingDays.some(day => day.available)) {
+        this.setTimedOutErrorMessage('Vali nädalapäev/Nädalapäevad')
+      } else if (!TimeConverter.validateTrainingTimes(this.addNewTraining.startTime, this.addNewTraining.endTime)) {
+        this.setTimedOutErrorMessage('Tuleb lisada korrektne trenni algus ja lõpuaeg')
+      } else if (this.addNewTraining.maxLimit < 1) {
+        this.setTimedOutErrorMessage('Trenni peab saama registreerida vähemalt 1 õpilane')
+      }else{
+        return true
+      }
+
     },
     handlePostTrainingRequest() {
       this.setTimedOutSuccessMessage("Treening edukalt lisatud")
       this.resetFields();
     },
-    setTimedOutSuccessMessage(message){
+    setTimedOutSuccessMessage(message) {
       this.successMessage = message
-      setTimeout(this.resetMessage,4000)
+      setTimeout(this.resetMessage, 4000)
     },
-    setTimedOutErrorMessage(message){
-       this.errorMessage = message
+    setTimedOutErrorMessage(message) {
+      this.errorMessage = message
       setTimeout(this.resetMessage, 4000)
     },
 
@@ -124,9 +135,9 @@ export default {
       this.addNewTraining.startTime = ''
       this.addNewTraining.endTime = ''
     },
-    resetMessage(){
-      this.successMessage=''
-      this.errorMessage=''
+    resetMessage() {
+      this.successMessage = ''
+      this.errorMessage = ''
     },
     getAllSports() {
       SportService.sendGetSportsRequest()

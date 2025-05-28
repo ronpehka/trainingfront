@@ -45,7 +45,7 @@
     <div class="container mt-3">
       <input type="number" class="form-control" placeholder="Max õpilaste arv"
              :value="addNewTraining.maxLimit"
-             @input="$emit('event-new-max-limit', $event.target.value)"
+             @input="$emit('event-new-max-limit', Number($event.target.value))"
       />
     </div>
 
