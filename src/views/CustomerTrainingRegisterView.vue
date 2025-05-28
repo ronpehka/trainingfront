@@ -41,7 +41,7 @@
         <td>{{ training.emptyPlaces }}</td>
         <td>
           <button class="btn btn-success btn-sm"
-                  @click="sendPostCustomerTrainingRegistrationRequest(training.trainingId)">Registreeru
+                  @click="register(training.trainingId)">Registreeru
           </button>
           <button class="btn btn-danger btn-sm" @click="unregister(training.trainingId)">Loobu</button>
         </td>
@@ -114,16 +114,20 @@ export default {
         );
       }
     },
-    sendPostCustomerTrainingRegistrationRequest(trainingId) {
+    register(trainingId) {
       RegisterService.sendPostCustomerTrainingRegistrationRequest(this.userId, trainingId)
           .then(() => alert("Registreerimine õnnestus"))
           .catch(() => alert("Registreerimine ebaõnnestus"));
     },
 
-    //   unregister(trainingId) {
-    //     // Will implement in next step
-    //     alert("Unregister will be implemented next.");
-    //   }
+    unregister(trainingId) {
+      RegisterService.sendPostCustomerTrainingUnregistrationRequest(this.userId, trainingId)
+          .then(() => {
+            alert("Loobumine õnnestus!");
+            this.getTrainingInfos();
+          })
+          .catch(() => alert("Loobumine ebaõnnestus..."));
+    },
   },
 
   mounted() {
