@@ -12,7 +12,7 @@ import ErrorView from "@/views/ErrorView.vue";
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'homeRoute',
     component: HomeView
   },
   {
@@ -49,15 +49,20 @@ const routes = [
   },
   {
     path: '/new-training',
-    name: 'AddNewTrainingRoute',
+    name: 'addNewTrainingRoute',
     component: AddNewTrainingView
   },{
     path: '/error-view',
-    name: 'ErrorViewRoute',
+    name: 'errorViewRoute',
     component: ErrorView
   },
   {
     path: '/coach-info',
+    name: 'coachInfoRoute',
+    component: CoachInfoView
+  },
+  {
+    path: '/',
     name: 'coachInfoRoute',
     component: CoachInfoView
   },

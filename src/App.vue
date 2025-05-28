@@ -1,35 +1,75 @@
 <template>
-  <nav>
-    <router-link to="/">Avaleht</router-link> |
-    <router-link to="/about">Meist</router-link> |
-    <router-link to="/locations">Asukohad</router-link> |
-    <router-link to="/training-info">Treeningud</router-link> |
-    <router-link to="/coach-info">Treenerid</router-link> |
-    <router-link to="/login">Logi sisse</router-link>
 
+    <LogOutModal :modal-is-open="modalIsOpen"
+                 @event-close-modal="closeModal"
+                 @event-logout-confirmed="executeLogOut"
+    />
+  <nav>
+    <router-link to="/">Avaleht</router-link>
+    |
+    <router-link to="/about">Meist</router-link>
+    |
+    <router-link to="/locations">Asukohad</router-link>
+    |
+    <router-link to="/training-info">Treeningud</router-link>
+    |
+    <router-link to="/coach-info">Treenerid</router-link>
+    |
+    <template v-if="!isLoggedIn">
+    <router-link to="/login">Logi sisse</router-link>
+    </template>
+    <template v-else>
+      <font-awesome-icon @click="startLogOutProcess" class="cursor-pointer" icon="right-from-bracket" />
+    </template>
   </nav>
-  <router-view/>
+    <router-view @event-update-nav-menu="updateNavMenu"/>
+
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-nav {
-  padding: 30px;
-}
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+<script>
+import Navigation from "@/navigation/navigation";
+import RoleService from "@/services/RoleService";
+import Modal from "@/components/modal/Modal.vue";
+import LogOutModal from "@/components/modal/LogOutModal.vue";
 
-nav a.router-link-exact-active {
-  color: #42b983;
+export default {
+  components: {LogOutModal, Modal},
+  data() {
+    return {
+      isLoggedIn: false,
+      isCoach: false,
+      modalIsOpen: false
+    }
+  },
+  methods: {
+
+    updateNavMenu() {
+      this.isLoggedIn = RoleService.isLoggedIn()
+      this.isCoach = RoleService.isCoach()
+    },
+
+    startLogOutProcess() {
+      this.modalIsOpen = true
+    },
+
+    executeLogOut() {
+      sessionStorage.clear()
+      this.updateNavMenu()
+      this.closeModal()
+      Navigation.navigateToHomeView()
+    },
+
+    closeModal() {
+      this.modalIsOpen = false
+    },
+
+  },
+  beforeMount() {
+    this.updateNavMenu()
+  }
+
 }
-</style>
+</script>
+

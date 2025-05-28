@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Modal -->
     <div v-if="modalIsOpen" class="modal-overlay">
       <div class="modal-container">
         <div class="modal-content">

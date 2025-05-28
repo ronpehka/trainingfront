@@ -12,13 +12,16 @@ export default {
         router.push({name:'coachRegistrationRoute'})
     },
     navigateToErrorView() {
-        router.push(({name: 'ErrorViewRoute'}))
+        router.push(({name: 'errorViewRoute'}))
     },
     navigateToCoachView() {
         router.push({name:'coachRoute'})
     },
     navigateToAddNewTrainingView(){
-        router.push({name:'AddNewTrainingRoute'})
+        router.push({name:'addNewTrainingRoute'})
+    },
+    navigateToHomeView(){
+      router.push({name: 'homeRoute'})
     }
 
 }
