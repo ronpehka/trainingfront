@@ -37,7 +37,7 @@
 
 
 <script>
-import TrainingInfoService from "@/services/TrainingInfoService";
+import TrainingInfoService from "@/services/training/TrainingInfoService";
 import SportsDropdown from "@/components/training/SportsDropdown.vue";
 import sportService from "@/services/SportService";
 import Navigation from "@/navigation/navigation";

@@ -31,14 +31,15 @@ import NewTraining from "@/components/traininginfo/NewTraining.vue";
 import SportService from "@/services/SportService";
 import WeekdayService from "@/services/WeekdayService";
 import RoleService from "@/services/RoleService";
-import TrainingLocationService from "@/services/TrainingLocationService";
+import TrainingLocationService from "@/services/training/TrainingLocationService";
 import Navigation from "@/navigation/navigation";
 import AlertError from "@/components/alert/AlertError.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
-import TrainingService from "@/services/TrainingService";
+import TrainingService from "@/services/training/TrainingService";
 import ErrorCodes from "@/errors/ErrorCodes";
 import TimeConverter from "@/util/TimeConverter";
 import LocationModal from "@/components/modal/LocationModal.vue";
+
 
 export default {
   name: 'AddNewTrainingView',
@@ -89,6 +90,7 @@ export default {
             this.handlePostTrainingRequest(response)).catch(error => this.handlePostTrainingError(error))
       }
     },
+
     handlePostTrainingError(error) {
       this.errorResponse = error.response.data
       if (error.response.status === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_TRAINING_TIME) {
