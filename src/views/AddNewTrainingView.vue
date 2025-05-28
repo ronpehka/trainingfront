@@ -16,7 +16,7 @@
                  @event-new-max-limit="setMaxLimit"
     />
     <button @click="saveTraining" type="button" class="btn btn-outline-secondary">Salvesta trenn</button>
-
+    <LocationModal />
   </div>
 
 </template>
@@ -32,10 +32,11 @@ import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import TrainingService from "@/services/TrainingService";
 import ErrorCodes from "@/errors/ErrorCodes";
 import TimeConverter from "@/util/TimeConverter";
+import LocationModal from "@/components/modal/LocationModal.vue";
 
 export default {
   name: 'AddNewTrainingView',
-  components: {AlertError, NewTraining, AlertSuccess},
+  components: {LocationModal, AlertError, NewTraining, AlertSuccess},
 
   data() {
     return {
