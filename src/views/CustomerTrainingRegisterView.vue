@@ -1,4 +1,3 @@
-
 <template>
   <div class="container text-center">
     <div class="row mb-3">
@@ -41,7 +40,9 @@
         </td>
         <td>{{ training.emptyPlaces }}</td>
         <td>
-          <button class="btn btn-success btn-sm" @click="register(training.trainingId)">Registreeru</button>
+          <button class="btn btn-success btn-sm"
+                  @click="sendPostCustomerTrainingRegistrationRequest(training.trainingId)">Registreeru
+          </button>
           <button class="btn btn-danger btn-sm" @click="unregister(training.trainingId)">Loobu</button>
         </td>
       </tr>
@@ -55,7 +56,7 @@
 import SportsDropdown from "@/components/training/SportsDropdown.vue";
 import TrainingInfoService from "@/services/TrainingInfoService";
 import SportService from "@/services/SportService";
-import RegistrationServices from "@/services/RegisterService";
+import RegisterService from "@/services/RegisterService";
 import CoachInfoService from "@/services/CoachInfoService";
 
 export default {
@@ -113,17 +114,17 @@ export default {
         );
       }
     },
-    sendPostCustomerTrainingRegistrationRequest (trainingId) {
-      RegistrationServices.register(this.userId, trainingId)
+    sendPostCustomerTrainingRegistrationRequest(trainingId) {
+      RegisterService.sendPostCustomerTrainingRegistrationRequest(this.userId, trainingId)
           .then(() => alert("Registreerimine õnnestus"))
           .catch(() => alert("Registreerimine ebaõnnestus"));
     },
 
-  //   unregister(trainingId) {
-  //     // Will implement in next step
-  //     alert("Unregister will be implemented next.");
-  //   }
-   },
+    //   unregister(trainingId) {
+    //     // Will implement in next step
+    //     alert("Unregister will be implemented next.");
+    //   }
+  },
 
   mounted() {
     this.getTrainingInfos();
