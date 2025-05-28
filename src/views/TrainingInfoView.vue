@@ -66,7 +66,7 @@ export default {
     },
 
     getAllSports() {
-      sportService.sendGetSportsInfoRequest()
+      sportService.sendGetSportsRequest()
           .then(response => {
             this.sportInfos = response.data;
           })
