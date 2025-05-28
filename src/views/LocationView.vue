@@ -21,8 +21,8 @@
             </tbody>
           </table>
           <div class="mb-3">
-            <img v-if="!location.imageData" src="../assets/gym.jpg" class="img-thumbnail" alt="Treeningsaali pilt"/>
-            <img v-else :src="'data:image/jpeg;base64,' + location.imageData" class="img-thumbnail"
+            <img v-if="!location.imageUrl" src="../assets/gym.jpg" class="img-thumbnail" alt="Suvalise treeningsaali pilt"/>
+            <img v-else :src="location.imageUrl" class="img-thumbnail"
                  alt="Treeningsaali pilt"/>
           </div>
         </div>
