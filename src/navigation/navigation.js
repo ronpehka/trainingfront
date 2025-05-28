@@ -17,5 +17,8 @@ export default {
     navigateToCoachView() {
         router.push({name:'coachRoute'})
     },
+    navigateToAddNewTrainingView(){
+        router.push({name:'AddNewTrainingRoute'})
+    }
 
 }

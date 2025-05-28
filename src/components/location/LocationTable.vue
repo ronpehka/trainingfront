@@ -28,7 +28,7 @@
         <button
             type="button"
             class="btn btn-outline-secondary"
-            @click="$emit('event-location-selected', location)"
+            @click="$emit('event-location-selected', Number(location.locationId))"
         >
           Lisa asukoht
         </button>

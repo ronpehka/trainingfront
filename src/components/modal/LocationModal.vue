@@ -3,14 +3,15 @@
 
 
     <template #title>
-      <h3>Asukoha valimine</h3>
+      <h3 class="text-center">Asukoha valimine</h3>
     </template>
 
     <template #body>
       <div class="container text-center">
         <div class="row">
           <div class="col">
-            <LocationTable :locations="locations"/>
+            <LocationTable :locations="locations"
+            @event-location-selected="$emit('event-location-selected', Number($event))"/>
           </div>
         </div>
       </div>

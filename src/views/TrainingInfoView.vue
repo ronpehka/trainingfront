@@ -31,6 +31,7 @@
       </tr>
     </tbody>
   </table>
+  <button v-if="isCoach" @click="addNewTraining" type="button" class="btn btn-outline-secondary mt-2">Lisa trenn</button>
 
 </template>
 
@@ -39,12 +40,15 @@
 import TrainingInfoService from "@/services/TrainingInfoService";
 import SportsDropdown from "@/components/training/SportsDropdown.vue";
 import sportService from "@/services/SportService";
+import Navigation from "@/navigation/navigation";
+import RoleService from "@/services/RoleService";
 
 export default {
   name: 'TrainingInfoView',
   components: {SportsDropdown},
   data() {
     return {
+      isCoach: false,
       trainingInfos: [],
       sportInfos: [],
       sportInfo: {
@@ -76,6 +80,9 @@ export default {
       this.sportInfo.sportId = selectedSportId;
       this.getTrainingInfos();
     },
+    addNewTraining(){
+      Navigation.navigateToAddNewTrainingView()
+    }
 
     // getFilteredTrainingInfos() {
     //   if (this.sportInfo.sportId === 0) {
@@ -92,9 +99,12 @@ export default {
     //   );
     // },
   },
-  mounted() {
+  beforeMount() {
     this.getTrainingInfos()
     this.getAllSports()
+    if(RoleService.isCoach()){
+      this.isCoach = true
+    }
     }
 }
 </script>

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1 v-if="modalIsOpen">Lisa uus trenn</h1>
-    <h1 v-if="!modalIsOpen">Lisa trenni asukoht</h1>
+    <h1 v-if="!modalIsOpen">Lisa uus trenn</h1>
     <LocationModal :modal-is-open="modalIsOpen"
+                   @event-location-selected="setSelectedLocationId"
                    @event-close-modal="setModalIsClosed"
-    ></LocationModal>
+    />
     <AlertError :error-message="errorMessage"/>
     <AlertSuccess :success-message="successMessage"/>
     <NewTraining v-if="!modalIsOpen" :add-new-training="addNewTraining" :sports="sports" :selected-sport-id="selectedSportId"
@@ -20,6 +20,7 @@
                  @event-new-max-limit="setMaxLimit"
     />
     <button v-if="!modalIsOpen" @click="saveTraining" type="button" class="btn btn-outline-secondary">Salvesta trenn</button>
+    <button v-if="modalIsOpen" @click="saveTrainingLocation" type="button" class="btn btn-outline-secondary">Salvesta asukoht</button>
     <button @click="setModalIsOpen">Modal</button>
   </div>
 
@@ -30,6 +31,7 @@ import NewTraining from "@/components/traininginfo/NewTraining.vue";
 import SportService from "@/services/SportService";
 import WeekdayService from "@/services/WeekdayService";
 import RoleService from "@/services/RoleService";
+import TrainingLocationService from "@/services/TrainingLocationService";
 import Navigation from "@/navigation/navigation";
 import AlertError from "@/components/alert/AlertError.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
@@ -48,6 +50,8 @@ export default {
       errorMessage: '',
       successMessage: '',
       selectedSportId: 0,
+      selectedLocationId: 0,
+      selectedTrainingId:0,
       sports: [{
         sportId: 0,
         sportName: '',
@@ -81,8 +85,8 @@ export default {
   methods: {
     saveTraining() {
       if(this.validateUserInput()){
-        TrainingService.sendPostTrainingRequest(this.addNewTraining).then(() =>
-            this.handlePostTrainingRequest()).catch(error => this.handlePostTrainingError(error))
+        TrainingService.sendPostTrainingRequest(this.addNewTraining).then((response) =>
+            this.handlePostTrainingRequest(response)).catch(error => this.handlePostTrainingError(error))
       }
     },
     handlePostTrainingError(error) {
@@ -91,6 +95,31 @@ export default {
         this.setTimedOutErrorMessage(this.errorResponse.message)
       }
     },
+
+    saveTrainingLocation() {
+    TrainingLocationService.sendPostTrainingLocationRequest(this.selectedTrainingId,this.selectedLocationId).then(()=>
+        this.handlePostTrainingLocationResponse()
+      ).catch(error =>
+        this.handlePostTrainingLocationErrorResponse(error))
+    },
+
+    handlePostTrainingLocationErrorResponse(error){
+      this.errorResponse = error.response.data
+      if (error.response.status === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_FOREIGN_KEY) {
+        this.setTimedOutErrorMessage(this.errorResponse.message)
+      }
+    },
+
+    handlePostTrainingLocationResponse(){
+      this.setTimedOutSuccessMessage("Treening asukoht on edukalt lisatud")
+      Navigation.navigatetoTrainingInfo()
+    },
+
+    setSelectedLocationId(locationId){
+      this.selectedLocationId = locationId
+    },
+
+
     validateUserInput() {
       if (this.addNewTraining.trainingName.length < 4) {
         this.setTimedOutErrorMessage('Sisesta treeningule nimi, vähemalt 4 tähemärki')
@@ -114,7 +143,8 @@ export default {
       }
 
     },
-    handlePostTrainingRequest() {
+    handlePostTrainingRequest(response) {
+      this.selectedTrainingId = response.data
       this.setTimedOutSuccessMessage("Treening edukalt lisatud")
       this.resetFields();
       this.setModalIsOpen()

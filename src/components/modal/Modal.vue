@@ -4,7 +4,7 @@
     <div v-if="modalIsOpen" class="modal-overlay">
       <div class="modal-container">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header justify-content-center">
             <h1 class="modal-title fs-5">
               <slot name="title"></slot>
             </h1>
