@@ -1,5 +1,6 @@
 <template>
-
+  <h1>Athletica </h1>
+  <h4>spordiportaal</h4>
     <LogOutModal :modal-is-open="modalIsOpen"
                  @event-close-modal="closeModal"
                  @event-logout-confirmed="executeLogOut"
@@ -7,8 +8,8 @@
   <nav>
     <router-link to="/">Avaleht</router-link>
     |
-    <router-link to="/about">Meist</router-link>
-    |
+<!--    <router-link to="/about">Meist</router-link>-->
+<!--    |-->
     <router-link to="/locations">Asukohad</router-link>
     |
     <router-link to="/training-info">Treeningud</router-link>
