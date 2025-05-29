@@ -263,21 +263,22 @@ export default {
   },
 
   beforeMount() {
-    RoleService.isCoach()
-    this.isEdit = useRoute().query.trainingId !== undefined
-    this.selectedTrainingId = useRoute().query.trainingId
-    if (!this.isEdit) {
-      this.getAllSports();
-      this.getAllWeekDays();
-    } else {
-      this.getAllSports();
-      this.getAllWeekDays();
+    RoleService.isCoach();
+
+    const query = useRoute().query;
+    this.selectedTrainingId = query.trainingId;
+    this.isEdit = !!this.selectedTrainingId;
+
+    this.getAllSports();
+    this.getAllWeekDays();
+
+    if (this.isEdit) {
       TrainingInfoService.sendGetTrainingRequest(this.selectedTrainingId)
           .then(response => {
             this.addNewTraining = response.data;
-            this.selectedSportId = this.addNewTraining.sportId
-
-          }).catch();
+            this.selectedSportId = this.addNewTraining.sportId;
+          })
+          .catch(() => Navigation.navigateToErrorView());
     }
   }
 }
