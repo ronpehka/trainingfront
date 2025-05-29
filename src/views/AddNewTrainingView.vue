@@ -19,9 +19,8 @@
                  @event-new-end-time="setEndTime"
                  @event-new-max-limit="setMaxLimit"
     />
-    <button v-if="!modalIsOpen" @click="saveTraining" type="button" class="btn btn-outline-secondary">Salvesta trenn</button>
-    <button v-if="modalIsOpen" @click="saveTrainingLocation" type="button" class="btn btn-outline-secondary">Salvesta asukoht</button>
-    <button @click="setModalIsOpen">Modal</button>
+    <button  @click="saveTraining" type="button" class="btn btn-outline-secondary">Salvesta trenn</button>
+
   </div>
 
 </template>
@@ -85,18 +84,29 @@ export default {
   },
   methods: {
     saveTraining() {
-      if(this.validateUserInput()){
+      if (this.validateUserInput()) {
         TrainingService.sendPostTrainingRequest(this.addNewTraining)
-            .then(response =>
-            this.handlePostTrainingRequest(response))
+            .then(response => {
+              this.handlePostTrainingRequest(response)
+            })
             .catch(error => this.handlePostTrainingError(error))
       }
     },
 
     handlePostTrainingError(error) {
-      this.errorResponse = error.response.data
-      if (error.response.status === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_TRAINING_TIME) {
-        this.setTimedOutErrorMessage(this.errorResponse.message)
+      if (error.response && error.response.data) {
+        this.errorResponse = error.response.data;
+        if (
+            error.response.status === 403 &&
+            this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_TRAINING_TIME
+        ) {
+          this.setTimedOutErrorMessage(this.errorResponse.message);
+        } else {
+          this.setTimedOutErrorMessage("Tekkis tundmatu viga. Palun proovi hiljem uuesti.");
+        }
+      } else {
+        this.setTimedOutErrorMessage("Serveri viga või võrgu probleem. Palun proovi hiljem uuesti.");
+        console.error("Unexpected error:", error);
       }
     },
 
@@ -150,8 +160,8 @@ export default {
     handlePostTrainingRequest(response) {
       this.selectedTrainingId = response.data
       this.setTimedOutSuccessMessage("Treening edukalt lisatud")
-      this.resetFields();
-      this.setModalIsOpen()
+      this.resetFields()
+      Navigation.navigateToTrainingLocationView(this.selectedTrainingId)
     },
     setModalIsOpen(){
       this.modalIsOpen = true

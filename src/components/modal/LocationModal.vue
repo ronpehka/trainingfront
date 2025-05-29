@@ -36,7 +36,8 @@ export default {
     modalIsOpen: Boolean,
   },
   data() {
-    return {
+    return {}
+  },
 
   methods: {
     handleGetLocationsRequestResponse(response) {
@@ -47,13 +48,7 @@ export default {
       console.error("Error fetching locations:", error);
       this.errorResponse.errorMessage = error?.response?.data?.message || "Viga asukohtade laadimisel";
     }
-
-  },
-
-
-  beforeMount() {
-    LocationService.sendGetLocationsRequest().then(response => this.handleGetLocationsRequestResponse(response))
-        .catch(error => this.handleGetLocationsRequestError(error))
   }
 }
+
 </script>

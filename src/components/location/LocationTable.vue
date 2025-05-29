@@ -5,6 +5,7 @@
       <div class="col col-2">Aadress</div>
       <div class="col col-2">Pilt</div>
       <div class="col col-2">Vali</div>
+      <div class="col col-2"></div>
     </div>
 
     <div v-for="location in locations" :key="location.locationId" class="row justify-content-center align-items-center mb-3">
@@ -30,8 +31,11 @@
             class="btn btn-outline-secondary"
             @click="$emit('event-location-selected', Number(location.locationId))"
         >
-          Lisa asukoht
+          Lisa treeningu asukoht
         </button>
+      </div>
+      <div class="col col-2">
+        <font-awesome-icon icon="trash" />
       </div>
     </div>
   </div>

@@ -9,6 +9,7 @@ import CoachInfoView from "@/views/CoachInfoView.vue";
 import AddNewTrainingView from "@/views/AddNewTrainingView.vue";
 import ErrorView from "@/views/ErrorView.vue";
 import TrainingLocation from "@/views/TrainingLocationView.vue";
+import TrainingLocationView from "@/views/TrainingLocationView.vue";
 
 const routes = [
   {
@@ -68,9 +69,9 @@ const routes = [
     component: CoachInfoView
   },
   {
-    path: 'training-location',
+    path: '/training-location',
     name: 'trainingLocationRoute',
-    component: Tra
+    component: TrainingLocationView
   }
 
 ]

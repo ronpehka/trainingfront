@@ -23,7 +23,7 @@ export default {
     navigateToHomeView(){
       router.push({name: 'homeRoute'})
     },
-    navigateToTrainingLocationView(trainingID) {
+    navigateToTrainingLocationView(trainingId) {
     router.push({
         name: 'trainingLocationRoute',
         query: {trainingId: trainingId}
