@@ -8,11 +8,12 @@ import CoachRegistrationView from "@/views/CoachRegistrationView.vue";
 import CoachInfoView from "@/views/CoachInfoView.vue";
 import AddNewTrainingView from "@/views/AddNewTrainingView.vue";
 import ErrorView from "@/views/ErrorView.vue";
+import CustomerTrainingRegisterView from "@/views/CustomerTrainingRegisterView.vue";
 
 const routes = [
   {
     path: '/',
-    name: 'homeRoute',
+    name: 'home',
     component: HomeView
   },
   {
@@ -48,12 +49,18 @@ const routes = [
     component: CoachRegistrationView
   },
   {
-    path: '/new-training',
+    path: '/add-new-training',
     name: 'addNewTrainingRoute',
     component: AddNewTrainingView
-  },{
+  },
+  {
+    path: '/customer-training-register',
+    name: 'customerTrainingRegisterRoute',
+    component: CustomerTrainingRegisterView
+  },
+  {
     path: '/error-view',
-    name: 'errorViewRoute',
+    name: 'ErrorViewRoute',
     component: ErrorView
   },
   {
