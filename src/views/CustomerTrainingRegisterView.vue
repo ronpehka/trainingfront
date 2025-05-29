@@ -37,10 +37,12 @@
         <td>
           {{ (training.trainingDays || []).map(day => day.weekday).join(', ') }}
           {{ training.startTime }} - {{ training.endTime }}
-        </td>
-        <td>{{ training.emptyPlaces }}</td>
+        </td :class="{'text-danger': training.emptyPlaces === 0}">
+        <td>{{ training.emptyPlaces }} / {{training.maxLimit}}</td>
+        <span v-if="training.emptyPlaces === 0"> (täis) </span>
         <td>
           <button class="btn btn-success btn-sm"
+                  :disabled="training.emptyPlaces === 0"
                   @click="register(training.trainingId)">Registreeru
           </button>
           <button class="btn btn-danger btn-sm" @click="unregister(training.trainingId)">Loobu</button>
