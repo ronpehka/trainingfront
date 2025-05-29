@@ -86,8 +86,10 @@ export default {
   methods: {
     saveTraining() {
       if(this.validateUserInput()){
-        TrainingService.sendPostTrainingRequest(this.addNewTraining).then((response) =>
-            this.handlePostTrainingRequest(response)).catch(error => this.handlePostTrainingError(error))
+        TrainingService.sendPostTrainingRequest(this.addNewTraining)
+            .then(response =>
+            this.handlePostTrainingRequest(response))
+            .catch(error => this.handlePostTrainingError(error))
       }
     },
 

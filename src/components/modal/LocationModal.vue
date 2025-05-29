@@ -37,22 +37,7 @@ export default {
   },
   data() {
     return {
-      locations: [
-        {
-          locationId: 0,
-          locationName: '',
-          locationAddress: '',
-          imageUrl: '',
-          districtId: 0,
-          districtName: ''
-        }
-      ],
-      errorResponse: {
-        errorMessage: '',
-        errorResponse: 0,
-      }
-    };
-  },
+
   methods: {
     handleGetLocationsRequestResponse(response) {
       this.locations = response.data;

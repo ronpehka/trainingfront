@@ -5,4 +5,5 @@ export default {
         const url = sportId ? `/training-info?sportId=${sportId}` : '/training-info';
         return axios.get(url);
     },
+    send
 }
