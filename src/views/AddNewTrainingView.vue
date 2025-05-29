@@ -1,13 +1,11 @@
 <template>
   <div>
-    <h1 v-if="!modalIsOpen">Lisa uus trenn</h1>
-    <LocationModal :modal-is-open="modalIsOpen"
-                   @event-location-selected="setSelectedLocationId"
-                   @event-close-modal="setModalIsClosed"
-    />
+
+    <h1 v-if="!isEdit">Lisa uus trenn</h1>
+    <h1 v-else>Muuda treeningu infot</h1>
     <AlertError :error-message="errorMessage"/>
     <AlertSuccess :success-message="successMessage"/>
-    <NewTraining v-if="!modalIsOpen" :add-new-training="addNewTraining" :sports="sports" :selected-sport-id="selectedSportId"
+    <NewTraining  :add-new-training="addNewTraining" :sports="sports" :selected-sport-id="selectedSportId"
                  @event-new-sport-selected="setSportId"
                  @event-update-weekday="setWeekdays"
                  @event-update-gender="setGender"
@@ -19,7 +17,10 @@
                  @event-new-end-time="setEndTime"
                  @event-new-max-limit="setMaxLimit"
     />
-    <button  @click="saveTraining" type="button" class="btn btn-outline-secondary">Salvesta trenn</button>
+    <button v-if="!isEdit" @click="saveTraining" type="button" class="btn btn-outline-secondary">Salvesta trenn</button>
+    <button v-else @click="saveTraining" type="button" class="btn btn-outline-secondary">Muuda treeningu infot</button>
+
+
 
   </div>
 
@@ -46,7 +47,7 @@ export default {
 
   data() {
     return {
-      modalIsOpen: false,
+      isEdit: false,
       errorMessage: '',
       successMessage: '',
       selectedSportId: 0,

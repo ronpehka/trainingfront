@@ -65,9 +65,12 @@ export default {
       }
     };
   }, methods: {
-    editTrainingInformation(training){
-      this.training = training
-
+    editTrainingInformation(){
+      TrainingInfoService.sendTrainingPutRequest(this.trainingId, this.training).then(response => {
+        this.training = response.data
+      }).catch(error => {
+        this.someDataBlockErrorResponseObject = error.response.data
+      })
     },
 
     saveTrainingLocation(locationId) {

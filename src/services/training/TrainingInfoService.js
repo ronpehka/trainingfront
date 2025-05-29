@@ -13,5 +13,14 @@ export default {
                     }
                 }
             )
-    }
+    },
+    sendTrainingPutRequest(trainingId,training) {
+       return axios.put('/training-info', training, {
+                params: {
+                    trainingId: trainingId,
+
+                }
+            }
+        )
+    },
 }
