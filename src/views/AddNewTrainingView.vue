@@ -18,7 +18,7 @@
                  @event-new-max-limit="setMaxLimit"
     />
     <button v-if="!isEdit" @click="saveTraining" type="button" class="btn btn-outline-secondary">Salvesta trenn</button>
-    <button v-else @click="saveTraining" type="button" class="btn btn-outline-secondary">Muuda treeningu infot</button>
+    <button v-else @click="editTraining" type="button" class="btn btn-outline-secondary">Muuda treeningu infot</button>
 
 
 
@@ -39,6 +39,8 @@ import TrainingService from "@/services/training/TrainingService";
 import ErrorCodes from "@/errors/ErrorCodes";
 import TimeConverter from "@/util/TimeConverter";
 import LocationModal from "@/components/modal/LocationModal.vue";
+import {useRoute} from "vue-router";
+import TrainingInfoService from "@/services/training/TrainingInfoService";
 
 
 export default {
@@ -84,6 +86,16 @@ export default {
     }
   },
   methods: {
+
+    editTraining(){
+      TrainingInfoService.sendTrainingPutRequest(this.selectedTrainingId, this.addNewTraining)
+          .then(()=>this.setTimedOutSuccessMessage("Treening edukalt muudetud")).catch(error=>{
+        this.errorResponse = error.response.data
+        if (error.response.status === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_FOREIGN_KEY) {
+          this.setTimedOutErrorMessage(this.errorResponse.message)
+        }
+      })
+    },
     saveTraining() {
       if (this.validateUserInput()) {
         TrainingService.sendPostTrainingRequest(this.addNewTraining)
@@ -187,7 +199,7 @@ export default {
       this.addNewTraining.trainingGender = ''
       this.addNewTraining.maxLimit = 0
       this.addNewTraining.trainingDescription = ''
-      this.addNewTraining.trainingDays.available = false
+      this.addNewTraining.trainingDays.forEach(day => day.available = false)
       this.addNewTraining.startTime = ''
       this.addNewTraining.endTime = ''
     },
@@ -247,13 +259,26 @@ export default {
     },
     setMaxLimit(count) {
       this.addNewTraining.maxLimit = count
-    }
-
+    },
   },
+
   beforeMount() {
-    this.getAllSports()
-    this.getAllWeekDays()
     RoleService.isCoach()
+    this.isEdit = useRoute().query.trainingId !== undefined
+    this.selectedTrainingId = useRoute().query.trainingId
+    if (!this.isEdit) {
+      this.getAllSports();
+      this.getAllWeekDays();
+    } else {
+      this.getAllSports();
+      this.getAllWeekDays();
+      TrainingInfoService.sendGetTrainingRequest(this.selectedTrainingId)
+          .then(response => {
+            this.addNewTraining = response.data;
+            this.selectedSportId = this.addNewTraining.sportId
+
+          }).catch();
+    }
   }
 }
 

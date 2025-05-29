@@ -28,6 +28,7 @@
       <th style="width: 200px;">Trenniajad</th>
       <th style="width: 200px;">Vabad kohad</th>
       <th v-if="isCustomer" style="width: 200px;">Registreeru</th>
+      <th v-if="isCoach"style="width: 200px;"></th>
     </tr>
     </thead>
 
@@ -55,6 +56,7 @@
           Loobu
         </button>
       </td>
+      <td v-if="isCoach"><font-awesome-icon @click="navigateToEditView(trainingInfo.trainingId)" icon="pen-to-square" /></td>
 
 
       </tr>
@@ -73,9 +75,15 @@ import Navigation from "@/navigation/navigation";
 import RoleService from "@/services/RoleService";
 import RegisterService from "@/services/RegisterService";
 import CoachInfoService from "@/services/CoachInfoService";
+import navigation from "@/navigation/navigation";
 
 export default {
   name: 'TrainingInfoView',
+  computed: {
+    navigation() {
+      return navigation
+    }
+  },
   components: {SportsDropdown},
   data() {
     return {
@@ -95,7 +103,9 @@ export default {
   },
 
   methods: {
-
+    navigateToEditView(trainingId){
+      Navigation.navigateToEditView(trainingId)
+    },
     getTrainingInfos() {
       TrainingInfoService.sendGetTrainingInfoRequest(this.sportInfo.sportId)
           .then(response => {

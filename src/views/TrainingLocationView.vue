@@ -35,6 +35,7 @@ import TrainingLocationService from "@/services/training/TrainingLocationService
 import AlertError from "@/components/alert/AlertError.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import Navigation from "@/navigation/navigation";
+import router from "@/router";
 
 export default {
   name: 'TrainingLocation',
@@ -66,11 +67,13 @@ export default {
     };
   }, methods: {
     editTrainingInformation(){
-      TrainingInfoService.sendTrainingPutRequest(this.trainingId, this.training).then(response => {
-        this.training = response.data
-      }).catch(error => {
-        this.someDataBlockErrorResponseObject = error.response.data
-      })
+      Navigation.navigateToEditView(this.trainingId)
+
+      // TrainingInfoService.sendTrainingPutRequest(this.trainingId, this.training).then(response => {
+      //   this.training = response.data
+      // }).catch(error => {
+      //   this.someDataBlockErrorResponseObject = error.response.data
+      // })
     },
 
     saveTrainingLocation(locationId) {

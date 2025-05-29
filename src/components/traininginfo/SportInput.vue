@@ -11,8 +11,7 @@
             class="form-check-input me-2"
             name="sport"
             :value="sport.sportId"
-            :checked="sport.sportId === selectedSportId"
-            @change="handleSportIdChange"
+            v-model="localSelectedSportId"
         />
         <label class="form-check-label">
           {{ sport.sportName }}
@@ -31,13 +30,22 @@ export default {
       default: 0
     },
     sports: {
-      type: Array
+      type: Array,
+      default: () => []
     }
   },
-  methods: {
-    handleSportIdChange(event) {
-      this.$emit('event-new-sport-selected', Number(event.target.value))
+  data() {
+    return {
+      localSelectedSportId: this.selectedSportId
+    };
+  },
+  watch: {
+    selectedSportId(newVal) {
+      this.localSelectedSportId = newVal;
+    },
+    localSelectedSportId(newVal) {
+      this.$emit('event-new-sport-selected', newVal);
     }
   }
-}
+};
 </script>
