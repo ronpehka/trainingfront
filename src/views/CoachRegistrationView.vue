@@ -21,9 +21,12 @@
         @event-update-description="setCoachProfileDescription"
         @event-update-phone-number="setCoachProfilePhoneNumber"
         @event-new-image-selected="setCoachProfileCoachImage"
+
+        :coach-sport="coachSport"
+        @event-update-coach-sport="setCoachSportId"
+        @event-update-coach-user-id="setCoachSportUserId"
     />
 
-    <SportInput/>
 
     <CoachImage :image-data="coachProfile.imageData"/>
 
@@ -42,14 +45,20 @@ import ErrorCodes from "@/errors/ErrorCodes";
 import RegistrationServices from "@/services/RegistrationServices";
 import CoachImage from "@/components/image/CoachImage.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
-import SportInput from "@/components/traininginfo/SportInput.vue";
+import SportService from "@/services/SportService";
+import Navigation from "@/navigation/navigation";
+import CoachSportService from "@/services/CoachSportService";
+
 
 export default {
   name: 'CoachRegistrationView',
-  components: {SportInput, CoachImage, ClientRegistration, AlertError, CoachRegistration, AlertSuccess},
+  components: {CoachImage, ClientRegistration, AlertError, CoachRegistration, AlertSuccess},
 
   data() {
     return {
+
+      selectedSportIds:[],
+      sports:[],
 
       errorMessage: '',
       successMessage: '',
@@ -70,11 +79,25 @@ export default {
         description: '',
         imageData: '',
       },
+      coachSport:{
+        userId:'',
+        sportId:'',
+      }
+
+
 
 
     }
   },
   methods: {
+
+    setCoachSportUserId(userId) {
+      this.coachSport.userId = userId
+    },
+
+    setCoachSportId(sportId) {
+      this.coachSport.sportId = sportId
+    },
 
     setCoachProfileDescription(description) {
       this.coachProfile.description = description
@@ -116,13 +139,18 @@ export default {
       this.validateUserCorrectInput()
       if (this.errorMessage === '') {
         RegistrationServices.sendPostNewCoachRequest(this.coachProfile)
+            CoachSportService.sendPostCoachSportRequest(this.coachSport)
             .then(() => this.handleAddNewCustomerResponse()).catch(error => this.handleAddNewCustomerErrorResponse(error))
       }
+
     },
+
     handleAddNewCustomerResponse() {
       this.setTimedOudSuccessMessage('Uus treener edukalt lisatud')
       this.resetAllFields()
     },
+
+
     resetAllFields() {
       this.coachProfile.firstName = ''
       this.coachProfile.lastName = ''
@@ -181,17 +209,32 @@ export default {
       setTimeout(this.resetMessage, 4000)
     },
 
-    setTimedOudSuccessMessage(message){
+    setTimedOudSuccessMessage(message) {
       this.successMessage = message
-      setTimeout(this.resetMessage,4000)
+      setTimeout(this.resetMessage, 4000)
     },
     resetMessage() {
       this.errorMessage = ''
       this.successMessage = ''
-    }
 
+    },
+
+    getAllSports() {
+      SportService.sendGetSportsRequest()
+          .then(response => this.handleGetSportsResponse(response))
+          .catch(() => Navigation.navigateToErrorView());
+    },
+
+    handleGetSportsResponse(response) {
+      this.sports = response.data
+    },
+  },
+
+  beforeMount() {
+    this.getAllSports()
 
   }
+
 
 }
 </script>

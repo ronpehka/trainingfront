@@ -12,7 +12,7 @@ export default {
         router.push({name:'coachRegistrationRoute'})
     },
     navigateToErrorView() {
-        router.push(({name: 'errorViewRoute'}))
+        // router.push(({name: 'errorViewRoute'}))
     },
     navigateToCoachView() {
         router.push({name:'coachRoute'})
