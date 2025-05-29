@@ -11,7 +11,7 @@
       Lõpp: {{ training.endDate }},
       Treening ajad: {{ (training.trainingDays || []).map(day => day.weekdayName).join(', ') }}
       {{ training.startTime }} - {{ training.endTime }}
-      <font-awesome-icon icon="fa-regular fa-pen-to-square"/>
+      <font-awesome-icon icon="fa-regular fa-pen-to-square" @click="editTrainingInformation"/>
 
     </div>
 
@@ -65,6 +65,11 @@ export default {
       }
     };
   }, methods: {
+    editTrainingInformation(training){
+      this.training = training
+
+    },
+
     saveTrainingLocation(locationId) {
       this.selectedLocationId = locationId
       TrainingLocationService.sendPostTrainingLocationRequest(this.trainingId, this.selectedLocationId)
