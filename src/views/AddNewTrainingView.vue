@@ -126,7 +126,7 @@ export default {
 
     handlePostTrainingLocationResponse(){
       this.setTimedOutSuccessMessage("Treening asukoht on edukalt lisatud")
-      Navigation.navigatetoTrainingInfo()
+      Navigation.navigateToTrainingInfoView()
     },
 
     setSelectedLocationId(locationId){

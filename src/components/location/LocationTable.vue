@@ -9,7 +9,7 @@
     </div>
 
     <div v-for="location in locations" :key="location.locationId" class="row justify-content-center align-items-center mb-3">
-      <div class="col col-2">{{ location.locationName }}</div>
+      <div class="col col-3">{{ location.locationName }}</div>
       <div class="col col-2">{{ location.locationAddress }}</div>
       <div class="col col-2">
         <img

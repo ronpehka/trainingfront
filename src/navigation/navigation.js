@@ -2,7 +2,7 @@ import router from "@/router";
 
 export default {
 
-    navigatetoTrainingInfo() {
+    navigateToTrainingInfoView() {
         router.push({name:'trainingInfoRoute'})
     },
     navigateToRegistrationView() {
