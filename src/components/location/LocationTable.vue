@@ -4,10 +4,14 @@
       <div class="col col-2">Nimi</div>
       <div class="col col-2">Aadress</div>
       <div class="col col-2">Pilt</div>
-      <div class="col col-2">Vali</div>
+      <div class="col col-2">Kinnita</div>
     </div>
 
-    <div v-for="location in locations" :key="location.locationId" class="row justify-content-center align-items-center mb-3">
+    <div
+        v-for="location in locations"
+        :key="location.locationId"
+        class="row justify-content-center align-items-center mb-3"
+    >
       <div class="col col-2">{{ location.locationName }}</div>
       <div class="col col-2">{{ location.locationAddress }}</div>
       <div class="col col-2">
@@ -24,14 +28,19 @@
             alt="Treeningsaali pilt"
         />
       </div>
-      <div class="col col-2">
-        <button
-            type="button"
-            class="btn btn-outline-secondary"
-            @click="$emit('event-location-selected', Number(location.locationId))"
-        >
-          Lisa asukoht
-        </button>
+      <div class="col col-2 justify-content-center">
+        <div class="form-check d-flex align-items-center">
+          <input
+              class="form-check-input"
+              type="radio"
+              name="location"
+              :value="location.locationId"
+              @change="$emit('event-location-selected', Number(location.locationId))"
+          />
+          <label class="form-check-label ms-2">
+            Vali asukoht
+          </label>
+        </div>
       </div>
     </div>
   </div>
@@ -39,9 +48,9 @@
 
 <script>
 export default {
-  name: 'LocationTable',
+  name: "LocationTable",
   props: {
-    locations: Array
-  }
-}
+    locations: Array,
+  },
+};
 </script>
