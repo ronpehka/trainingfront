@@ -16,75 +16,61 @@
       </div>
     </div>
 
-  </div>
-
-  <table v-if="filteredTrainings.length > 0" class="table-bordered">
-    <thead>
-    <tr class="active">
-      <th style="width: 200px;">Spordiala</th>
-      <th style="width: 200px;">Vanuserühm</th>
-      <th style="width: 200px;">Asukoht</th>
-      <th style="width: 200px;">Treener</th>
-      <th style="width: 200px;">Trenniajad</th>
-      <th style="width: 200px;">Vabad kohad</th>
-      <th v-if="isCustomer" style="width: 200px;">Registreeru</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <tr v-for="trainingInfo in filteredTrainings" :key="trainingInfo.trainingId" class="active">
-      <td>{{ trainingInfo.sportType }}</td>
-      <td>{{ trainingInfo.trainingName }}</td>
-      <td>{{ trainingInfo.locationName }}</td>
-      <td>{{ trainingInfo.coachFullName }}</td>
-      <td :class="{'text-danger': trainingInfo.emptyPlaces === 0}">
-        {{ (trainingInfo.trainingDays || []).map(day => day.weekday).join(', ') }}
-        {{ trainingInfo.startTime }} - {{ trainingInfo.endTime }}
-      </td>
-
-      <td>{{ trainingInfo.emptyPlaces }} / {{trainingInfo.maxLimit}}
-      <span v-if="trainingInfo.emptyPlaces === 0"> (täis) </span>
-      </td>
-      <td v-if="isCustomer && trainingInfo.emptyPlaces > 0">
-        <button class="btn btn-success btn-sm"
-                @click="register(trainingInfo.trainingId)">
-          Registreeru
-        </button>
-        <button class="btn btn-danger btn-sm"
-                @click="unregister(trainingInfo.trainingId)">
-          Loobu
-        </button>
-      </td>
-
-
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Spordiala</th>
+        <th>Vanuserühm</th>
+        <th>Asukoht</th>
+        <th>Treener</th>
+        <th>Trenniajad</th>
+        <th>Vabad kohad</th>
+        <th>Registreeru</th>
       </tr>
-    </tbody>
-  </table>
-  <button v-if="isCoach" @click="addNewTraining" type="button" class="btn btn-outline-secondary mt-2">Lisa trenn</button>
-
+      </thead>
+      <tbody>
+      <tr v-for="training in filteredTrainings" :key="training.trainingId">
+        <td>{{ training.sportType }}</td>
+        <td>{{ training.trainingName }}</td>
+        <td>{{ training.locationName }}</td>
+        <td>{{ training.coachFullName }}</td>
+        <td>
+          {{ (training.trainingDays || []).map(day => day.weekday).join(', ') }}
+          {{ training.startTime }} - {{ training.endTime }}
+        </td :class="{'text-danger': training.emptyPlaces === 0}">
+        <td>{{ training.emptyPlaces }} / {{training.maxLimit}}</td>
+        <span v-if="training.emptyPlaces === 0"> (täis) </span>
+        <td>
+          <button class="btn btn-success btn-sm"
+                  :disabled="training.emptyPlaces === 0"
+                  @click="register(training.trainingId)">Registreeru
+          </button>
+          <button class="btn btn-danger btn-sm" @click="unregister(training.trainingId)">Loobu</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 
 <script>
-import TrainingInfoService from "@/services/training/TrainingInfoService";
 import SportsDropdown from "@/components/training/SportsDropdown.vue";
-import sportService from "@/services/SportService";
-import Navigation from "@/navigation/navigation";
-import RoleService from "@/services/RoleService";
+import TrainingInfoService from "@/services/TrainingInfoService";
+import SportService from "@/services/SportService";
 import RegisterService from "@/services/RegisterService";
 import CoachInfoService from "@/services/CoachInfoService";
 
 export default {
-  name: 'TrainingInfoView',
+  name: "UserTrainingRegisterView",
   components: {SportsDropdown},
+
   data() {
     return {
-      filteredTrainings: [],
-      isCoach: false,
-      isCustomer: false,
       trainingInfos: [],
-      coachInfos: [],
+      filteredTrainings: [],
       sportInfos: [],
+      coachInfos: [],
       sportInfo: {
         sportId: 0,
         sportName: ''
@@ -95,24 +81,21 @@ export default {
   },
 
   methods: {
-
     getTrainingInfos() {
       TrainingInfoService.sendGetTrainingInfoRequest(this.sportInfo.sportId)
           .then(response => {
             this.trainingInfos = response.data;
-            this.filterTrainingsByCoach();
+            this.filteredTrainings = response.data;
           })
-          .catch(error => console.error("Failed to load training info", error));
+          .catch(error => console.error("Failed to load training Info", error));
     },
-
     getAllSports() {
-      sportService.sendGetSportsRequest()
+      SportService.sendGetSportsRequest()
           .then(response => {
             this.sportInfos = response.data;
           })
-          .catch(error => console.error("Failed to load sports info", error));
+          .catch(error => console.error("Failed to load sports Info", error));
     },
-
     getAllCoaches() {
       CoachInfoService.sendGetCoachInfoRequest()
           .then(response => {
@@ -120,12 +103,10 @@ export default {
           })
           .catch(error => console.error("Failed to load coaches info", error));
     },
-
     setSportId(selectedSportId) {
       this.sportInfo.sportId = selectedSportId;
       this.getTrainingInfos();
     },
-
     filterTrainingsByCoach() {
       if (this.selectedCoachId === 0) {
         this.filteredTrainings = this.trainingInfos;
@@ -135,11 +116,6 @@ export default {
         );
       }
     },
-
-    addNewTraining() {
-      Navigation.navigateToAddNewTrainingView()
-    },
-
     register(trainingId) {
       RegisterService.sendPostCustomerTrainingRegistrationRequest(this.userId, trainingId)
           .then(() => alert("Registreerimine õnnestus"))
@@ -156,16 +132,11 @@ export default {
     },
   },
 
-  beforeMount() {
-    this.getTrainingInfos()
-    this.getAllSports()
+  mounted() {
+    this.getTrainingInfos();
+    this.getAllSports();
     this.getAllCoaches();
-    if(RoleService.isCoach()){
-      this.isCoach = true
-    }
-    if(RoleService.isCustomer()){
-      this.isCustomer = true
-    }
-    }
+  }
+
 }
 </script>
