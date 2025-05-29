@@ -1,39 +1,31 @@
-
 <template>
-
   <div class="form-check"
-       v-for="sport in sports.sportId"
+       v-for="sport in sports"
        :key="sport.sportId">
-
-
-    <input class="form-check-input"
-           type="checkbox"
-           :checked="sport.available"
-            @change="$emit('event-update-sport-id', {
-            sportId: sport.sportId,
-            available: $event.target.checked
-            })"
-
+    <input
+        class="form-check-input"
+        type="checkbox"
+        :id="'sport' + sport.sportId"
+        :checked="sport.available"
+        @change="$emit('event-update-checked-sports', {
+        sportId: sport.sportId,
+        available: $event.target.checked
+      })"
     >
-
-    <label class="form-check-label" for="flexCheckDefault">
+    <label class="form-check-label" :for="'sport-' + sport.sportId">
       {{ sport.sportName }}
     </label>
   </div>
-
-
-
 </template>
 
 <script>
 export default {
   name: 'SportCheckBox',
   props: {
-    addSport: {
-      type: Object
+    sports: {
+      type: Array,
+      required: true
     }
   }
-
-
 }
 </script>

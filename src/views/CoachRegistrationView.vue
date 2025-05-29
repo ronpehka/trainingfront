@@ -22,8 +22,8 @@
         @event-update-phone-number="setCoachProfilePhoneNumber"
         @event-new-image-selected="setCoachProfileCoachImage"
 
-        :coach-sport="coachSport"
-        @event-update-coach-sport="setCoachSportId"
+        :checkedSports="coachSport"
+        @event-update-checked-sports="setCoachSportId"
         @event-update-coach-user-id="setCoachSportUserId"
     />
 
@@ -57,8 +57,8 @@ export default {
   data() {
     return {
 
-      selectedSportIds:[],
-      sports:[],
+      selectedSportIds: [],
+      sports: [],
 
       errorMessage: '',
       successMessage: '',
@@ -79,12 +79,17 @@ export default {
         description: '',
         imageData: '',
       },
-      coachSport:{
-        userId:'',
-        sportId:'',
+
+      coachSport: {
+        userId: 0,
+        sports: [
+          {
+            sportId: 0,
+            sportName: '',
+            isAvailable: false
+          }
+        ]
       }
-
-
 
 
     }
@@ -95,10 +100,14 @@ export default {
       this.coachSport.userId = userId
     },
 
-    setCoachSportId(sportId) {
-      this.coachSport.sportId = sportId
+    setCoachSportId({ sportId, available }) {
+      const sport = this.coachSport.sports.find(s => s.sportId === sportId);
+      if (sport) {
+        sport.isAvailable = available;
+      } else {
+        this.coachSport.sports.push({ sportId, sportName: '', isAvailable: available });
+      }
     },
-
     setCoachProfileDescription(description) {
       this.coachProfile.description = description
     },
@@ -139,7 +148,7 @@ export default {
       this.validateUserCorrectInput()
       if (this.errorMessage === '') {
         RegistrationServices.sendPostNewCoachRequest(this.coachProfile)
-            CoachSportService.sendPostCoachSportRequest(this.coachSport)
+        CoachSportService.sendPostCoachSportRequest(this.coachSport)
             .then(() => this.handleAddNewCustomerResponse()).catch(error => this.handleAddNewCustomerErrorResponse(error))
       }
 
