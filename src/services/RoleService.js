@@ -13,5 +13,8 @@ export default {
         let roleName = sessionStorage.getItem('roleName')
         return this.isLoggedIn() && roleName === 'coach'
     },
-
+    isCustomer() {
+        let roleName = sessionStorage.getItem('roleName')
+        return this.isLoggedIn() && roleName === 'customer'
+    },
 }
