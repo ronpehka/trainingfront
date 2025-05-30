@@ -7,8 +7,23 @@
           <img src="https://korvpall100.ee/bw_client_files/korvpall100/public/img/Image/ESMF201_96-C561_1.jpg" class="card-img-top" alt="trennipilt">
           <div class="card-body text-start">
             <h5 class="card-title">Meeskonnasport massidesse!</h5>
-            <p class="card-text">Meie veebiplatvorm ühendab spordihuvilisi...</p>
-            <p class="card-text"><small class="text-body-secondary">Viimati uuendatud mai 2025</small></p>
+            <div class="space-y-4">
+              <p>
+                <strong>Tere tulemast spordiportaali Athletica!</strong><br>
+                Athletica on spetsiaalselt noortele sportlastele loodud kaasaegne treeningute haldamise keskkond, kus treenerid, õpilased ja lapsevanemad saavad mugavalt organiseerida sporditegevusi. Portaali kaudu on võimalik vaadata treeningplaani, registreeruda treeningutele ning saada ülevaade treeningkoormusest ja vabadest kohtadest. Selge ja kasutajasõbralik liides teeb igapäevase halduse lihtsaks nii mobiilis kui ka arvutis.
+              </p>
+
+              <p>
+                <strong>Personaalne treeningukogemus igale sportlasele</strong><br>
+                Portaal võimaldab filtreerida treeninguid spordiala, treeneri, asukoha ja muu järgi, et iga kasutaja leiaks sobiva koormuse ning parima arengu võimalused. Treeneritel on võimalus hallata oma rühmi, lisada uusi treeninguid ning hoida silm peal registreerumistel ja osalejate arvul. Tänu täpsele kalendripõhisele vaatele on võimalik näha, millal ja kus treeningud toimuvad, vältides ajakattuvusi.
+              </p>
+
+              <p>
+                <strong>Usaldusväärne tööriist klubidele ja kogukondadele</strong><br>
+                Athletica ei ole pelgalt kalender – see on tööriist, mis ühendab kogukonda. Klubi administraatorid saavad hallata mitut treenerit ja rühma korraga, jälgida aktiivsust ning koguda tagasisidet. Portaali taustal töötab võimas ja turvaline süsteem, mis tagab andmete täpsuse ning mugava kasutajakogemuse. Athletica teeb treeningute korraldamise lihtsaks, läbipaistvaks ja tõhusaks.
+              </p>
+            </div>
+
           </div>
         </div>
       </div>
