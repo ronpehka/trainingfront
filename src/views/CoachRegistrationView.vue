@@ -22,13 +22,10 @@
         @event-update-phone-number="setCoachProfilePhoneNumber"
         @event-new-image-selected="setCoachProfileCoachImage"
 
-        :checkedSports="coachSport"
+        :sports="sports"
         @event-update-checked-sports="setCoachSportId"
-        @event-update-coach-user-id="setCoachSportUserId"
     />
 
-
-    <CoachImage :image-data="coachProfile.imageData"/>
 
     <button @click="addNewCoach" type="button" class="btn btn-outline-secondary">Loo konto</button>
   </div>
@@ -43,7 +40,6 @@ import CoachRegistration from "@/components/registration/CoachRegistration.vue";
 import ClientRegistration from "@/components/registration/ClientRegistration.vue";
 import ErrorCodes from "@/errors/ErrorCodes";
 import RegistrationServices from "@/services/RegistrationServices";
-import CoachImage from "@/components/image/CoachImage.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import SportService from "@/services/SportService";
 import Navigation from "@/navigation/navigation";
@@ -52,14 +48,10 @@ import CoachSportService from "@/services/CoachSportService";
 
 export default {
   name: 'CoachRegistrationView',
-  components: {CoachImage, ClientRegistration, AlertError, CoachRegistration, AlertSuccess},
+  components: {ClientRegistration, AlertError, CoachRegistration, AlertSuccess},
 
   data() {
     return {
-
-      selectedSportIds: [],
-      sports: [],
-
       errorMessage: '',
       successMessage: '',
 
@@ -80,16 +72,10 @@ export default {
         imageData: '',
       },
 
-      coachSport: {
         userId: 0,
-        sports: [
-          {
-            sportId: 0,
-            sportName: '',
-            isAvailable: false
-          }
-        ]
-      }
+        sports: [{
+          sportId: 0,
+        }],
 
 
     }
@@ -100,13 +86,8 @@ export default {
       this.coachSport.userId = userId
     },
 
-    setCoachSportId({ sportId, available }) {
-      const sport = this.coachSport.sports.find(s => s.sportId === sportId);
-      if (sport) {
-        sport.isAvailable = available;
-      } else {
-        this.coachSport.sports.push({ sportId, sportName: '', isAvailable: available });
-      }
+    setCoachSportId(sportId) {
+      this.coachSport.sportId = sportId
     },
     setCoachProfileDescription(description) {
       this.coachProfile.description = description
@@ -147,8 +128,10 @@ export default {
     addNewCoach() {
       this.validateUserCorrectInput()
       if (this.errorMessage === '') {
-        RegistrationServices.sendPostNewCoachRequest(this.coachProfile)
-        CoachSportService.sendPostCoachSportRequest(this.coachSport)
+        RegistrationServices.sendPostNewCoachRequest(this.coachProfile).then(response=>{
+          this.userId=response.data
+        })
+        CoachSportService.sendPostCoachSportRequest(this.userId, this.sports.sportId)
             .then(() => this.handleAddNewCustomerResponse()).catch(error => this.handleAddNewCustomerErrorResponse(error))
       }
 
@@ -171,6 +154,10 @@ export default {
       this.coachProfile.description = ''
       this.coachProfile.phoneNumber = ''
       this.coachProfile.imageData = ''
+      // this.coachSport = {
+      //   userId: 0,
+      //   sports: []
+      // }
 
 
     },

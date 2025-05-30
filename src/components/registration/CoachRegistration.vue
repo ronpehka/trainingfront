@@ -1,36 +1,18 @@
 <template>
   <div>
-    <AlertError
-        :error-message="errorMessage"
+    <PhoneNumberInput :coach-phone-number="coachProfile.phoneNumber"
+                      @event-update-phone-number="$emit('event-update-phone-number', $event)" />
+    <CoachDescriptionInput
+    :description="coachProfile.description"
+    @event-update-description="$emit('event-update-description', $event)"
     />
-    <AlertSuccess :success-message="successMessage"/>
+    <SportCheckBox
+        :sports="sports"
+        @event-update-checked-sports="$emit('event-update-checked-sports',$event)"/>
 
-    <ClientRegistration :customer-profile="coachProfile"
-                        :password-retype="passwordRetype"
-                        @event-update-firstname="setCoachProfileFirstName"
-                        @event-update-lastname="setCoachProfileLastName"
-                        @event-update-email="setCoachProfileEmail"
-                        @event-update-date-of-birth="setCoachProfileDateOfBirth"
-                        @event-update-gender="setCoachProfileGender"
-                        @event-update-password="setCoachProfilePassword"
-                        @event-update-retyped-password="setRetypedPassword"
-    />
-
-    <CoachRegistration
-        :coach-profile="coachProfile"
-        @event-update-description="setCoachProfileDescription"
-        @event-update-phone-number="setCoachProfilePhoneNumber"
-        @event-new-image-selected="setCoachProfileCoachImage"
-
-        :checkedSports="coachSport"
-        @event-update-checked-sports="setCoachSportId"
-        @event-update-coach-user-id="setCoachSportUserId"
-    />
+    <CoachImage @event-update-coach-image="$emit('event-update-coach-image',$event)"/>
 
 
-    <CoachImage :image-data="coachProfile.imageData"/>
-
-    <button @click="addNewCoach" type="button" class="btn btn-outline-secondary">Loo konto</button>
   </div>
 
 
@@ -38,234 +20,37 @@
 
 
 <script>
-import AlertError from "@/components/alert/AlertError.vue";
-import CoachRegistration from "@/components/registration/CoachRegistration.vue";
-import ClientRegistration from "@/components/registration/ClientRegistration.vue";
-import ErrorCodes from "@/errors/ErrorCodes";
-import RegistrationServices from "@/services/RegistrationServices";
+
 import CoachImage from "@/components/image/CoachImage.vue";
-import AlertSuccess from "@/components/alert/AlertSuccess.vue";
-import SportService from "@/services/SportService";
-import Navigation from "@/navigation/navigation";
-import CoachSportService from "@/services/CoachSportService";
+import SportCheckBox from "@/components/registration/SportCheckBox.vue";
+import PhoneNumberInput from "@/components/registration/PhoneNumberInput.vue";
+import CoachDescriptionInput from "@/components/registration/CoachDescriptionInput.vue";
+import emailInput from "@/components/registration/EmailInput.vue";
+import * as events from "node:events";
 
 
 export default {
-  name: 'CoachRegistrationView',
-  components: {CoachImage, ClientRegistration, AlertError, CoachRegistration, AlertSuccess},
-
-  data() {
-    return {
-
-      selectedSportIds: [],
-      sports: [],
-
-      errorMessage: '',
-      successMessage: '',
-
-      errorResponse: {
-        message: '',
-        errorCode: 0
-      },
-
-      coachProfile: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        dateOfBirth: '',
-        gender: '',
-        password: '',
-        phoneNumber: '',
-        description: '',
-        imageData: '',
-      },
-
-      coachSport: {
-        userId: 0,
-        sports: [
-          {
-            sportId: 0,
-            sportName: '',
-            isAvailable: false
-          }
-        ]
-      }
-
-
+  name: 'CoachRegistration',
+  computed: {
+    events() {
+      return events
+    },
+    emailInput() {
+      return emailInput
     }
   },
-  methods: {
-    setCoachSportUserId(userId) {
-      this.coachSport.userId = userId
-    },
+  components: {CoachDescriptionInput, PhoneNumberInput, SportCheckBox, CoachImage},
+  props: {
 
-    setCoachSportId({ sportId, available }) {
-      const sport = this.coachSport.sports.find(s => s.sportId === sportId);
-      if (sport) {
-        sport.isAvailable = available;
-      } else {
-        this.coachSport.sports.push({ sportId, sportName: '', isAvailable: available });
+    coachProfile: Object,
+    sports: [
+      {
+        sportId: 0,
+        sportName: '',
+        isAvailable: false
       }
-    },
-
-    setCoachProfileDescription(description) {
-      this.coachProfile.description = description
-    },
-
-    setCoachProfilePhoneNumber(phoneNumber) {
-      this.coachProfile.phoneNumber = phoneNumber
-    },
-
-    setCoachProfileCoachImage(coachImage) {
-      this.coachProfile.imageData = coachImage
-    },
-
-    setCoachProfileGender(gender) {
-      this.coachProfile.gender = gender
-    },
-
-    setCoachProfileFirstName(firstName) {
-      this.coachProfile.firstName = firstName
-    },
-
-    setCoachProfileLastName(lastName) {
-      this.coachProfile.lastName = lastName
-    },
-
-    setCoachProfileEmail(email) {
-      this.coachProfile.email = email
-    },
-
-    setCoachProfileDateOfBirth(dateOfBirth) {
-      this.coachProfile.dateOfBirth = dateOfBirth
-    },
-
-    setCoachProfilePassword(password) {
-      this.coachProfile.password = password
-    },
-
-    setRetypedPassword(passwordRetype) {
-      this.passwordRetype = passwordRetype
-    },
-
-    handleAddNewCustomerErrorResponse(error) {
-      this.errorResponse = error.response.data
-      if (error.response.status === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_EMAIL_UNAVAILABLE) {
-        this.setTimedOutErrorMessage(this.errorResponse.message)
-      }
-    },
-
-    addNewCoach() {
-      if (!this.validateUserCorrectInput()) return;
-
-      RegistrationServices.sendPostNewCoachRequest(this.coachProfile)
-      CoachSportService.sendPostCoachSportRequest(this.coachSport)
-          .then(() => this.handleAddNewCustomerResponse())
-          .catch(error => this.handleAddNewCustomerErrorResponse(error))
-    },
-
-    handleAddNewCustomerResponse() {
-      this.setTimedOutSuccessMessage('Uus treener edukalt lisatud')
-      this.resetAllFields()
-    },
-
-    resetAllFields() {
-      this.coachProfile.firstName = ''
-      this.coachProfile.lastName = ''
-      this.coachProfile.email = ''
-      this.coachProfile.dateOfBirth = ''
-      this.coachProfile.gender = ''
-      this.coachProfile.password = ''
-      this.passwordRetype = ''
-      this.coachProfile.description = ''
-      this.coachProfile.phoneNumber = ''
-      this.coachProfile.imageData = ''
-      this.coachSport = {
-        userId: 0,
-        sports: []
-      }
-    },
-
-    validateUserCorrectInput() {
-      if (!this.isNameValid(this.coachProfile.firstName)) {
-        this.setTimedOutErrorMessage('Eesnimi peab olema vähemalt 3 tähemärki ja tohib sisaldada tähti ning vajadusel sidekriipsu')
-        return false
-      } else if (this.coachProfile.lastName.length < 3 || !this.isNameValid(this.coachProfile.lastName)) {
-        this.setTimedOutErrorMessage('Perekonnanimi peab olema vähemalt 3 tähemärki ja tohib sisaldada tähti ning vajadusel sidekriipsu')
-        return false
-      } else if (!this.isEmailValid(this.coachProfile.email)) {
-        this.setTimedOutErrorMessage('Ebakorrektne emaili aadress')
-        return false
-      } else if (this.coachProfile.dateOfBirth.length === 0) {
-        this.setTimedOutErrorMessage('Sünnikuupäev on valimata')
-        return false
-      } else if (this.coachProfile.gender.length === 0) {
-        this.setTimedOutErrorMessage('Sugu on valimata')
-        return false
-      } else if (!this.isPasswordValid(this.coachProfile.password)) {
-        this.setTimedOutErrorMessage('Parool peab olema vähemalt 8 tähemärki')
-        return false
-      } else if (this.passwordRetype !== this.coachProfile.password) {
-        this.setTimedOutErrorMessage('Paroolid ei kattu')
-        return false
-      } else if (this.coachProfile.description.length < 10) {
-        this.setTimedOutErrorMessage('Kirjeldus peab olema vähemalt 10 tähemärki!')
-        return false
-      } else if (this.coachProfile.phoneNumber.length < 5 || !this.isPhoneValid(this.coachProfile.phoneNumber)) {
-        this.setTimedOutErrorMessage('Sisesta korrektne number')
-        return false
-      } else if (!this.coachProfile.imageData) {
-        this.setTimedOutErrorMessage('Pilt peab olema lisatud')
-        return false
-      }
-      return true
-    },
-
-    isNameValid(name) {
-      return /^[\p{L}\s-]+$/u.test(name)
-    },
-
-    isEmailValid(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-    },
-
-    isPhoneValid(phoneNumber) {
-      return /^[5-9][0-9]{6,7}$/.test(phoneNumber)
-    },
-
-    isPasswordValid(password) {
-      return /^.{8,}$/.test(password)
-    },
-
-    setTimedOutErrorMessage(message) {
-      this.errorMessage = message
-      setTimeout(this.resetMessage, 4000)
-    },
-
-    setTimedOutSuccessMessage(message) {
-      this.successMessage = message
-      setTimeout(this.resetMessage, 4000)
-    },
-
-    resetMessage() {
-      this.errorMessage = ''
-      this.successMessage = ''
-    },
-
-    getAllSports() {
-      SportService.sendGetSportsRequest()
-          .then(response => this.handleGetSportsResponse(response))
-          .catch(() => Navigation.navigateToErrorView());
-    },
-
-    handleGetSportsResponse(response) {
-      this.sports = response.data
-    }
+    ],
   },
-
-  beforeMount() {
-    this.getAllSports()
-  }
 
 }
 

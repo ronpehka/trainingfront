@@ -7,7 +7,7 @@
         type="checkbox"
         :id="'sport' + sport.sportId"
         :checked="sport.available"
-        @change="$emit('event-update-checked-sports', {
+        @change="$emit('event-update-checked-sport', {
         sportId: sport.sportId,
         available: $event.target.checked
       })"
