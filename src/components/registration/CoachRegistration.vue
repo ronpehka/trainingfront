@@ -8,7 +8,7 @@
     />
     <SportCheckBox
         :sports="sports"
-        @event-update-checked-sports="$emit('event-update-checked-sports',$event)"/>
+        @event-update-checked-sport="$emit('event-update-checked-sport',$event)"/>
 
     <CoachImage @event-update-coach-image="$emit('event-update-coach-image',$event)"/>
 
@@ -26,30 +26,16 @@ import SportCheckBox from "@/components/registration/SportCheckBox.vue";
 import PhoneNumberInput from "@/components/registration/PhoneNumberInput.vue";
 import CoachDescriptionInput from "@/components/registration/CoachDescriptionInput.vue";
 import emailInput from "@/components/registration/EmailInput.vue";
-import * as events from "node:events";
 
 
 export default {
   name: 'CoachRegistration',
-  computed: {
-    events() {
-      return events
-    },
-    emailInput() {
-      return emailInput
-    }
-  },
+
   components: {CoachDescriptionInput, PhoneNumberInput, SportCheckBox, CoachImage},
   props: {
 
     coachProfile: Object,
-    sports: [
-      {
-        sportId: 0,
-        sportName: '',
-        isAvailable: false
-      }
-    ],
+    sports: Array
   },
 
 }

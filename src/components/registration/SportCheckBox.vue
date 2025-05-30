@@ -5,14 +5,13 @@
     <input
         class="form-check-input"
         type="checkbox"
-        :id="'sport' + sport.sportId"
         :checked="sport.available"
         @change="$emit('event-update-checked-sport', {
         sportId: sport.sportId,
         available: $event.target.checked
       })"
     >
-    <label class="form-check-label" :for="'sport-' + sport.sportId">
+    <label class="form-check-label">
       {{ sport.sportName }}
     </label>
   </div>
@@ -24,7 +23,6 @@ export default {
   props: {
     sports: {
       type: Array,
-      required: true
     }
   }
 }

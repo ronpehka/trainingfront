@@ -23,7 +23,7 @@
         @event-new-image-selected="setCoachProfileCoachImage"
 
         :sports="sports"
-        @event-update-checked-sports="setCoachSportId"
+        @event-update-checked-sport="setCoachSportId"
     />
 
 
@@ -73,9 +73,13 @@ export default {
       },
 
         userId: 0,
-        sports: [{
+      sports: [
+        {
           sportId: 0,
-        }],
+          sportName: '',
+          available: false
+        }
+      ],
 
 
     }
@@ -86,8 +90,15 @@ export default {
       this.coachSport.userId = userId
     },
 
-    setCoachSportId(sportId) {
-      this.coachSport.sportId = sportId
+    setCoachSportId(sportInfo) {
+      let sportId= sportInfo.sportId
+      let isAvailable= sportInfo.isAvailable
+      for (let i=0; this.sports.length; i++){
+        if(this.sports[i].sportId===sportId){
+          this.sports[i].isAvailable= isAvailable
+          break;
+        }
+      }
     },
     setCoachProfileDescription(description) {
       this.coachProfile.description = description
