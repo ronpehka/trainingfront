@@ -2,12 +2,12 @@
   <div class="d-flex justify-content-center align-items-center gap-4">
     <div class="form-check d-flex align-items-center">
       <input
-          @change="$emit('event-update-gender', $event.target.value)"
           class="form-check-input"
           type="radio"
           name="gender"
           id="gender-male"
           value="M"
+          v-model="localGender"
       />
       <label class="form-check-label ms-2" for="gender-male">
         Mees
@@ -20,7 +20,7 @@
           name="gender"
           id="gender-female"
           value="N"
-          @change="$emit('event-update-gender', $event.target.value)"
+          v-model="localGender"
       />
       <label class="form-check-label ms-2" for="gender-female">
         Naine
@@ -28,3 +28,26 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    gender: {
+      type: String,
+    }
+  },
+  data() {
+    return {
+      localGender: this.gender
+    };
+  },
+  watch: {
+    gender(newGender) {
+      this.localGender = newGender;
+    },
+    localGender(newGender) {
+      this.$emit('event-update-gender', newGender);
+    }
+  }
+};
+</script>

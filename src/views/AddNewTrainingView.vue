@@ -1,13 +1,11 @@
 <template>
   <div>
-    <h1 v-if="!modalIsOpen">Lisa uus trenn</h1>
-    <LocationModal :modal-is-open="modalIsOpen"
-                   @event-location-selected="setSelectedLocationId"
-                   @event-close-modal="setModalIsClosed"
-    />
+
+    <h1 v-if="!isEdit">Lisa uus trenn</h1>
+    <h1 v-else>Muuda treeningu infot</h1>
     <AlertError :error-message="errorMessage"/>
     <AlertSuccess :success-message="successMessage"/>
-    <NewTraining v-if="!modalIsOpen" :add-new-training="addNewTraining" :sports="sports" :selected-sport-id="selectedSportId"
+    <NewTraining  :add-new-training="addNewTraining" :sports="sports" :selected-sport-id="selectedSportId"
                  @event-new-sport-selected="setSportId"
                  @event-update-weekday="setWeekdays"
                  @event-update-gender="setGender"
@@ -19,9 +17,11 @@
                  @event-new-end-time="setEndTime"
                  @event-new-max-limit="setMaxLimit"
     />
-    <button v-if="!modalIsOpen" @click="saveTraining" type="button" class="btn btn-outline-secondary">Salvesta trenn</button>
-    <button v-if="modalIsOpen" @click="saveTrainingLocation" type="button" class="btn btn-outline-secondary">Salvesta asukoht</button>
-    <button @click="setModalIsOpen">Modal</button>
+    <button v-if="!isEdit" @click="saveTraining" type="button" class="btn btn-outline-secondary">Salvesta trenn</button>
+    <button v-else @click="editTraining" type="button" class="btn btn-outline-secondary">Muuda treeningu infot</button>
+
+
+
   </div>
 
 </template>
@@ -31,14 +31,17 @@ import NewTraining from "@/components/traininginfo/NewTraining.vue";
 import SportService from "@/services/SportService";
 import WeekdayService from "@/services/WeekdayService";
 import RoleService from "@/services/RoleService";
-import TrainingLocationService from "@/services/TrainingLocationService";
+import TrainingLocationService from "@/services/training/TrainingLocationService";
 import Navigation from "@/navigation/navigation";
 import AlertError from "@/components/alert/AlertError.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
-import TrainingService from "@/services/TrainingService";
+import TrainingService from "@/services/training/TrainingService";
 import ErrorCodes from "@/errors/ErrorCodes";
 import TimeConverter from "@/util/TimeConverter";
 import LocationModal from "@/components/modal/LocationModal.vue";
+import {useRoute} from "vue-router";
+import TrainingInfoService from "@/services/training/TrainingInfoService";
+
 
 export default {
   name: 'AddNewTrainingView',
@@ -46,7 +49,7 @@ export default {
 
   data() {
     return {
-      modalIsOpen: false,
+      isEdit: false,
       errorMessage: '',
       successMessage: '',
       selectedSportId: 0,
@@ -83,16 +86,40 @@ export default {
     }
   },
   methods: {
+
+    editTraining(){
+      TrainingInfoService.sendTrainingPutRequest(this.selectedTrainingId, this.addNewTraining)
+          .then(()=>this.setTimedOutSuccessMessage("Treening edukalt muudetud")).catch(error=>{
+        this.errorResponse = error.response.data
+        if (error.response.status === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_FOREIGN_KEY) {
+          this.setTimedOutErrorMessage(this.errorResponse.message)
+        }
+      })
+    },
     saveTraining() {
-      if(this.validateUserInput()){
-        TrainingService.sendPostTrainingRequest(this.addNewTraining).then((response) =>
-            this.handlePostTrainingRequest(response)).catch(error => this.handlePostTrainingError(error))
+      if (this.validateUserInput()) {
+        TrainingService.sendPostTrainingRequest(this.addNewTraining)
+            .then(response => {
+              this.handlePostTrainingRequest(response)
+            })
+            .catch(error => this.handlePostTrainingError(error))
       }
     },
+
     handlePostTrainingError(error) {
-      this.errorResponse = error.response.data
-      if (error.response.status === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_TRAINING_TIME) {
-        this.setTimedOutErrorMessage(this.errorResponse.message)
+      if (error.response && error.response.data) {
+        this.errorResponse = error.response.data;
+        if (
+            error.response.status === 403 &&
+            this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_TRAINING_TIME
+        ) {
+          this.setTimedOutErrorMessage(this.errorResponse.message);
+        } else {
+          this.setTimedOutErrorMessage("Tekkis tundmatu viga. Palun proovi hiljem uuesti.");
+        }
+      } else {
+        this.setTimedOutErrorMessage("Serveri viga või võrgu probleem. Palun proovi hiljem uuesti.");
+        console.error("Unexpected error:", error);
       }
     },
 
@@ -112,7 +139,7 @@ export default {
 
     handlePostTrainingLocationResponse(){
       this.setTimedOutSuccessMessage("Treening asukoht on edukalt lisatud")
-      Navigation.navigatetoTrainingInfo()
+      Navigation.navigateToTrainingInfoView()
     },
 
     setSelectedLocationId(locationId){
@@ -146,8 +173,8 @@ export default {
     handlePostTrainingRequest(response) {
       this.selectedTrainingId = response.data
       this.setTimedOutSuccessMessage("Treening edukalt lisatud")
-      this.resetFields();
-      this.setModalIsOpen()
+      this.resetFields()
+      Navigation.navigateToTrainingLocationView(this.selectedTrainingId)
     },
     setModalIsOpen(){
       this.modalIsOpen = true
@@ -172,7 +199,7 @@ export default {
       this.addNewTraining.trainingGender = ''
       this.addNewTraining.maxLimit = 0
       this.addNewTraining.trainingDescription = ''
-      this.addNewTraining.trainingDays.available = false
+      this.addNewTraining.trainingDays.forEach(day => day.available = false)
       this.addNewTraining.startTime = ''
       this.addNewTraining.endTime = ''
     },
@@ -232,13 +259,27 @@ export default {
     },
     setMaxLimit(count) {
       this.addNewTraining.maxLimit = count
-    }
-
+    },
   },
+
   beforeMount() {
-    this.getAllSports()
-    this.getAllWeekDays()
-    RoleService.isCoach()
+    RoleService.isCoach();
+
+    const query = useRoute().query;
+    this.selectedTrainingId = query.trainingId;
+    this.isEdit = !!this.selectedTrainingId;
+
+    this.getAllSports();
+    this.getAllWeekDays();
+
+    if (this.isEdit) {
+      TrainingInfoService.sendGetTrainingRequest(this.selectedTrainingId)
+          .then(response => {
+            this.addNewTraining = response.data;
+            this.selectedSportId = this.addNewTraining.sportId;
+          })
+          .catch(() => Navigation.navigateToErrorView());
+    }
   }
 }
 

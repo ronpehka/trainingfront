@@ -36,23 +36,9 @@ export default {
     modalIsOpen: Boolean,
   },
   data() {
-    return {
-      locations: [
-        {
-          locationId: 0,
-          locationName: '',
-          locationAddress: '',
-          imageUrl: '',
-          districtId: 0,
-          districtName: ''
-        }
-      ],
-      errorResponse: {
-        errorMessage: '',
-        errorResponse: 0,
-      }
-    };
+    return {}
   },
+
   methods: {
     handleGetLocationsRequestResponse(response) {
       this.locations = response.data;
@@ -62,13 +48,7 @@ export default {
       console.error("Error fetching locations:", error);
       this.errorResponse.errorMessage = error?.response?.data?.message || "Viga asukohtade laadimisel";
     }
-
-  },
-
-
-  beforeMount() {
-    LocationService.sendGetLocationsRequest().then(response => this.handleGetLocationsRequestResponse(response))
-        .catch(error => this.handleGetLocationsRequestError(error))
   }
 }
+
 </script>

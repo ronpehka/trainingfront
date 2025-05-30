@@ -87,7 +87,7 @@ export default {
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
       this.$emit('event-update-nav-menu')
-      Navigation.navigatetoTrainingInfo()
+      Navigation.navigateToTrainingInfoView()
     },
     handleIncorrectCredentials(error) {
       let httpStatusCode = error.response.status
