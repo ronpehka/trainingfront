@@ -29,7 +29,7 @@
 
 
 <script>
-import Navigation from "@/navigation/navigation";
+import Navigation from "@/navigation/Navigation";
 import RoleService from "@/services/RoleService";
 import Modal from "@/components/modal/Modal.vue";
 import LogOutModal from "@/components/modal/LogOutModal.vue";

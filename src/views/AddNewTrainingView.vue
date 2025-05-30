@@ -32,7 +32,7 @@ import SportService from "@/services/SportService";
 import WeekdayService from "@/services/WeekdayService";
 import RoleService from "@/services/RoleService";
 import TrainingLocationService from "@/services/training/TrainingLocationService";
-import Navigation from "@/navigation/navigation";
+import Navigation from "@/navigation/Navigation";
 import AlertError from "@/components/alert/AlertError.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import TrainingService from "@/services/training/TrainingService";
@@ -41,7 +41,7 @@ import TimeConverter from "@/util/TimeConverter";
 import LocationModal from "@/components/modal/LocationModal.vue";
 import {useRoute} from "vue-router";
 import TrainingInfoService from "@/services/training/TrainingInfoService";
-import navigation from "@/navigation/navigation";
+import navigation from "@/navigation/Navigation";
 
 
 export default {
@@ -251,7 +251,7 @@ export default {
             this.addNewTraining = response.data;
             this.selectedSportId = this.addNewTraining.sportId
 
-          }).catch();
+          }).catch(()=> navigation.navigateToErrorView());
     }
   }
 }
