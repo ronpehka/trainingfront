@@ -18,7 +18,6 @@
         Spordialad
       </div>
     </div>
-
     <!--    kõik ülejöönud read dynaamiliselt coaches pealt, row for loopi-->
     <div v-for="coach in coaches" :key="coach.coachUserId" class="row justify-content-center">
       <div class="col col-2">
@@ -42,16 +41,10 @@
 </template>
 
 <script>
-import CoachImage from "../image/CoachImage.vue";
+
 
 export default {
   name: 'CoachesTable',
-  computed: {
-    CoachImage() {
-
-      return CoachImage
-    }
-  },
   props: {
     coaches: Array
   }

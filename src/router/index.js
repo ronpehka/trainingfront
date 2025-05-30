@@ -70,11 +70,7 @@ const routes = [
     name: 'coachInfoRoute',
     component: CoachInfoView
   },
-  {
-    path: '/',
-    name: 'coachInfoRoute',
-    component: CoachInfoView
-  },
+
   {
     path: '/training-location',
     name: 'trainingLocationRoute',
