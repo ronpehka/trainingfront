@@ -41,6 +41,7 @@ import TimeConverter from "@/util/TimeConverter";
 import LocationModal from "@/components/modal/LocationModal.vue";
 import {useRoute} from "vue-router";
 import TrainingInfoService from "@/services/training/TrainingInfoService";
+import navigation from "@/navigation/navigation";
 
 
 export default {
@@ -123,30 +124,6 @@ export default {
       }
     },
 
-    saveTrainingLocation() {
-    TrainingLocationService.sendPostTrainingLocationRequest(this.selectedTrainingId,this.selectedLocationId).then(()=>
-        this.handlePostTrainingLocationResponse()
-      ).catch(error =>
-        this.handlePostTrainingLocationErrorResponse(error))
-    },
-
-    handlePostTrainingLocationErrorResponse(error){
-      this.errorResponse = error.response.data
-      if (error.response.status === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_FOREIGN_KEY) {
-        this.setTimedOutErrorMessage(this.errorResponse.message)
-      }
-    },
-
-    handlePostTrainingLocationResponse(){
-      this.setTimedOutSuccessMessage("Treening asukoht on edukalt lisatud")
-      Navigation.navigateToTrainingInfoView()
-    },
-
-    setSelectedLocationId(locationId){
-      this.selectedLocationId = locationId
-    },
-
-
     validateUserInput() {
       if (this.addNewTraining.trainingName.length < 4) {
         this.setTimedOutErrorMessage('Sisesta treeningule nimi, vähemalt 4 tähemärki')
@@ -175,12 +152,6 @@ export default {
       this.setTimedOutSuccessMessage("Treening edukalt lisatud")
       this.resetFields()
       Navigation.navigateToTrainingLocationView(this.selectedTrainingId)
-    },
-    setModalIsOpen(){
-      this.modalIsOpen = true
-    },
-    setModalIsClosed(){
-      this.modalIsOpen = false
     },
     setTimedOutSuccessMessage(message) {
       this.successMessage = message
@@ -263,6 +234,9 @@ export default {
   },
 
   beforeMount() {
+    if(!RoleService.isLoggedIn()){
+      navigation.navigateToErrorView()
+    }
     RoleService.isCoach()
     this.isEdit = useRoute().query.trainingId !== undefined
     this.selectedTrainingId = useRoute().query.trainingId

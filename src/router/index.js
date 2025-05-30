@@ -15,7 +15,7 @@ import CustomerTrainingRegisterView from "@/views/CustomerTrainingRegisterView.v
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'homeRoute',
     component: HomeView
   },
   {
