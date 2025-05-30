@@ -19,7 +19,7 @@
     <h4>Asukoha valimine</h4>
     <LocationTable :locations="locations"
                    @event-location-selected="saveTrainingLocation"/>
-    <button>Lisa uus asukoht</button>
+    <button @click="navigation.navigateToAddNewLocationView()">Lisa uus asukoht</button>
   </div>
 
 </template>
@@ -34,11 +34,17 @@ import {useRoute} from "vue-router";
 import TrainingLocationService from "@/services/training/TrainingLocationService";
 import AlertError from "@/components/alert/AlertError.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
-import Navigation from "@/navigation/navigation";
+import Navigation from "@/navigation/Navigation";
 import router from "@/router";
+import navigation from "@/navigation/Navigation";
 
 export default {
   name: 'TrainingLocation',
+  computed: {
+    navigation() {
+      return navigation
+    }
+  },
   components: {AlertError, LocationTable, AlertSuccess},
   data() {
     return {

@@ -33,7 +33,7 @@
 import LoginService from "@/services/LoginService";
 import ErrorCodes from "@/errors/ErrorCodes";
 import AlertError from "@/components/alert/AlertError.vue";
-import Navigation from "@/navigation/navigation";
+import Navigation from "@/navigation/Navigation";
 
 export default {
   name: 'LoginView',
