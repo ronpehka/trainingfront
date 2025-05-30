@@ -21,11 +21,13 @@
         @event-update-description="setCoachProfileDescription"
         @event-update-phone-number="setCoachProfilePhoneNumber"
         @event-new-image-selected="setCoachProfileCoachImage"
-
         :sports="sports"
         @event-update-checked-sport="setCoachSportId"
     />
 
+    <CoachImage
+        :image-data="coachProfile.imageData"
+        @event-update-coach-image="$emit('event-update-coach-image',$event)"/>
 
     <button @click="addNewCoach" type="button" class="btn btn-outline-secondary">Loo konto</button>
   </div>
@@ -44,14 +46,17 @@ import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import SportService from "@/services/SportService";
 import Navigation from "@/navigation/navigation";
 import CoachSportService from "@/services/CoachSportService";
+import CoachImage from "@/components/image/CoachImage.vue";
 
 
 export default {
   name: 'CoachRegistrationView',
-  components: {ClientRegistration, AlertError, CoachRegistration, AlertSuccess},
+  components: {CoachImage, ClientRegistration, AlertError, CoachRegistration, AlertSuccess},
 
   data() {
     return {
+      sportIds:[],
+
       errorMessage: '',
       successMessage: '',
 
@@ -72,7 +77,7 @@ export default {
         imageData: '',
       },
 
-        userId: 0,
+      userId: 0,
       sports: [
         {
           sportId: 0,
@@ -86,16 +91,20 @@ export default {
   },
   methods: {
 
-    setCoachSportUserId(userId) {
-      this.coachSport.userId = userId
-    },
 
     setCoachSportId(sportInfo) {
-      let sportId= sportInfo.sportId
-      let isAvailable= sportInfo.isAvailable
-      for (let i=0; this.sports.length; i++){
-        if(this.sports[i].sportId===sportId){
-          this.sports[i].isAvailable= isAvailable
+      let sportId = sportInfo.sportId
+      let isAvailable = sportInfo.available
+      for (let i = 0; i< this.sports.length; i++) {
+        if (this.sports[i].sportId === sportId) {
+          this.sports[i].available = isAvailable
+          if (isAvailable && !this.sportIds.includes(sportId)) {
+            this.sportIds.push(sportId);
+          } else if (!isAvailable) {
+
+            this.sportIds = this.sportIds.filter(id => id !== sportId);
+          }
+
           break;
         }
       }
@@ -139,11 +148,21 @@ export default {
     addNewCoach() {
       this.validateUserCorrectInput()
       if (this.errorMessage === '') {
-        RegistrationServices.sendPostNewCoachRequest(this.coachProfile).then(response=>{
-          this.userId=response.data
-        })
-        CoachSportService.sendPostCoachSportRequest(this.userId, this.sports.sportId)
-            .then(() => this.handleAddNewCustomerResponse()).catch(error => this.handleAddNewCustomerErrorResponse(error))
+
+        RegistrationServices.sendPostNewCoachRequest(this.coachProfile).then(response => {
+
+          this.userId = response.data
+          const coachSportPayload = {
+            userId: this.userId,
+            sportIds: this.sportIds
+          };
+
+          CoachSportService.sendPostCoachSportRequest(coachSportPayload)
+              .then(() => this.handleAddNewCustomerResponse())
+              .catch(error => this.handleAddNewCustomerErrorResponse(error));
+        }).catch(error => this.handleAddNewCustomerErrorResponse(error));
+
+
       }
 
     },
