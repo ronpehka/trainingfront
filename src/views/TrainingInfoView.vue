@@ -118,7 +118,7 @@ export default {
             this.trainingInfos = response.data;
             this.filterTrainingsByCoach();
           })
-          .catch(error => console.error("Failed to load training info", error));
+          .catch(() => Navigation.navigateToErrorView());
     },
 
     getAllSports() {
@@ -126,7 +126,7 @@ export default {
           .then(response => {
             this.sportInfos = response.data;
           })
-          .catch(error => console.error("Failed to load sports info", error));
+          .catch(() => Navigation.navigateToErrorView());
     },
 
     getAllCoaches() {
@@ -134,7 +134,7 @@ export default {
           .then(response => {
             this.coachInfos = response.data;
           })
-          .catch(error => console.error("Failed to load coaches info", error));
+          .catch(() => Navigation.navigateToErrorView());
     },
 
     setSportId(selectedSportId) {
