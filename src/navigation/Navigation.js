@@ -35,6 +35,12 @@ export default {
             query:{ trainingId }
         })
 
+    }, navigateToLocationEditView(locationId) {
+        router.push({
+            name: 'addNewLocationRoute',
+            query:{ locationId }
+        })
+
     },
     navigateToAddNewLocationView(){
         router.push({name:'addNewLocationRoute'})

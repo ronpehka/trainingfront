@@ -2,6 +2,7 @@
   <div>
     <AlertError :error-message="errorMessage"/>
     <AlertSuccess :success-message="successMessage"/>
+    <LocationModal :modalIsOpen="modalIsOpen"/>
 
     <div>
       NImi: {{ training.trainingName }},
@@ -37,6 +38,7 @@ import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import Navigation from "@/navigation/Navigation";
 import router from "@/router";
 import navigation from "@/navigation/Navigation";
+import LocationModal from "@/components/modal/LocationModal.vue";
 
 export default {
   name: 'TrainingLocation',
@@ -45,7 +47,7 @@ export default {
       return navigation
     }
   },
-  components: {AlertError, LocationTable, AlertSuccess},
+  components: {LocationModal, AlertError, LocationTable, AlertSuccess},
   data() {
     return {
       coachUserId: Number(sessionStorage.getItem('userId')),
@@ -55,6 +57,7 @@ export default {
       trainingId: 0,
       sportName: '',
       training: {},
+      modalIsOpen: false,
 
       locations: [
         {
@@ -74,12 +77,6 @@ export default {
   }, methods: {
     editTrainingInformation(){
       Navigation.navigateToEditView(this.trainingId)
-
-      // TrainingInfoService.sendTrainingPutRequest(this.trainingId, this.training).then(response => {
-      //   this.training = response.data
-      // }).catch(error => {
-      //   this.someDataBlockErrorResponseObject = error.response.data
-      // })
     },
 
     saveTrainingLocation(locationId) {

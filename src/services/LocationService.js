@@ -6,7 +6,10 @@ export default {
         return axios.get('/locations');
     },
 
-    sendGetLocationRequest(locationnId){
+    sendGetLocationRequest(locationId){
         return axios.get('/location')
-    }
+    },
+    sendPostLocationRequest(newLocation){
+    return axios.post('/location', newLocation)
+       }
 }

@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default{
     sendGetDistrictRequest(){
-       return  axios.get('/district')
+       return axios.get('/districts')
     }
 
 }

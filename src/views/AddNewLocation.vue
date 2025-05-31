@@ -1,35 +1,45 @@
 <template>
-<div>
+  <div>
 
-  <div class="container text-center">
-    <div class="row justify-content-center">
-      <div class="col col-5">
-        <AlertDanger :error-message="errorMessage">
-        <h1 v-if="!isEdit">Lisa uus asukoht</h1>
-        <h1 v-else>Muuda asukoht</h1>
+    <div class="container text-center">
+      <div class="row justify-content-center">
+        <div class="col col-5">
+          <!--        <AlertError/>-->
+          <!--        <AlertSuccess/>-->
+          <h1 v-if="!isEdit">Lisa uus asukoht</h1>
+          <h1 v-else>Muuda asukoht</h1>
+        </div>
       </div>
-    </div>
-    <div class="row justify-content-center">
+      <div class="row justify-content-center">
 
-      <div class="col col-2">
-        <DistrictDropDown/>
+        <div class="col col-2">
+
+          <DistrictDropDown
+              :districts="districts"
+              :selected-district-id="selectedDistrictId"
+              @update:selectedDistrictId="selectedDistrictId = $event"
+          />
+        </div>
+
+        <div class="col col-7">
+          <LocationInput :location="newLocation"
+                         @event-imageUrl-change="setImageUrl"
+                         @event-address-change="setLocationAddress"
+                         @event-name-change="setLocationName"
+                         @event-openingHours-change="setOpeningHours"/>
+        </div>
+
+
       </div>
+      <div class="row  justify-content-center">
+        <div class="col col-2">
+          <button v-if="!isEdit" @click="saveLocation">Lisa asukoht</button>
+          <button v-else @click="updateLocation">Muuda asukoht</button>
+        </div>
 
-      <div class="col col-7">
-        <LocationInput/>
       </div>
-
-
-    </div>
-    <div class="row  justify-content-center">
-      <div class="col col-2">
-        <button v-if="!isEdit">Lisa asukoht</button>
-        <button v-else>Muuda asukoht</button>
-      </div>
-
     </div>
   </div>
-</div>
 
 </template>
 
@@ -42,49 +52,95 @@ import navigation from "@/navigation/Navigation";
 import {useRoute} from "vue-router";
 import LocationService from "@/services/LocationService";
 import DistrictService from "@/services/DistrictService";
+import AlertError from "@/components/alert/AlertError.vue";
 
 export default {
   name: "AddNewLocation",
-  components: {LocationInput, DistrictDropDown, alertSuccess},
-  data(){
-    return{
-      newLocation:{
+  components: {AlertError, LocationInput, DistrictDropDown, alertSuccess},
+  data() {
+    return {
+      selectedDistrictId: 0,
+      isEdit:false,
+      newLocation: {
         districtId: 0,
-        locationName: "string",
-        locationAddress: "string",
-        openingHours: "string",
-        imageUrl: "string"
+        locationName: '',
+        locationAddress: '',
+        openingHours: '',
+        imageUrl: ''
       },
       districts: [{
         districtId: 0,
-        districtName: "string"
-      }]
+        districtName: '',
+      }],
+      errorResponse:{
+        errorMessage: String,
+        errorCode: 0
+      }
     }
   },
-  methods:{
-    handleSendGetLocationResponse(response){
+  methods: {
+    handlePostLocationResponse() {
+     this.setTimedOutSuccessMessage("Asukoht edukalt lisatud")
+
+      },
+  updateLocation() {
+    LocationService.sendUpdateLocationRequest(this.selectedLocationId, this.newLocation)
+        .then(() => this.setTimedOutSuccessMessage("Asukoht edukalt muudetud"))
+        .catch(error => {
+          console.error('Update failed:', error);
+        });
+  },
+  saveLocation(){
+      LocationService.sendPostLocationRequest(this.newLocation).then(this.handlePostLocationResponse())
+          .catch(error => {
+            console.error('Failed to save:', error);
+          })
+    },
+    handleSendGetLocationResponse(response) {
       this.newLocation = response.data
-},
-    handleSendGetLocationErrorResponse(error){
+    },
+    handleSendGetLocationErrorResponse(error) {
       this.errorResponse = error.response.data
 
-    }
-    // thishandleResponse(response){
-    //
-    // }
+    },
+    handleGetDistrictResponse(response) {
+      this.districts = response
+    },
+  setImageUrl(imageUrl) {
+    this.newLocation.imageUrl = imageUrl;
   },
-  beforeMount() {
-    if(!RoleService.isLoggedIn()){
-      navigation.navigateToErrorView()
-    }
-    RoleService.isCoach()
-    this.isEdit = useRoute().query.locationId !== undefined
-    this.selectedLocationId = useRoute().query.locationId
-    LocationService.sendGetLocationRequest(this.selectedLocationId)
-        .then(response =>this.handleSendGetLocationResponse(response)).catch(error=>this.handleSendGetLocationErrorResponse(error))
-    DistrictService.sendGetDistrictRequest().then(respone=>this.handleResponse(response))
+  setLocationAddress(address) {
+    this.newLocation.locationAddress = address;
+  },
+  setLocationName(name) {
+    this.newLocation.locationName = name;
+  },
+  setOpeningHours(hours) {
+    this.newLocation.openingHours = hours;
+  },
+  },
+mounted() {
+  if (!RoleService.isLoggedIn()) {
+    navigation.navigateToErrorView();
   }
 
+  RoleService.isCoach();
+
+  const route = useRoute();
+  this.isEdit = route.query.locationId !== undefined;
+
+  if (this.isEdit) {
+    this.selectedLocationId = route.query.locationId;
+    LocationService.sendGetLocationRequest(this.selectedLocationId)
+        .then(this.handleSendGetLocationResponse)
+        .catch(this.handleSendGetLocationErrorResponse);
+  }
+
+  DistrictService.sendGetDistrictRequest()
+      .then(this.handleGetDistrictResponse)
+      .catch(() => navigation.navigateToErrorView());
 }
+}
+
 </script>
 
