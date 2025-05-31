@@ -2,7 +2,6 @@
   <div>
     <AlertError :error-message="errorMessage"/>
     <AlertSuccess :success-message="successMessage"/>
-    <LocationModal :modalIsOpen="modalIsOpen"/>
 
     <div>
       NImi: {{ training.trainingName }},
@@ -20,7 +19,7 @@
     <h4>Asukoha valimine</h4>
     <LocationTable :locations="locations"
                    @event-location-selected="saveTrainingLocation"/>
-    <button @click="navigation.navigateToAddNewLocationView()">Lisa uus asukoht</button>
+    <button @click="navigateToAddNewLocationView()">Lisa uus asukoht</button>
   </div>
 
 </template>
@@ -78,7 +77,9 @@ export default {
     editTrainingInformation(){
       Navigation.navigateToEditView(this.trainingId)
     },
-
+    navigateToAddNewLocationView(){
+      Navigation.navigateToAddNewLocationView()
+    },
     saveTrainingLocation(locationId) {
       this.selectedLocationId = locationId
       TrainingLocationService.sendPostTrainingLocationRequest(this.trainingId, this.selectedLocationId)
@@ -122,7 +123,7 @@ export default {
         .then(response => {
           this.training = response.data
         }).catch(error => {
-      this.someDataBlockErrorResponseObject = error.response.data
+      this.errorResponse = error.response.data
     })
 
     LocationService.sendGetLocationsRequest()

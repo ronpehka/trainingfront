@@ -28,7 +28,13 @@
       </div>
     </template>
     <template #buttons>
-      <button>Salvesta asukoht</button>
+      <div class="row  justify-content-center">
+        <div class="col col-2">
+          <button v-if="!isEdit" @click="saveLocation">Lisa asukoht</button>
+          <button v-else @click="updateLocation">Muuda asukoht</button>
+        </div>
+
+      </div>
     </template>
 
   </Modal>
@@ -60,14 +66,14 @@ export default {
       selectedDistrictId: 0,
       newLocation: {
         districtId: 0,
-        locationName: "string",
-        locationAddress: "string",
-        openingHours: "string",
-        imageUrl: "string"
+        locationName: '',
+        locationAddress: '',
+        openingHours: '',
+        imageUrl: ''
       },
       districts: [{
         districtId: 0,
-        districtName: "string"
+        districtName: ''
       }],
       errorResponse:{
         errorMessage: String,
@@ -77,14 +83,13 @@ export default {
   },
 
   methods: {
-    handleGetLocationsRequestResponse(response) {
+    handleSendGetLocationResponse(response) {
       this.locations = response.data;
     },
 
-    handleGetLocationsRequestError(error) {
-      console.error("Error fetching locations:", error);
-      this.errorResponse.errorMessage = error?.response?.data?.message || "Viga asukohtade laadimisel";
-    }
+    handleSendGetLocationErrorResponse(error) {
+      this.errorResponse = error.response.data
+    },
   },
   beforeMount() {
     if (!RoleService.isLoggedIn()) {

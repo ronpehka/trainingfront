@@ -1,6 +1,6 @@
 <template>
   <select :value="selectedDistrictId" @change="handleCityDropdownChange" class="form-select">
-    <option value="0">Kõik linnad</option>
+    <option value="0">Kõik linnaosad</option>
     <option v-for="district in districts" :key="district.districtId" :value="district.districtId">
       {{ district.districtName }}
     </option>
@@ -16,12 +16,12 @@ export default {
     },
     selectedDistrictId: {
       type: Number,
-      default: 0
+      default:0,
     }
   },
   methods: {
     handleCityDropdownChange(event) {
-      this.$emit('update:selectedDistrictId', Number(event.target.value))
+      this.$emit('new-district-selected', Number(event.target.value))
     }
   }
 }

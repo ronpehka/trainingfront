@@ -1,11 +1,8 @@
 <template>
   <div>
-
     <div class="container text-center">
       <div class="row justify-content-center">
         <div class="col col-5">
-          <!--        <AlertError/>-->
-          <!--        <AlertSuccess/>-->
           <h1 v-if="!isEdit">Lisa uus asukoht</h1>
           <h1 v-else>Muuda asukoht</h1>
         </div>
@@ -17,12 +14,13 @@
           <DistrictDropDown
               :districts="districts"
               :selected-district-id="selectedDistrictId"
-              @update:selectedDistrictId="selectedDistrictId = $event"
+              @new-district-selected="setNewLocationDistrictId"
+
           />
         </div>
 
         <div class="col col-7">
-          <LocationInput :location="newLocation"
+          <LocationInput :new-location="newLocation"
                          @event-imageUrl-change="setImageUrl"
                          @event-address-change="setLocationAddress"
                          @event-name-change="setLocationName"
@@ -60,9 +58,9 @@ export default {
   data() {
     return {
       selectedDistrictId: 0,
-      isEdit:false,
+      isEdit: false,
       newLocation: {
-        districtId: 0,
+        districtId: null,
         locationName: '',
         locationAddress: '',
         openingHours: '',
@@ -72,26 +70,26 @@ export default {
         districtId: 0,
         districtName: '',
       }],
-      errorResponse:{
-        errorMessage: String,
+      errorResponse: {
+        errorMessage: '',
         errorCode: 0
       }
     }
   },
   methods: {
     handlePostLocationResponse() {
-     this.setTimedOutSuccessMessage("Asukoht edukalt lisatud")
+      this.setTimedOutSuccessMessage("Asukoht edukalt lisatud")
 
-      },
-  updateLocation() {
-    LocationService.sendUpdateLocationRequest(this.selectedLocationId, this.newLocation)
-        .then(() => this.setTimedOutSuccessMessage("Asukoht edukalt muudetud"))
-        .catch(error => {
-          console.error('Update failed:', error);
-        });
-  },
-  saveLocation(){
-      LocationService.sendPostLocationRequest(this.newLocation).then(this.handlePostLocationResponse())
+    },
+    updateLocation() {
+      LocationService.sendUpdateLocationRequest(this.selectedLocationId, this.newLocation)
+          .then(() => this.setTimedOutSuccessMessage("Asukoht edukalt muudetud"))
+          .catch(error => {
+            console.error('Update failed:', error);
+          });
+    },
+    saveLocation() {
+      LocationService.sendPostLocationRequest(this.newLocation).then(()=>this.handlePostLocationResponse())
           .catch(error => {
             console.error('Failed to save:', error);
           })
@@ -101,45 +99,47 @@ export default {
     },
     handleSendGetLocationErrorResponse(error) {
       this.errorResponse = error.response.data
-
     },
     handleGetDistrictResponse(response) {
-      this.districts = response
+      this.districts = response.data
     },
-  setImageUrl(imageUrl) {
-    this.newLocation.imageUrl = imageUrl;
+    setImageUrl(imageUrl) {
+      this.newLocation.imageUrl = imageUrl
+    },
+    setLocationAddress(address) {
+      this.newLocation.locationAddress = address;
+    },
+    setLocationName(name) {
+      this.newLocation.locationName = name;
+    },
+    setOpeningHours(hours) {
+      this.newLocation.openingHours = hours;
+    },
+    setNewLocationDistrictId(id) {
+      this.newLocation.districtId = id
+      this.selectedDistrictId = id
+    }
   },
-  setLocationAddress(address) {
-    this.newLocation.locationAddress = address;
-  },
-  setLocationName(name) {
-    this.newLocation.locationName = name;
-  },
-  setOpeningHours(hours) {
-    this.newLocation.openingHours = hours;
-  },
-  },
-mounted() {
-  if (!RoleService.isLoggedIn()) {
-    navigation.navigateToErrorView();
+  beforeMount() {
+    if (!RoleService.isLoggedIn()) {
+      navigation.navigateToErrorView();
+    }
+
+    RoleService.isCoach();
+
+    this.isEdit = useRoute().query.locationId !== undefined;
+
+    if (this.isEdit) {
+      this.selectedLocationId = useRoute().query.locationId;
+      LocationService.sendGetLocationRequest(this.selectedLocationId)
+          .then(this.handleSendGetLocationResponse)
+          .catch(this.handleSendGetLocationErrorResponse);
+    }
+
+    DistrictService.sendGetDistrictRequest()
+        .then(response => this.handleGetDistrictResponse(response))
+        .catch(() => navigation.navigateToErrorView());
   }
-
-  RoleService.isCoach();
-
-  const route = useRoute();
-  this.isEdit = route.query.locationId !== undefined;
-
-  if (this.isEdit) {
-    this.selectedLocationId = route.query.locationId;
-    LocationService.sendGetLocationRequest(this.selectedLocationId)
-        .then(this.handleSendGetLocationResponse)
-        .catch(this.handleSendGetLocationErrorResponse);
-  }
-
-  DistrictService.sendGetDistrictRequest()
-      .then(this.handleGetDistrictResponse)
-      .catch(() => navigation.navigateToErrorView());
-}
 }
 
 </script>
