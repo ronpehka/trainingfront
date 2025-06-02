@@ -1,8 +1,9 @@
 <template>
   <div class="taust">
+    <img src="@/assets/Athletica%20logo.png" alt="Athletica logo" class="corner-logo" />
     <div class="overlay">
   <h1>Athletica </h1>
-  <h4>spordiportaal</h4>
+<!--  <h4>spordiportaal</h4>-->
     <LogOutModal :modal-is-open="modalIsOpen"
                  @event-close-modal="closeModal"
                  @event-logout-confirmed="executeLogOut"
