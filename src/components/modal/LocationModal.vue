@@ -1,7 +1,5 @@
 <template>
   <Modal :modal-is-open="modalIsOpen" @event-close-modal="$emit('event-close-modal')">
-    <AlertSuccess :success-message="successMessage"/>
-
     <template #title>
       <h3 v-if="!isEdit" class="text-center">Uue asukoha lisamine</h3>
       <h3 v-else class="text-center">Asukoha muutmine</h3>
@@ -61,10 +59,11 @@ import DistrictDropDown from "@/components/location/DistrictDropDown.vue";
 import LocationInput from "@/views/LocationInput.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import ErrorCodes from "@/errors/ErrorCodes";
+import AlertError from "@/components/alert/AlertError.vue";
 
 export default {
   name: 'LocationModal',
-  components: {LocationInput, DistrictDropDown, LocationTable, CoachesTable, Modal, AlertSuccess},
+  components: {AlertError, LocationInput, DistrictDropDown, LocationTable, CoachesTable, Modal, AlertSuccess},
   props: {
     modalIsOpen: Boolean,
     isEdit: Boolean,
@@ -91,8 +90,6 @@ export default {
   data() {
     return {
       selectedDistrictId: 0,
-      successMessage: '',
-      errorMessage: '',
       newLocation: {
         districtId: null,
         locationName: '',
@@ -112,11 +109,13 @@ export default {
   },
   methods: {
 
+
     handlePostLocationResponse() {
       this.setTimedOutSuccessMessage("Asukoht edukalt lisatud")
       this.$emit('event-close-modal');
     },
     updateLocation() {
+
       LocationService.sendLocationPutRequest(this.selectedLocationId, this.newLocation)
           .then(() => {
             this.$emit('event-update-location')
@@ -129,6 +128,7 @@ export default {
           });
     },
     saveLocation() {
+
       LocationService.sendPostLocationRequest(this.newLocation).then(() => this.handlePostLocationResponse())
           .catch(error => {
             console.error('Failed to save:', error);
@@ -169,11 +169,15 @@ export default {
       this.successMessage = message
       setTimeout(this.resetMessages, 4000)
     },
+    setTimedOutErrorMessage(message) {
+      this.errorMessage = message
+      setTimeout(this.resetMessages, 4000)
+    },
     resetMessages() {
       this.successMessage = ''
       this.errorMessage = ''
-    }
-  },
+    },
+
   beforeMount() {
     if (!RoleService.isLoggedIn()) {
       navigation.navigateToErrorView();
@@ -190,7 +194,7 @@ export default {
     DistrictService.sendGetDistrictRequest()
         .then(response => this.handleGetDistrictResponse(response))
         .catch(() => navigation.navigateToErrorView());
-  }
+  }}
 }
 
 </script>
