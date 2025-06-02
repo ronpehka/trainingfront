@@ -334,3 +334,16 @@ input[type="date"] {
 .input-dark::placeholder {
     color: #bbb;
 }
+
+.form-check {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Tekst vasakule */
+    text-align: left; /* kindlustab, et tekst on vasakult joondatud */
+    margin-bottom: 0.5rem; /* veidi ruumi ridade vahele */
+}
+
+.form-check-label {
+    margin-left: 0.5rem; /* väike vahe kasti ja teksti vahel */
+    color: white; /* kui taust on tume */
+}

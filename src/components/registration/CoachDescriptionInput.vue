@@ -2,7 +2,7 @@
 <template>
 
   <div>
-    <label class="form-label">
+    <label class="form-label-custom">
       Tutvustus
     </label>
     <span class="input-group"></span>
