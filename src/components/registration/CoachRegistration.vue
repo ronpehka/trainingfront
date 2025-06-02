@@ -1,52 +1,49 @@
 <template>
+  <div>
+    <PhoneNumberInput :coach-phone-number="coachProfile.phoneNumber"
+                      @event-update-phone-number="$emit('event-update-phone-number', $event)" />
+    <CoachDescriptionInput
+    :description="coachProfile.description"
+    @event-update-description="$emit('event-update-description', $event)"
+    />
+    <SportCheckBox
+        :sports="sports"
+        @event-update-checked-sport="$emit('event-update-checked-sport',$event)"/>
 
 
-  <div class="col col-2  container text-center justify-content-center">
-    <div class="row justify-content-center">
+    <CoachImageInput :image-data="coachProfile.imageData"
+    @event-new-image-selected="$emit('event-new-image-selected',$event)"/>
 
-      <div>
 
-        <div class="col col-2 input-group mb-3">
-          <CoachDescriptionInput :description="coachProfile.description"
-          @event-update-description="$emit('event-update-description', $event)"
-          />
-        </div>
-        <div class="col col-2 input-group mb-3">
-          <PhoneNumberInput :coach-phone-number="coachProfile.phoneNumber"
-                              @event-update-phone-number="$emit('event-update-phone-number', $event)"
 
-          />
-        </div>
 
-        <div class="col col-2 input-group mb-3">
-          <CoachImageInput :coach-image="coachProfile.imageData"
-          @event-new-image-selected="$emit('event-new-image-selected', $event)"
-          />
-        </div>
-      </div>
 
-    </div>
   </div>
+
+
 </template>
 
-<script>
-import CoachDescriptionInput from "@/components/registration/CoachDescriptionInput.vue";
-import PhoneNumberInput from "@/components/registration/PhoneNumberInput.vue";
-import CoachImageInput from "@/components/registration/CoachImageInput.vue";
 
+<script>
+
+import CoachImage from "@/components/image/CoachImage.vue";
+import SportCheckBox from "@/components/registration/SportCheckBox.vue";
+import PhoneNumberInput from "@/components/registration/PhoneNumberInput.vue";
+import CoachDescriptionInput from "@/components/registration/CoachDescriptionInput.vue";
+import emailInput from "@/components/registration/EmailInput.vue";
+import CoachImageInput from "@/components/registration/CoachImageInput.vue";
 
 
 export default {
   name: 'CoachRegistration',
-  components: {
-    CoachDescriptionInput,
-    PhoneNumberInput,
-    CoachImageInput,
-  },
+
+  components: {CoachImageInput, CoachDescriptionInput, PhoneNumberInput, SportCheckBox, CoachImage},
   props: {
-    passwordRetype: String,
-    coachProfile: Object
+
+    coachProfile: Object,
+    sports: Array
   },
 
 }
+
 </script>

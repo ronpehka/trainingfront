@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from "@/views/LoginView.vue";
 import TrainingInfoView from "@/views/TrainingInfoView.vue";
@@ -71,11 +71,7 @@ const routes = [
     name: 'coachInfoRoute',
     component: CoachInfoView
   },
-  {
-    path: '/',
-    name: 'coachInfoRoute',
-    component: CoachInfoView
-  },
+
   {
     path: '/training-location',
     name: 'trainingLocationRoute',

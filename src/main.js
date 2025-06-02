@@ -1,6 +1,8 @@
 import {createApp} from 'vue'
 import App from './App.vue'
 import router from './router'
+import VCalendar from 'v-calendar'
+import 'v-calendar/style.css'
 import VueAxios from "vue-axios";
 import axios from "axios";
 
@@ -20,6 +22,9 @@ library.add(faUserSecret, fas, faR, far)
 
 const app = createApp(App)
 
+app.use(VCalendar, {
+    componentPrefix: 'v', // kõik komponendid algavad "v-", näiteks <v-calendar>
+})
 // Register the FontAwesomeIcon component globally
 app.component('font-awesome-icon', FontAwesomeIcon)
 

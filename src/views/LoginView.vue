@@ -1,31 +1,29 @@
 <template>
-  <div class="container text-center">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow-lg login-card">
 
-    <AlertError :error-message="errorMessage"/>
-    <div class="row justify-content-center">
-      <div class="col col-2">
-        <div class="mb-3">
-          <label class="form-label"> Kasutajanimi</label>
-          <input v-model="email" type="email" class="form-control" placeholder="juhan@juhan.ee">
-        </div>
+      <AlertError :error-message="errorMessage"/>
+      <div class="row justify-content-center">
+        <div class="col">
+          <div class="mb-3">
+            <label class="form-label">Kasutajanimi</label>
+            <input v-model="email" type="email" class="form-control input-dark" placeholder="juhan@juhan.ee">
+          </div>
 
-        <div class="input-group mb-3">
-          <label class="form-label m-2"> Parool</label>
-          <input v-model="password" type="password" class="form-control">
-        </div>
+          <div class="mb-3">
+            <label class="form-label">Parool</label>
+            <input v-model="password" type="password" class="form-control input-dark">
+          </div>
 
-        <button @click="login" type="button" class="btn btn-outline-secondary">Logi sisse</button>
-
-        <div class="m-3">
-          <button @click="registrationView" type="button" class="btn btn-outline-secondary">Loo konto</button>
-          <button @click="coachRegistrationView" type="button" class="btn btn-outline-secondary">Registreeri teenerina
-          </button>
+          <div class="d-grid gap-2">
+            <button @click="login" type="button" class="btn btn-danger">Logi sisse</button>
+            <button @click="registrationView" type="button" class="btn btn-danger">Loo konto</button>
+            <button @click="coachRegistrationView" type="button" class="btn btn-outline-danger">Registreeri treenerina</button>
+          </div>
         </div>
       </div>
     </div>
-
   </div>
-
 </template>
 
 

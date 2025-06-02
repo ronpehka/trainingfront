@@ -1,14 +1,17 @@
 <template>
-
+  <div class="taust">
+    <div class="overlay">
+  <h1>Athletica </h1>
+  <h4>spordiportaal</h4>
     <LogOutModal :modal-is-open="modalIsOpen"
                  @event-close-modal="closeModal"
                  @event-logout-confirmed="executeLogOut"
     />
-  <nav>
+  <nav class="nav-menu">
     <router-link to="/">Avaleht</router-link>
     |
-    <router-link to="/about">Meist</router-link>
-    |
+<!--    <router-link to="/about">Meist</router-link>-->
+<!--    |-->
     <router-link to="/locations">Asukohad</router-link>
     |
     <router-link to="/training-info">Treeningud</router-link>
@@ -23,7 +26,8 @@
     </template>
   </nav>
     <router-view @event-update-nav-menu="updateNavMenu"/>
-
+  </div>
+  </div>
 </template>
 
 
@@ -72,4 +76,3 @@ export default {
 
 }
 </script>
-

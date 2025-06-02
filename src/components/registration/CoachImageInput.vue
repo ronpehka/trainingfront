@@ -17,6 +17,10 @@
 <script>
 export default {
   name: 'CoachImageInput',
+  props:{
+    imageData: String
+
+  },
   data() {
 
     return{

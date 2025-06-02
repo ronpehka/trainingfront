@@ -57,3 +57,171 @@ nav a {
 nav a.router-link-exact-active {
     color: #42b983;
 }
+/* Avalehe tutvustava teksti vorming (HomeView.vue komponendis) */
+
+ .calendar-wrapper {
+     max-width: 500px;
+     margin: auto;
+ }
+
+.training-list {
+    margin-top: 20px;
+}
+.negatiiv {
+    background-color: black;
+    color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    line-height: 1.6;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* valikuline varje */
+}
+
+.negatiiv strong {
+    color: #ff4c4c; /* valikuline: punane rõhuasetus pealkirjadel */
+}
+
+/* Taustapilt App.vue komponendis */
+
+ .taust {
+     background-image: url('@/assets/Sports 01.jpg');
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     min-height: 100vh;
+     padding: 20px;
+     color: white;
+ }
+                    /* Poolläbipaistev must kiht */
+.overlay {
+    background-color: rgba(0, 0, 0, 0.3); /* 60% läbipaistvus */
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+    color: white;
+    box-sizing: border-box;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+nav a.router-link-exact-active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* Üldine fondi stiil kogu lehele */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Pealkirjadele eraldi font */
+h1, h2, h3, h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    margin-bottom: 0.5em;
+}
+
+/* Kui soovid eraldi ka näiteks nav-lingid teha Montserratis */
+nav a {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+}
+
+/* Võimalik: konkreetse ploki jaoks Interiga */
+.pohitekst {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Training-table vorming */
+
+.training-table {
+    background-color: rgba(30, 30, 30, 0.45); /* tumedam taust, kergelt läbipaistev */
+    color: #fff; /* valge tekst */
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.training-table th,
+.training-table td {
+    border: 1px solid #555; /* hallid äärised */
+    padding: 10px;
+}
+
+.training-table th {
+    background-color: #222; /* veel tumedam päis */
+    font-weight: 600;
+}
+
+.training-table tr:nth-child(even) {
+    background-color: rgba(50, 50, 50, 0.6); /* kergelt erinev toon ridadele */
+}
+
+.training-table tr.active:hover {
+    background-color: rgba(70, 70, 70, 0.9); /* hover-efekt */
+}
+/* Navigatsioonimenüü taust */
+.nav-menu {
+    background-color: rgba(20, 20, 20, 0.85); /* tumedam poolläbipaistev taust */
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.nav-menu a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 8px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.nav-menu a:hover {
+    color: #f44336; /* punakas hover */
+}
+.login-background {
+    background-color: #121212; /* väga tume taust */
+}
+
+/* Login-kaart */
+.login-card {
+    background-color: #1e1e1e;
+    border: none;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Heledad sildid */
+.form-label {
+    color: Black;
+}
+
+/* Tume sisestusväli, hele tekst */
+.input-dark {
+    background-color: #2c2c2c;
+    color: #f8f9fa;
+    border: 1px solid #444;
+}
+
+.input-dark::placeholder {
+    color: #aaa;
+}
+
+/* Kohandatud tume punane nupp */
+.btn-dark-red {
+    background-color: #a71d2a;
+    border-color: #a71d2a;
+    color: white;
+}
+
+.btn-dark-red:hover {
+    background-color: #821421;
+    border-color: #821421;
+}

@@ -21,21 +21,21 @@
         </div>
       </div>
 
-    </div>
+  </div>
 
-    <table v-if="filteredTrainings.length > 0" class="table-bordered">
-      <thead>
-      <tr class="active">
-        <th style="width: 200px;">Spordiala</th>
-        <th style="width: 200px;">Vanuserühm</th>
-        <th style="width: 200px;">Asukoht</th>
-        <th style="width: 200px;">Treener</th>
-        <th style="width: 200px;">Trenniajad</th>
-        <th style="width: 200px;">Vabad kohad</th>
-        <th v-if="isCustomer" style="width: 200px;">Registreeru</th>
-        <th v-if="isCoach" style="width: 200px;"></th>
-      </tr>
-      </thead>
+  <table v-if="filteredTrainings.length > 0" class="table-bordered training-table">
+    <thead>
+    <tr class="active">
+      <th style="width: 200px;">Spordiala</th>
+      <th style="width: 200px;">Vanuserühm</th>
+      <th style="width: 200px;">Asukoht</th>
+      <th style="width: 200px;">Treener</th>
+      <th style="width: 200px;">Trenniajad</th>
+      <th style="width: 200px;">Vabad kohad</th>
+      <th v-if="isCustomer" style="width: 200px;">Registreeru</th>
+      <th v-if="isCoach" style="width: 200px;"></th>
+    </tr>
+    </thead>
 
       <tbody>
       <tr v-for="trainingInfo in filteredTrainings" :key="trainingInfo.trainingId" class="active">
@@ -48,31 +48,30 @@
           {{ trainingInfo.startTime }} - {{ trainingInfo.endTime }}
         </td>
 
-        <td>{{ trainingInfo.emptyPlaces }} / {{ trainingInfo.maxLimit }}
-          <span v-if="trainingInfo.emptyPlaces === 0"> (täis) </span>
-        </td>
-        <td v-if="isCustomer && trainingInfo.emptyPlaces > 0">
-          <button class="btn btn-success btn-sm"
-                  @click="register(trainingInfo.trainingId)">
-            Registreeru
-          </button>
-          <button class="btn btn-danger btn-sm"
-                  @click="unregister(trainingInfo.trainingId)">
-            Loobu
-          </button>
-        </td>
-        <td v-if="isCoach">
-          <font-awesome-icon @click="navigateToEditView(trainingInfo.trainingId)" icon="pen-to-square"/>
-          <font-awesome-icon class="ms-2" @click="removeTraining(trainingInfo.trainingId)" icon="trash"/>
-        </td>
+      <td>{{ trainingInfo.emptyPlaces }} / {{ trainingInfo.maxLimit }}
+        <span v-if="trainingInfo.emptyPlaces === 0"> (täis) </span>
+      </td>
+      <td v-if="isCustomer && trainingInfo.emptyPlaces > 0">
+        <button class="btn btn-success btn-sm"
+                @click="register(trainingInfo.trainingId)">
+          Registreeru
+        </button>
+        <button class="btn btn-danger btn-sm"
+                @click="unregister(trainingInfo.trainingId)">
+          Loobu
+        </button>
+      </td>
+      <td v-if="isCoach">
+        <font-awesome-icon @click="navigateToEditView(trainingInfo.trainingId)" icon="pen-to-square"/>
+      </td>
 
 
-      </tr>
-      </tbody>
-    </table>
-    <button v-if="isCoach" @click="addNewTraining" type="button" class="btn btn-outline-secondary mt-2">Lisa trenn
-    </button>
-  </div>
+    </tr>
+    </tbody>
+  </table>
+  <button v-if="isCoach" @click="addNewTraining" type="button" class="btn btn-outline-secondary mt-2">Lisa trenn
+  </button>
+
 </template>
 
 
@@ -80,11 +79,14 @@
 import TrainingInfoService from "@/services/training/TrainingInfoService";
 import SportsDropdown from "@/components/training/SportsDropdown.vue";
 import sportService from "@/services/SportService";
+import Navigation from "@/navigation/navigation";
+import navigation from "@/navigation/navigation";
 import Navigation from "@/navigation/Navigation";
 import navigation from "@/navigation/Navigation";
 import RoleService from "@/services/RoleService";
 import RegisterService from "@/services/RegisterService";
 import CoachInfoService from "@/services/CoachInfoService";
+import CoachDropdown from "@/components/training/CoachDropdown.vue";
 import AlertError from "@/components/alert/AlertError.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
@@ -95,7 +97,8 @@ export default {
       return navigation
     }
   },
-  components: {AlertError, SportsDropdown, AlertSuccess},
+
+  components: {AlertError, SportsDropdown, AlertSuccess,CoachDropdown},
   data() {
     return {
       filteredTrainings: [],
@@ -138,7 +141,7 @@ export default {
             this.trainingInfos = response.data;
             this.filterTrainingsByCoach();
           })
-          .catch(error => console.error("Failed to load training info", error));
+          .catch(() => Navigation.navigateToErrorView());
     },
 
     getAllSports() {
@@ -146,7 +149,7 @@ export default {
           .then(response => {
             this.sportInfos = response.data;
           })
-          .catch(error => console.error("Failed to load sports info", error));
+          .catch(() => Navigation.navigateToErrorView());
     },
 
     getAllCoaches() {
@@ -154,12 +157,17 @@ export default {
           .then(response => {
             this.coachInfos = response.data;
           })
-          .catch(error => console.error("Failed to load coaches info", error));
+          .catch(() => Navigation.navigateToErrorView());
     },
 
     setSportId(selectedSportId) {
       this.sportInfo.sportId = selectedSportId;
       this.getTrainingInfos();
+    },
+
+    setCoachId(coachId) {
+      this.selectedCoachId = coachId;
+      this.filterTrainingsByCoach();
     },
 
     filterTrainingsByCoach() {

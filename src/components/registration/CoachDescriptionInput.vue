@@ -20,7 +20,7 @@ export default {
   name: 'CoachDescriptionInput',
   components: {LastNameInput},
   props:{
-    description:""
+    description: String,
   }
 }
 </script>
