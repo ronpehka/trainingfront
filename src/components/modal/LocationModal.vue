@@ -15,9 +15,9 @@
             <div class="col col-3">
               <DistrictDropDown
                   :districts="districts"
+                  :selected-district-id="selectedDistrictId"
                   @new-district-selected="setNewLocationDistrictId"
                   :isEdit="isEdit"
-
               />
             </div>
 
@@ -69,15 +69,25 @@ export default {
     modalIsOpen: Boolean,
     isEdit: Boolean,
     selectedLocationId: Number,
-    selectedLocation: Object
-  },
-  watch: {
-    selectedLocation(newVal) {
-      if (this.isEdit && newVal) {
-        this.newLocation = { ...newVal }; // shallow copy to avoid mutating prop directly
-      }
+    selectedLocation:{
+      type:Object,
+      default: ()=>({})
     }
   },
+    watch: {
+      isEdit(newVal) {
+        if (newVal && this.selectedLocation) {
+          this.newLocation = { ...this.selectedLocation }
+          this.selectedDistrictId = this.selectedLocation.districtId
+        }
+      },
+      selectedLocation(newVal) {
+        if (this.isEdit && newVal) {
+          this.newLocation = { ...newVal }
+          this.selectedDistrictId = newVal.districtId
+        }
+      }
+    },
   data() {
     return {
       selectedDistrictId: 0,
