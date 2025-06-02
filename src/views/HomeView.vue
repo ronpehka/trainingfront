@@ -62,6 +62,7 @@
             </ul>
           </div>
         </div>
+
         <div style="text-align: right;">
           <p>Kontakt: info@sportportaal.ee</p>
           <p>Treenerite kogemus: 10+ aastat</p>
