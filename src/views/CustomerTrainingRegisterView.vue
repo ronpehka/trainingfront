@@ -37,7 +37,7 @@
         <td>
           {{ (training.trainingDays || []).map(day => day.weekday).join(', ') }}
           {{ training.startTime }} - {{ training.endTime }}
-        </td :class="{'text-danger': training.emptyPlaces === 0}">
+        </td :class= "{'text-danger': training.emptyPlaces === 0}">
         <td>{{ training.emptyPlaces }} / {{training.maxLimit}}</td>
         <span v-if="training.emptyPlaces === 0"> (täis) </span>
         <td>

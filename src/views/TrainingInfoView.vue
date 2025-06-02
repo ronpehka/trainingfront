@@ -71,6 +71,7 @@
   </table>
   <button v-if="isCoach" @click="addNewTraining" type="button" class="btn btn-outline-secondary mt-2">Lisa trenn
   </button>
+  </div>
 
 </template>
 
@@ -79,10 +80,7 @@
 import TrainingInfoService from "@/services/training/TrainingInfoService";
 import SportsDropdown from "@/components/training/SportsDropdown.vue";
 import sportService from "@/services/SportService";
-import Navigation from "@/navigation/navigation";
-import navigation from "@/navigation/navigation";
 import Navigation from "@/navigation/Navigation";
-import navigation from "@/navigation/Navigation";
 import RoleService from "@/services/RoleService";
 import RegisterService from "@/services/RegisterService";
 import CoachInfoService from "@/services/CoachInfoService";

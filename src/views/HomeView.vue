@@ -75,7 +75,7 @@
 
 <script>
 import TrainingDateService from "@/services/TrainingDateService";
-import Navigation from "@/navigation/navigation";
+import Navigation from "@/navigation/Navigation";
 import TrainingInfoService from "@/services/training/TrainingInfoService";
 import {Calendar} from "v-calendar";
 

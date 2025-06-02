@@ -44,7 +44,7 @@ import ErrorCodes from "@/errors/ErrorCodes";
 import RegistrationServices from "@/services/RegistrationServices";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import SportService from "@/services/SportService";
-import Navigation from "@/navigation/navigation";
+import Navigation from "@/navigation/Navigation";
 import CoachSportService from "@/services/CoachSportService";
 import CoachImage from "@/components/image/CoachImage.vue";
 
