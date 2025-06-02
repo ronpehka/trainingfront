@@ -90,6 +90,7 @@ export default {
   data() {
     return {
       selectedDistrictId: 0,
+      errorMessage:'',
       newLocation: {
         districtId: null,
         locationName: '',
@@ -176,8 +177,8 @@ export default {
     resetMessages() {
       this.successMessage = ''
       this.errorMessage = ''
-    },
-
+    }
+  },
   beforeMount() {
     if (!RoleService.isLoggedIn()) {
       navigation.navigateToErrorView();
@@ -194,7 +195,7 @@ export default {
     DistrictService.sendGetDistrictRequest()
         .then(response => this.handleGetDistrictResponse(response))
         .catch(() => navigation.navigateToErrorView());
-  }}
-}
+  }
 
+}
 </script>
