@@ -7,12 +7,11 @@
                         @event-new-sport-selected="setSportId"/>
       </div>
       <div class="col col-4">
-        <select class="form-select" v-model="selectedCoachId" @change="filterTrainingsByCoach">
-          <option value="0">Kõik treenerid</option>
-          <option v-for="coach in coachInfos" :key="coach.coachUserId" :value="coach.coachUserId">
-            {{ coach.coachFullName }}
-          </option>
-        </select>
+        <CoachDropdown
+            :coach-infos="coachInfos"
+            :selected-coach-id="selectedCoachId"
+            @event-new-coach-selected="setCoachId"
+        />
       </div>
     </div>
 
@@ -28,7 +27,7 @@
       <th style="width: 200px;">Trenniajad</th>
       <th style="width: 200px;">Vabad kohad</th>
       <th v-if="isCustomer" style="width: 200px;">Registreeru</th>
-      <th v-if="isCoach"style="width: 200px;"></th>
+      <th v-if="isCoach" style="width: 200px;"></th>
     </tr>
     </thead>
 
@@ -43,8 +42,8 @@
         {{ trainingInfo.startTime }} - {{ trainingInfo.endTime }}
       </td>
 
-      <td>{{ trainingInfo.emptyPlaces }} / {{trainingInfo.maxLimit}}
-      <span v-if="trainingInfo.emptyPlaces === 0"> (täis) </span>
+      <td>{{ trainingInfo.emptyPlaces }} / {{ trainingInfo.maxLimit }}
+        <span v-if="trainingInfo.emptyPlaces === 0"> (täis) </span>
       </td>
       <td v-if="isCustomer && trainingInfo.emptyPlaces > 0">
         <button class="btn btn-success btn-sm"
@@ -56,13 +55,16 @@
           Loobu
         </button>
       </td>
-      <td v-if="isCoach"><font-awesome-icon @click="navigateToEditView(trainingInfo.trainingId)" icon="pen-to-square" /></td>
+      <td v-if="isCoach">
+        <font-awesome-icon @click="navigateToEditView(trainingInfo.trainingId)" icon="pen-to-square"/>
+      </td>
 
 
-      </tr>
+    </tr>
     </tbody>
   </table>
-  <button v-if="isCoach" @click="addNewTraining" type="button" class="btn btn-outline-secondary mt-2">Lisa trenn</button>
+  <button v-if="isCoach" @click="addNewTraining" type="button" class="btn btn-outline-secondary mt-2">Lisa trenn
+  </button>
 
 </template>
 
@@ -72,10 +74,11 @@ import TrainingInfoService from "@/services/training/TrainingInfoService";
 import SportsDropdown from "@/components/training/SportsDropdown.vue";
 import sportService from "@/services/SportService";
 import Navigation from "@/navigation/navigation";
+import navigation from "@/navigation/navigation";
 import RoleService from "@/services/RoleService";
 import RegisterService from "@/services/RegisterService";
 import CoachInfoService from "@/services/CoachInfoService";
-import navigation from "@/navigation/navigation";
+import CoachDropdown from "@/components/training/CoachDropdown.vue";
 
 export default {
   name: 'TrainingInfoView',
@@ -84,7 +87,10 @@ export default {
       return navigation
     }
   },
-  components: {SportsDropdown},
+  components: {
+    SportsDropdown,
+    CoachDropdown
+  },
   data() {
     return {
       filteredTrainings: [],
@@ -103,7 +109,7 @@ export default {
   },
 
   methods: {
-    navigateToEditView(trainingId){
+    navigateToEditView(trainingId) {
       Navigation.navigateToEditView(trainingId)
     },
     getTrainingInfos() {
@@ -112,7 +118,7 @@ export default {
             this.trainingInfos = response.data;
             this.filterTrainingsByCoach();
           })
-          .catch(error => console.error("Failed to load training info", error));
+          .catch(() => Navigation.navigateToErrorView());
     },
 
     getAllSports() {
@@ -120,7 +126,7 @@ export default {
           .then(response => {
             this.sportInfos = response.data;
           })
-          .catch(error => console.error("Failed to load sports info", error));
+          .catch(() => Navigation.navigateToErrorView());
     },
 
     getAllCoaches() {
@@ -128,12 +134,17 @@ export default {
           .then(response => {
             this.coachInfos = response.data;
           })
-          .catch(error => console.error("Failed to load coaches info", error));
+          .catch(() => Navigation.navigateToErrorView());
     },
 
     setSportId(selectedSportId) {
       this.sportInfo.sportId = selectedSportId;
       this.getTrainingInfos();
+    },
+
+    setCoachId(coachId) {
+      this.selectedCoachId = coachId;
+      this.filterTrainingsByCoach();
     },
 
     filterTrainingsByCoach() {
@@ -170,12 +181,12 @@ export default {
     this.getTrainingInfos()
     this.getAllSports()
     this.getAllCoaches();
-    if(RoleService.isCoach()){
+    if (RoleService.isCoach()) {
       this.isCoach = true
     }
-    if(RoleService.isCustomer()){
+    if (RoleService.isCustomer()) {
       this.isCustomer = true
     }
-    }
+  }
 }
 </script>
