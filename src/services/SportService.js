@@ -5,4 +5,6 @@ export default {
        return axios.get('/sports')
 
     },
+
+
 }
