@@ -42,7 +42,5 @@ export default {
         })
 
     },
-    navigateToAddNewLocationView(){
-        router.push({name:'addNewLocationRoute'})
-    }
+
 }

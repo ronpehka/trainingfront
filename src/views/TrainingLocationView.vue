@@ -2,6 +2,14 @@
   <div>
     <AlertError :error-message="errorMessage"/>
     <AlertSuccess :success-message="successMessage"/>
+    <LocationModal :modal-is-open="modalIsOpen"
+                   :is-edit="isEdit"
+                   :selected-location-id="updateLocationId"
+                   :selected-location="selectedLocation"
+                   @event-close-modal="closeLocationModal"
+                   @event-update-location=""
+                   @event-close-isEdit="setIsEdit"
+    />
 
     <div>
       NImi: {{ training.trainingName }},
@@ -18,8 +26,10 @@
 
     <h4>Asukoha valimine</h4>
     <LocationTable :locations="locations"
-                   @event-location-selected="saveTrainingLocation"/>
-    <button @click="navigateToAddNewLocationView()">Lisa uus asukoht</button>
+                   @event-location-selected="saveTrainingLocation"
+                   @event-edit-location-selected="startEditTrainingLocationProcess"
+    />
+    <button @click="setLocationModalOpen">Lisa uus asukoht</button>
   </div>
 
 </template>
@@ -35,22 +45,17 @@ import TrainingLocationService from "@/services/training/TrainingLocationService
 import AlertError from "@/components/alert/AlertError.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import Navigation from "@/navigation/Navigation";
-import router from "@/router";
-import navigation from "@/navigation/Navigation";
 import LocationModal from "@/components/modal/LocationModal.vue";
 
 export default {
   name: 'TrainingLocation',
-  computed: {
-    navigation() {
-      return navigation
-    }
-  },
   components: {LocationModal, AlertError, LocationTable, AlertSuccess},
   data() {
     return {
       coachUserId: Number(sessionStorage.getItem('userId')),
       selectedLocationId: 0,
+      updateLocationId: 0,
+      isEdit: false,
       errorMessage: '',
       successMessage: '',
       trainingId: 0,
@@ -68,17 +73,42 @@ export default {
           districtName: ''
         }
       ],
+      selectedLocation: {
+        locationName: '',
+        locationAddress: '',
+        imageUrl: '',
+        districtId: 0,
+        districtName: ''
+      },
       errorResponse: {
         errorMessage: '',
         errorResponse: 0,
       }
     };
-  }, methods: {
-    editTrainingInformation(){
-      Navigation.navigateToEditView(this.trainingId)
+  },
+
+  methods: {
+    startEditTrainingLocationProcess(locationId) {
+      this.updateLocationId = locationId
+      LocationService.sendGetLocationRequest(locationId)
+          .then(response => this.selectedLocation = response.data)
+          .catch(error => {
+        this.errorResponse = error.response.data
+      })
+      this.isEdit = true
+      this.setLocationModalOpen()
     },
-    navigateToAddNewLocationView(){
-      Navigation.navigateToAddNewLocationView()
+    setIsEdit() {
+      this.isEdit = false
+    },
+    setLocationModalOpen() {
+      this.modalIsOpen = true
+    },
+    closeLocationModal() {
+      this.modalIsOpen = false
+    },
+    editTrainingInformation() {
+      Navigation.navigateToEditView(this.trainingId)
     },
     saveTrainingLocation(locationId) {
       this.selectedLocationId = locationId

@@ -81,11 +81,6 @@ const routes = [
     name: 'trainingLocationRoute',
     component: TrainingLocationView
   },
-  {
-    path: '/new-location',
-    name:'newLocationRoute',
-    component: addNewLocation
-  }
 
 ]
 

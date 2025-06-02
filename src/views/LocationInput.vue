@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="input-group mb-3">
-      <span class="input-group-text">Lisa asukohanimi</span>
+
+      <span v-if="isEdit" class="input-group-text">Muuda asukohanimi</span>
+      <span v-else class="input-group-text">Lisa asukohanimi</span>
       <input
           type="text"
           class="form-control"
@@ -11,17 +13,21 @@
     </div>
 
     <div class="input-group mb-3">
-      <span class="input-group-text">Lisa aadress</span>
+
+      <span v-if="isEdit" class="input-group-text">Muuda aadress</span>
+      <span v-else class="input-group-text">Lisa aadress</span>
       <input
           type="text"
           class="form-control"
-          :value="newLocation.address"
+          :value="newLocation.locationAddress"
           @input="$emit('event-address-change', $event.target.value)"
       >
     </div>
 
     <div class="input-group mb-3">
-      <span class="input-group-text">Lisa lahtiolekuajad</span>
+
+      <span v-if="isEdit" class="input-group-text">Muuda aegu</span>
+      <span v-else class="input-group-text">Lisa lahtiolekuajad</span>
       <input
           placeholder="E-R 9.00-22.00"
           type="text"
@@ -31,7 +37,8 @@
       >
     </div>
     <div class="input-group mb-3">
-      <span class="input-group-text">Lisa pilt lingina</span>
+      <span v-if="isEdit" class="input-group-text">Muuda pilt lingina</span>
+      <span v-else class="input-group-text">Lisa pilt lingina</span>
       <input
           type="text"
           class="form-control"
@@ -55,7 +62,9 @@
 export default {
   name: 'LocationInput',
   props: {
-    newLocation: Object
+    newLocation: Object,
+    isEdit: Boolean,
+
   }
 }
 </script>

@@ -28,14 +28,17 @@
       <div class="col col-2">
         <button
             type="button"
-            class="btn btn-outline-secondary"
+            class="btn btn-outline-secondary btn-sm"
             @click="$emit('event-location-selected', Number(location.locationId))"
         >
           Lisa treeningu asukoht
         </button>
       </div>
       <div class="col col-2">
-        <font-awesome-icon icon="trash" />
+        <font-awesome-icon class="me-3" icon="fa-regular fa-pen-to-square"
+                           @click="$emit('event-edit-location-selected', Number(location.locationId))"/>
+        <font-awesome-icon icon="trash" @click="$emit('event-delete-location', Number(location.locationId))"/>
+
       </div>
     </div>
   </div>
