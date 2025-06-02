@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label class="form-label">Perekonnanimi</label>
+    <label class="form-group mb-3">Perekonnanimi</label>
     <input :value="lastName" @input="$emit('event-update-lastname', $event.target.value)"
         type="text" class="form-control" placeholder="Perekonnanimi">
   </div>

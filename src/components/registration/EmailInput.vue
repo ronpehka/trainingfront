@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label class="form-label">Email</label>
+    <label class="form-group mb-3">Email</label>
     <input :value="email" @input="$emit('event-update-email', $event.target.value)"
            type="email" class="form-control" placeholder="email">
   </div>

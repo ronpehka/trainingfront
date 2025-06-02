@@ -1,40 +1,45 @@
 <template>
-  <div>
-    <AlertError
-        :error-message="errorMessage"
-    />
-    <AlertSuccess :success-message="successMessage"/>
+  <div class="registration-container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="registration-box p-4 shadow-lg">
 
-    <ClientRegistration :customer-profile="coachProfile"
-                        :password-retype="passwordRetype"
-                        @event-update-firstname="setCoachProfileFirstName"
-                        @event-update-lastname="setCoachProfileLastName"
-                        @event-update-email="setCoachProfileEmail"
-                        @event-update-date-of-birth="setCoachProfileDateOfBirth"
-                        @event-update-gender="setCoachProfileGender"
-                        @event-update-password="setCoachProfilePassword"
-                        @event-update-retyped-password="setRetypedPassword"
-    />
+      <AlertError :error-message="errorMessage" />
+      <AlertSuccess :success-message="successMessage" />
 
-    <CoachRegistration
-        :coach-profile="coachProfile"
-        @event-update-description="setCoachProfileDescription"
-        @event-update-phone-number="setCoachProfilePhoneNumber"
-        @event-new-image-selected="setCoachProfileCoachImage"
-        :sports="sports"
-        @event-update-checked-sport="setCoachSportId"
-    />
+      <ClientRegistration
+          :customer-profile="coachProfile"
+          :password-retype="passwordRetype"
+          @event-update-firstname="setCoachProfileFirstName"
+          @event-update-lastname="setCoachProfileLastName"
+          @event-update-email="setCoachProfileEmail"
+          @event-update-date-of-birth="setCoachProfileDateOfBirth"
+          @event-update-gender="setCoachProfileGender"
+          @event-update-password="setCoachProfilePassword"
+          @event-update-retyped-password="setRetypedPassword"
+      />
 
-    <CoachImage
-        :image-data="coachProfile.imageData"
-        @event-update-coach-image="$emit('event-update-coach-image',$event)"/>
+      <CoachRegistration
+          :coach-profile="coachProfile"
+          @event-update-description="setCoachProfileDescription"
+          @event-update-phone-number="setCoachProfilePhoneNumber"
+          @event-new-image-selected="setCoachProfileCoachImage"
+          :sports="sports"
+          @event-update-checked-sport="setCoachSportId"
+      />
 
-    <button @click="addNewCoach" type="button" class="btn btn-outline-secondary">Loo konto</button>
+      <CoachImage
+          :image-data="coachProfile.imageData"
+          @event-update-coach-image="$emit('event-update-coach-image', $event)"
+      />
+
+      <div class="d-grid gap-2 mt-4">
+        <button @click="addNewCoach" type="button" class="btn btn-danger">
+          Loo konto
+        </button>
+      </div>
+
+    </div>
   </div>
-
-
 </template>
-
 
 <script>
 import AlertError from "@/components/alert/AlertError.vue";
