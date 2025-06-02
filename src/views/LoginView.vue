@@ -1,6 +1,6 @@
 <template>
   <div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card p-4 shadow-lg login-card">
+    <div class="card p-4 shadow-lg login-card dark-card">
 
       <AlertError :error-message="errorMessage"/>
       <div class="row justify-content-center">

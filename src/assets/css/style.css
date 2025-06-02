@@ -347,3 +347,31 @@ input[type="date"] {
     margin-left: 0.5rem; /* väike vahe kasti ja teksti vahel */
     color: white; /* kui taust on tume */
 }
+
+.bg-dark-theme {
+    background-color: #121212; /* tume taust kogu konteineri jaoks */
+    color: #eee; /* hele tekst kogu konteineris */
+}
+
+.dark-card {
+    background-color: rgba(0, 0, 0, 0.6) !important; /* must 70% läbipaistvusega */
+    color: #eee;
+    border: none;
+    backdrop-filter: blur(5px); /* mõnus udusus taga olevatele elementidele, valikuline */
+}
+
+.input-label {
+    color: #eee; /* hele tekst labelitel */
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+}
+
+.input-dark {
+    background-color: #333;
+    color: #eee;
+    border: 1px solid #555;
+}
+
+.input-dark::placeholder {
+    color: #bbb;
+}
