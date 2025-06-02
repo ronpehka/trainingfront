@@ -8,8 +8,8 @@
                class="card-img-top" alt="trennipilt">
           <div class="card-body text-start">
             <h5 class="card-title">Meeskonnasport massidesse!</h5>
-            <div class="space-y-4">
-              <p>
+            <div class="space-y-4 negatiiv">
+              <p class="card-body">
                 <strong>Tere tulemast spordiportaali Athletica!</strong><br>
                 Athletica on spetsiaalselt noortele sportlastele loodud kaasaegne treeningute haldamise keskkond, kus
                 treenerid, õpilased ja lapsevanemad saavad mugavalt organiseerida sporditegevusi. Portaali kaudu on
@@ -18,7 +18,7 @@
                 ka arvutis.
               </p>
 
-              <p>
+              <p class="card-body">
                 <strong>Personaalne treeningukogemus igale sportlasele</strong><br>
                 Portaal võimaldab filtreerida treeninguid spordiala, treeneri, asukoha ja muu järgi, et iga kasutaja
                 leiaks sobiva koormuse ning parima arengu võimalused. Treeneritel on võimalus hallata oma rühmi, lisada
@@ -26,7 +26,7 @@
                 kalendripõhisele vaatele on võimalik näha, millal ja kus treeningud toimuvad, vältides ajakattuvusi.
               </p>
 
-              <p>
+              <p class="card-body">
                 <strong>Usaldusväärne tööriist klubidele ja kogukondadele</strong><br>
                 Athletica ei ole pelgalt kalender – see on tööriist, mis ühendab kogukonda. Klubi administraatorid
                 saavad hallata mitut treenerit ja rühma korraga, jälgida aktiivsust ning koguda tagasisidet. Portaali
@@ -41,7 +41,7 @@
 
       <!-- Kalendri pool -->
       <div class="col-md-6">
-        <h4>Treeningplaan</h4>
+        <h4 class="nav-menu">Treeningplaan</h4>
 
         <div class="calendar-wrapper">
           <Calendar
@@ -62,8 +62,7 @@
             </ul>
           </div>
         </div>
-
-        <div style="text-align: left;">
+        <div style="text-align: right;">
           <p>Kontakt: info@sportportaal.ee</p>
           <p>Treenerite kogemus: 10+ aastat</p>
           <p>Treeningute sagedus: 3x nädalas</p>
@@ -159,13 +158,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.calendar-wrapper {
-  max-width: 500px;
-  margin: auto;
-}
-
-.training-list {
-  margin-top: 20px;
-}
-</style>

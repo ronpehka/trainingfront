@@ -17,7 +17,7 @@
 
   </div>
 
-  <table v-if="filteredTrainings.length > 0" class="table-bordered">
+  <table v-if="filteredTrainings.length > 0" class="table-bordered training-table">
     <thead>
     <tr class="active">
       <th style="width: 200px;">Spordiala</th>
