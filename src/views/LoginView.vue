@@ -6,12 +6,12 @@
       <div class="row justify-content-center">
         <div class="col">
           <div class="mb-3">
-            <label class="form-label">Kasutajanimi</label>
+            <div class="input-label">Kasutajanimi</div>
             <input v-model="email" type="email" class="form-control input-dark" placeholder="juhan@juhan.ee">
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Parool</label>
+            <div class="input-label">Parool</div>
             <input v-model="password" type="password" class="form-control input-dark">
           </div>
 

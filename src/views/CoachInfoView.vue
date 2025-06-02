@@ -1,5 +1,5 @@
 <template>
-  <div class="coach-info-conteiner">
+  <div class="container text-center coach-info-container">
     <div class="row">
       <div class="col">
         <CoachesTable :coaches="coaches"/>
