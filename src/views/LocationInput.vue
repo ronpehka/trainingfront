@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="input-group mb-3">
 
+    <div class="input-group mb-3">
       <span v-if="isEdit" class="input-group-text">Muuda asukohanimi</span>
       <span v-else class="input-group-text">Lisa asukohanimi</span>
       <input

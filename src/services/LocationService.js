@@ -25,5 +25,13 @@ export default {
             }
         )
     },
+    sendRemoveLocationRequest(locationId){
+        return axios.delete('/location', {
+                params: {
+                    locationId: locationId,
+                }
+            }
+        )
+    }
 
 }

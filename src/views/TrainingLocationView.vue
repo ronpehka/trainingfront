@@ -21,6 +21,7 @@
       {{ training.startTime }} - {{ training.endTime }}
       <font-awesome-icon icon="fa-regular fa-pen-to-square" @click="editTrainingInformation"/>
 
+
     </div>
 
 
@@ -28,6 +29,7 @@
     <LocationTable :locations="locations"
                    @event-location-selected="saveTrainingLocation"
                    @event-edit-location-selected="startEditTrainingLocationProcess"
+                   @event-delete-location="removeLocation"
     />
     <button @click="setLocationModalOpen">Lisa uus asukoht</button>
   </div>
@@ -88,6 +90,14 @@ export default {
   },
 
   methods: {
+
+    removeLocation(locationId){
+      LocationService.sendRemoveLocationRequest(locationId).then(()=>{
+        LocationService.sendGetLocationsRequest()
+            .then(response => this.handleGetLocationsResponse(response))
+            .catch(error => this.handleGetLocationsErrorResponse(error))
+      }).catch(()=>Navigation.navigateToErrorView())
+    },
     updateLocation(){
       this.setTimedOutSuccessMessage("Asukoht edukalt muudetud")
       LocationService.sendGetLocationsRequest()
@@ -97,12 +107,13 @@ export default {
     startEditTrainingLocationProcess(locationId) {
       this.updateLocationId = locationId
       LocationService.sendGetLocationRequest(locationId)
-          .then(response => this.selectedLocation = response.data)
+          .then(response =>{ this.selectedLocation = response.data
+            this.isEdit = true
+            this.setLocationModalOpen()
+    })
           .catch(error => {
         this.errorResponse = error.response.data
       })
-      this.isEdit = true
-      this.setLocationModalOpen()
     },
     setIsEdit() {
       this.isEdit = false

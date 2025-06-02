@@ -63,6 +63,7 @@
       </td>
       <td v-if="isCoach">
         <font-awesome-icon @click="navigateToEditView(trainingInfo.trainingId)" icon="pen-to-square"/>
+        <font-awesome-icon @click="removeTraining(trainingInfo.trainingId)" icon="trash" />
       </td>
 
 

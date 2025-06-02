@@ -90,7 +90,13 @@ export default {
 
     editTraining(){
       TrainingInfoService.sendTrainingPutRequest(this.selectedTrainingId, this.addNewTraining)
-          .then(()=>this.setTimedOutSuccessMessage("Treening edukalt muudetud")).catch(error=>{
+          .then((response)=>{
+            this.selectedTrainingId = response.data
+            this.setTimedOutSuccessMessage("Treening edukalt muudetud")
+            Navigation.navigateToTrainingLocationView(this.selectedTrainingId)
+          })
+
+          .catch(error=>{
         this.errorResponse = error.response.data
         if (error.response.status === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_FOREIGN_KEY) {
           this.setTimedOutErrorMessage(this.errorResponse.message)
