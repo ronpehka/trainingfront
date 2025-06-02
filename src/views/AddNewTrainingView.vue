@@ -1,11 +1,16 @@
 <template>
-  <div>
+  <div class="training-container">
+    <div class="training-box">
 
     <h1 v-if="!isEdit">Lisa uus trenn</h1>
-    <h1 v-else>Muuda treeningu infot</h1>
-    <AlertError :error-message="errorMessage"/>
+    <h2 v-else>Muuda treeningu infot</h2>
+
+      <AlertError :error-message="errorMessage"/>
     <AlertSuccess :success-message="successMessage"/>
-    <NewTraining  :add-new-training="addNewTraining" :sports="sports" :selected-sport-id="selectedSportId"
+
+      <NewTraining  :add-new-training="addNewTraining"
+                    :sports="sports"
+                    :selected-sport-id="selectedSportId"
                  @event-new-sport-selected="setSportId"
                  @event-update-weekday="setWeekdays"
                  @event-update-gender="setGender"
@@ -17,11 +22,24 @@
                  @event-new-end-time="setEndTime"
                  @event-new-max-limit="setMaxLimit"
     />
-    <button v-if="!isEdit" @click="saveTraining" type="button" class="btn btn-outline-secondary">Salvesta trenn</button>
-    <button v-else @click="editTraining" type="button" class="btn btn-outline-secondary">Muuda treeningu infot</button>
+    <button
+        v-if="!isEdit"
+        @click="saveTraining"
+        type="button"
+        class="btn btn-outline-secondary"
+    >
+      Salvesta trenn
+    </button>
+    <button
+        v-else
+        @click="editTraining"
+        type="button"
+        class="btn-edit"
+    >
+      Muuda treeningu infot
+    </button>
 
-
-
+    </div>
   </div>
 
 </template>
