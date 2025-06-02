@@ -7,7 +7,7 @@
                    :selected-location-id="updateLocationId"
                    :selected-location="selectedLocation"
                    @event-close-modal="closeLocationModal"
-                   @event-update-location=""
+                   @event-update-location="updateLocation"
                    @event-close-isEdit="setIsEdit"
     />
 
@@ -88,6 +88,12 @@ export default {
   },
 
   methods: {
+    updateLocation(){
+      this.setTimedOutSuccessMessage("Asukoht edukalt muudetud")
+      LocationService.sendGetLocationsRequest()
+          .then(response => this.handleGetLocationsResponse(response))
+          .catch(error => this.handleGetLocationsErrorResponse(error))
+    },
     startEditTrainingLocationProcess(locationId) {
       this.updateLocationId = locationId
       LocationService.sendGetLocationRequest(locationId)

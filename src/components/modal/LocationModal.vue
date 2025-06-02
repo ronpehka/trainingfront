@@ -119,10 +119,10 @@ export default {
     updateLocation() {
       LocationService.sendLocationPutRequest(this.selectedLocationId, this.newLocation)
           .then(() => {
-            this.setTimedOutSuccessMessage("Asukoht edukalt muudetud")
             this.$emit('event-update-location')
             this.$emit('event-close-isEdit');
             this.$emit('event-close-modal');
+
           })
           .catch(error => {
             console.error('Update failed:', error);
