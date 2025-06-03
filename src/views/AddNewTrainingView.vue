@@ -26,7 +26,7 @@
         v-if="!isEdit"
         @click="saveTraining"
         type="button"
-        class="btn btn-outline-secondary"
+        class="btn btn-outline-secondary mt-2"
     >
       Salvesta trenn
     </button>
@@ -34,7 +34,7 @@
         v-else
         @click="editTraining"
         type="button"
-        class="btn-edit"
+        class="btn-edit mt-2"
     >
       Muuda treeningu infot
     </button>

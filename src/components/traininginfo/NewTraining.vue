@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="col-10 col-md-6 bg-black text-white p-4 rounded-4 shadow">
+  <div>
+
     <div class="input-group mb-3">
       <span class="input-group-text">Treeningu nimi</span>
       <input type="text" class="form-control" placeholder="Treeningu nimi"
@@ -48,7 +48,6 @@
              :value="addNewTraining.maxLimit"
              @input="$emit('event-new-max-limit', Number($event.target.value))"
       />
-    </div>
     </div>
   </div>
 </template>
