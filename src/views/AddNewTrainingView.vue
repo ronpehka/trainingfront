@@ -111,7 +111,7 @@ export default {
           .then((response) => {
             this.selectedTrainingId = response.data
             this.setTimedOutSuccessMessage("Treening edukalt muudetud")
-            Navigation.navigateToTrainingLocationView(this.selectedTrainingId)
+            Navigation.navigateToTrainingInfoView();
           })
 
           .catch(error => {
