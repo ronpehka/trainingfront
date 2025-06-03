@@ -10,7 +10,7 @@
     </div>
 
     <div class="input-group mb-3">
-      <span class="input-group-text">Treeningu Kirjeldus</span>
+      <span class="input-group-text">Treeningu kirjeldus</span>
       <input type="text" class="form-control" placeholder="Treeningu kirjeldus"
              :value="addNewTraining.trainingDescription"
              @input="$emit('event-new-training-description', $event.target.value)"/>

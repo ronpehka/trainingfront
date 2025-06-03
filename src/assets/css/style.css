@@ -225,3 +225,153 @@ nav a {
     background-color: #821421;
     border-color: #821421;
 }
+/* Logo kujundus */
+.corner-logo {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 150px;
+    opacity: 0.7;         /* poolläbipaistev */
+    z-index: 1000;         /* kindlasti pealpool */
+    pointer-events: none; /* ei sega klikke */
+}
+/* RegistrationView settingud */
+
+.training-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    /*background-color: #000000; !* või jätta ära, kui kogu leht on tume *!*/
+}
+
+.training-box {
+    background-color: rgba(0, 0, 0, 0.6); /* poolläbipaistev must taust */
+    color: white; /* valge tekst */
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    width: 100%;
+    max-width: 500px; /* kitsam kast */
+}
+
+/* Vormi elemendid ühtlase stiiliga */
+input, textarea, select {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1); /* poolläbipaistev hele taust */
+    color: white;
+    border: 1px solid #888;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+label {
+    color: white;
+}
+
+h1 {
+    color: white;
+    margin-bottom: 1.5rem;
+}
+
+.btn-edit {
+    background-color: #dc3545; /* punane */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    margin-top: 20px; /* see nihutab nuppu allapoole */
+}
+
+.btn-edit:hover {
+    background-color: #bb2d3b; /* veidi tumedam punane hoveril */
+    cursor: pointer;
+}
+.custom-label {
+    color: white;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="date"] {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid #ccc;
+    padding: 6px 10px;
+}
+.coach-info-container {
+    background-color: rgba(0, 0, 0, 0.5); /* must, 70% opakusega */
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+.registration-container {
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.1), rgba(30, 30, 30, 0.7));
+    min-height: 100vh;
+}
+
+.registration-box {
+    background-color: rgba(0, 0, 0, 0.6); /* transparent must */
+    border-radius: 1rem;
+    max-width: 600px;
+    width: 50%;
+    color: white;
+}
+.form-label-custom {
+    color: white;
+}
+
+.input-dark {
+    background-color: rgba(0, 0, 0, 0.5); /* läbipaistev must taust */
+    color: white;
+    border: 1px solid #ccc;
+}
+
+.input-dark::placeholder {
+    color: #bbb;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Tekst vasakule */
+    text-align: left; /* kindlustab, et tekst on vasakult joondatud */
+    margin-bottom: 0.5rem; /* veidi ruumi ridade vahele */
+}
+
+.form-check-label {
+    margin-left: 0.5rem; /* väike vahe kasti ja teksti vahel */
+    color: white; /* kui taust on tume */
+}
+
+.bg-dark-theme {
+    background-color: #121212; /* tume taust kogu konteineri jaoks */
+    color: #eee; /* hele tekst kogu konteineris */
+}
+
+.dark-card {
+    background-color: rgba(0, 0, 0, 0.6) !important; /* must 70% läbipaistvusega */
+    color: #eee;
+    border: none;
+    backdrop-filter: blur(5px); /* mõnus udusus taga olevatele elementidele, valikuline */
+}
+
+.input-label {
+    color: #eee; /* hele tekst labelitel */
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+}
+
+.input-dark {
+    background-color: #333;
+    color: #eee;
+    border: 1px solid #555;
+}
+
+.input-dark::placeholder {
+    color: #bbb;
+}

@@ -1,5 +1,5 @@
 <template>
-  <div class="container text-center">
+  <div class="container text-center coach-info-container">
     <div class="row">
       <div class="col">
         <CoachesTable :coaches="coaches"/>
@@ -20,16 +20,16 @@ export default {
     return {
       coaches: [
         {
-          coachUserId: 0,
-          coachFullName: '',
-          email: '',
-          phoneNumber: '',
-          sports: [
-            {
-              sportType: ''
-            }
-          ],
-          imageData: ''
+          // coachUserId: 0,
+          // coachFullName: '',
+          // email: '',
+          // phoneNumber: '',
+          // sports: [
+          //   {
+          //     sportType: ''
+          //   }
+          // ],
+          // imageData: ''
         }
       ]
     }

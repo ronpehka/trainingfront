@@ -1,24 +1,34 @@
 <template>
-  <div>
-    <h1>Loo uus konto</h1>
-    <AlertError :error-message="errorMessage"/>
-    <AlertSuccess :success-message="successMessage"/>
-    <ClientRegistration :customer-profile="customerProfile"
-                        :password-retype="passwordRetype"
-                        @event-update-firstname="setCustomerProfileFirstName"
-                        @event-update-lastname="setCustomerProfileLastName"
-                        @event-update-email="setCustomerProfileEmail"
-                        @event-update-date-of-birth="setCustomerProfileDateOfBirth"
-                        @event-update-gender="setCustomerProfileGender"
-                        @event-update-password="setCustomerProfilePassword"
-                        @event-update-retyped-password="setRetypedPassword"
-    />
+  <div class="registration-container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="registration-box p-4 shadow-lg">
 
-    <button @click="addNewCustomer" type="button" class="btn btn-outline-secondary">Loo konto</button>
+      <h2 class="text-white">Loo uus konto</h2>
+
+      <AlertError :error-message="errorMessage" />
+      <AlertSuccess :success-message="successMessage" />
+
+      <ClientRegistration
+          :customer-profile="customerProfile"
+          :password-retype="passwordRetype"
+          @event-update-firstname="setCustomerProfileFirstName"
+          @event-update-lastname="setCustomerProfileLastName"
+          @event-update-email="setCustomerProfileEmail"
+          @event-update-date-of-birth="setCustomerProfileDateOfBirth"
+          @event-update-gender="setCustomerProfileGender"
+          @event-update-password="setCustomerProfilePassword"
+          @event-update-retyped-password="setRetypedPassword"
+      />
+
+      <div class="d-grid gap-2 mt-4">
+        <button @click="addNewCustomer" type="button" class="btn btn-danger">
+          Loo konto
+        </button>
+      </div>
+
+    </div>
   </div>
-
-
 </template>
+
 
 <script>
 import ClientRegistration from "@/components/registration/ClientRegistration.vue";
