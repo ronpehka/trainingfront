@@ -20,16 +20,6 @@ export default {
     return {
       coaches: [
         {
-          // coachUserId: 0,
-          // coachFullName: '',
-          // email: '',
-          // phoneNumber: '',
-          // sports: [
-          //   {
-          //     sportType: ''
-          //   }
-          // ],
-          // imageData: ''
         }
       ]
     }

@@ -36,9 +36,9 @@
       <div class="col col-2">{{ coach.phoneNumber }}</div>
 
       <div class="col col-2">
-        <span v-if="Array.isArray(coach.sports) && coach.sports.length">
-          {{ [...new Set(coach.sports.map(s => s.sportType))].join(', ') }}
-        </span>
+  <span v-if="Array.isArray(coach.sports) && coach.sports.length">
+    {{ [...new Set(coach.sports.map(s => s.sportType))].join(', ') }}
+  </span>
         <span v-else>Pole määratud</span>
       </div>
 
