@@ -276,7 +276,7 @@ export default {
             this.selectedSportId = this.addNewTraining.sportId
 
           }).catch((error) => {
-            this.errorResponse = error.respose.data
+            this.errorResponse = error.response.data
         if (
             error.response.status === 403 &&
             this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_TRAINING_TIME
