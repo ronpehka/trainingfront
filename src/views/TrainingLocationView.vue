@@ -14,12 +14,11 @@
     <div>
       NImi: {{ training.trainingName }},
       Sihtgrupp: {{ training.trainingGender }},
-      Sport: {{ training.sportId }},
       Algus kuupäev: {{ training.startDate }},
       Lõpp: {{ training.endDate }},
       Treening ajad: {{ (training.trainingDays || []).map(day => day.weekdayName).join(', ') }}
       {{ training.startTime }} - {{ training.endTime }}
-      <font-awesome-icon icon="fa-regular fa-pen-to-square" @click="editTrainingInformation"/>
+      <font-awesome-icon class="pointer-event" icon="fa-regular fa-pen-to-square" @click="editTrainingInformation"/>
 
 
     </div>
@@ -31,7 +30,7 @@
                    @event-edit-location-selected="startEditTrainingLocationProcess"
                    @event-delete-location="removeLocation"
     />
-    <button @click="setLocationModalOpen">Lisa uus asukoht</button>
+    <button type="button" class="btn btn-outline-light" @click="setLocationModalOpen">Lisa uus asukoht</button>
   </div>
 
 </template>
@@ -48,6 +47,9 @@ import AlertError from "@/components/alert/AlertError.vue";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import Navigation from "@/navigation/Navigation";
 import LocationModal from "@/components/modal/LocationModal.vue";
+import LoginService from "@/services/LoginService";
+import RoleService from "@/services/RoleService";
+import navigation from "@/navigation/Navigation";
 
 export default {
   name: 'TrainingLocation',
@@ -165,6 +167,11 @@ export default {
     },
   },
   beforeMount() {
+    if (!RoleService.isLoggedIn()) {
+      navigation.navigateToErrorView()
+    }
+    RoleService.isCoach()
+
     this.trainingId = useRoute().query.trainingId
     TrainingInfoService.sendGetTrainingRequest(this.trainingId)
         .then(response => {

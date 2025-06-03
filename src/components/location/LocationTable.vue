@@ -28,7 +28,7 @@
       <div class="col col-2">
         <button
             type="button"
-            class="btn btn-outline-secondary btn-sm"
+            class="btn btn-outline-light btn-sm"
             @click="$emit('event-location-selected', Number(location.locationId))"
         >
           Lisa treeningu asukoht

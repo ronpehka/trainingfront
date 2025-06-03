@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="col-10 col-md-6 bg-black text-white p-4 rounded-4 shadow">
     <div class="input-group mb-3">
       <span class="input-group-text">Treeningu nimi</span>
       <input type="text" class="form-control" placeholder="Treeningu nimi"
@@ -42,13 +43,13 @@
                @event-new-end-time="$emit('event-new-end-time', $event)"/>
 
     <h6>Maksimaalne osalejate arv</h6>
-    <div class="container mt-3">
+    <div class="container mt-3 input-group-sm">
       <input type="number" class="form-control" placeholder="Max õpilaste arv"
              :value="addNewTraining.maxLimit"
              @input="$emit('event-new-max-limit', Number($event.target.value))"
       />
     </div>
-
+    </div>
   </div>
 </template>
 

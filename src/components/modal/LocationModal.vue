@@ -1,8 +1,7 @@
 <template>
   <Modal :modal-is-open="modalIsOpen" @event-close-modal="$emit('event-close-modal')">
     <template #title>
-      <h3 v-if="!isEdit" class="text-center">Uue asukoha lisamine</h3>
-      <h3 v-else class="text-center">Asukoha muutmine</h3>
+      {{ isEdit ? 'Asukoha muutmine' : 'Uue asukoha lisamine' }}
 
     </template>
 
@@ -10,8 +9,9 @@
       <div class="container text-center">
         <div class="row">
           <div class="col">
-            <div class="col col-3">
+            <div class="col col-6">
               <DistrictDropDown
+                  :error="validationErrors.districtId"
                   :districts="districts"
                   :selected-district-id="selectedDistrictId"
                   @new-district-selected="setNewLocationDistrictId"
@@ -19,9 +19,10 @@
               />
             </div>
 
-            <div class="col col-7">
+            <div class="col col-10 mt-4">
               <LocationInput :new-location="newLocation"
                              :isEdit="isEdit"
+                             :validationErrors="validationErrors"
                              @event-imageUrl-change="setImageUrl"
                              @event-address-change="setLocationAddress"
                              @event-name-change="setLocationName"
@@ -32,10 +33,10 @@
       </div>
     </template>
     <template #buttons>
-      <div class="row  justify-content-center">
-        <div class="col col-2">
-          <button v-if="!isEdit" @click="saveLocation">Lisa asukoht</button>
-          <button v-else @click="updateLocation">Muuda asukoht</button>
+      <div class="row justify-content-center">
+        <div class="col col-4">
+          <button type="button" class="btn btn-outline-success small" v-if="!isEdit" @click="saveLocation">Lisa asukoht</button>
+          <button type="button" class="btn btn-outline-success small"  v-else @click="updateLocation">Muuda asukoht</button>
         </div>
 
       </div>
@@ -68,29 +69,29 @@ export default {
     modalIsOpen: Boolean,
     isEdit: Boolean,
     selectedLocationId: Number,
-    selectedLocation:{
-      type:Object,
-      default: ()=>({})
+    selectedLocation: {
+      type: Object,
+      default: () => ({})
     }
   },
-    watch: {
-      isEdit(newVal) {
-        if (newVal && this.selectedLocation) {
-          this.newLocation = { ...this.selectedLocation }
-          this.selectedDistrictId = this.selectedLocation.districtId
-        }
-      },
-      selectedLocation(newVal) {
-        if (this.isEdit && newVal) {
-          this.newLocation = { ...newVal }
-          this.selectedDistrictId = newVal.districtId
-        }
+  watch: {
+    isEdit(newVal) {
+      if (newVal && this.selectedLocation) {
+        this.newLocation = {...this.selectedLocation}
+        this.selectedDistrictId = this.selectedLocation.districtId
       }
     },
+    selectedLocation(newVal) {
+      if (this.isEdit && newVal) {
+        this.newLocation = {...newVal}
+        this.selectedDistrictId = newVal.districtId
+      }
+    }
+  },
   data() {
     return {
       selectedDistrictId: 0,
-      errorMessage:'',
+      errorMessage: '',
       newLocation: {
         districtId: null,
         locationName: '',
@@ -105,6 +106,13 @@ export default {
       errorResponse: {
         errorMessage: '',
         errorCode: 0
+      },
+      validationErrors: {
+        locationName: '',
+        locationAddress: '',
+        openingHours: '',
+        districtId: '',
+        imageUrl: ''
       }
     }
   },
@@ -116,20 +124,20 @@ export default {
       this.$emit('event-close-modal');
     },
     updateLocation() {
-
+      if (!this.validateForm()) return
       LocationService.sendLocationPutRequest(this.selectedLocationId, this.newLocation)
           .then(() => {
             this.$emit('event-update-location')
             this.$emit('event-close-isEdit');
             this.$emit('event-close-modal');
-
+            this.resetMessages()
           })
           .catch(error => {
             console.error('Update failed:', error);
           });
     },
     saveLocation() {
-
+      if (!this.validateForm()) return
       LocationService.sendPostLocationRequest(this.newLocation).then(() => this.handlePostLocationResponse())
           .catch(error => {
             console.error('Failed to save:', error);
@@ -177,6 +185,41 @@ export default {
     resetMessages() {
       this.successMessage = ''
       this.errorMessage = ''
+      this.locationName = ''
+      this.locationAddress = ''
+      this.openingHours = ''
+      this.districtId = ''
+      this.imageUrl = ''
+    },
+    validateForm() {
+      let isValid = true;
+
+      if (!this.newLocation.locationName.trim()) {
+        this.validationErrors.locationName = 'Asukoha nimi on kohustuslik.';
+        isValid = false;
+      }
+
+      if (!this.newLocation.locationAddress.trim()) {
+        this.validationErrors.locationAddress = 'Aadress on kohustuslik.';
+        isValid = false;
+      }
+
+      if (!this.newLocation.openingHours.trim()) {
+        this.validationErrors.openingHours = 'Lahtiolekuajad on kohustuslikud.';
+        isValid = false;
+      }
+
+      if (!this.newLocation.districtId || this.newLocation.districtId === 0) {
+        this.validationErrors.districtId = 'Palun vali piirkond.';
+        isValid = false;
+      }
+
+      if (this.newLocation.imageUrl && !/^https?:\/\/.+\..+/.test(this.newLocation.imageUrl)) {
+        this.validationErrors.imageUrl = 'Pildi URL ei ole korrektne.';
+        isValid = false;
+      }
+
+      return isValid;
     }
   },
   beforeMount() {
@@ -189,7 +232,7 @@ export default {
     if (this.isEdit) {
       LocationService.sendGetLocationRequest(this.selectedLocationId)
           .then(response => this.handleSendGetLocationResponse(response))
-          .catch(error =>this.handleSendGetLocationErrorResponse(error));
+          .catch(error => this.handleSendGetLocationErrorResponse(error));
     }
 
     DistrictService.sendGetDistrictRequest()

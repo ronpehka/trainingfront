@@ -1,11 +1,11 @@
 <template>
   <div>
 
-    <h1 v-if="!isEdit">Lisa uus trenn</h1>
-    <h1 v-else>Muuda treeningu infot</h1>
+    <h1 v-if="!isEdit" class="mb-2">Lisa uus trenn</h1>
+    <h1 v-else class="mb-2">Muuda treeningu infot</h1>
     <AlertError :error-message="errorMessage"/>
     <AlertSuccess :success-message="successMessage"/>
-    <NewTraining  :add-new-training="addNewTraining" :sports="sports" :selected-sport-id="selectedSportId"
+    <NewTraining :add-new-training="addNewTraining" :sports="sports" :selected-sport-id="selectedSportId"
                  @event-new-sport-selected="setSportId"
                  @event-update-weekday="setWeekdays"
                  @event-update-gender="setGender"
@@ -17,9 +17,8 @@
                  @event-new-end-time="setEndTime"
                  @event-new-max-limit="setMaxLimit"
     />
-    <button v-if="!isEdit" @click="saveTraining" type="button" class="btn btn-outline-secondary">Salvesta trenn</button>
-    <button v-else @click="editTraining" type="button" class="btn btn-outline-secondary">Muuda treeningu infot</button>
-
+    <button v-if="!isEdit" @click="saveTraining" type="button" class="btn btn-outline-light mt-4">Salvesta trenn</button>
+    <button v-else @click="editTraining" type="button" class="btn btn-outline-light mt-4">Muuda treeningu infot</button>
 
 
   </div>
@@ -55,7 +54,7 @@ export default {
       successMessage: '',
       selectedSportId: 0,
       selectedLocationId: 0,
-      selectedTrainingId:0,
+      selectedTrainingId: 0,
       sports: [{
         sportId: 0,
         sportName: '',
@@ -88,20 +87,20 @@ export default {
   },
   methods: {
 
-    editTraining(){
+    editTraining() {
       TrainingInfoService.sendTrainingPutRequest(this.selectedTrainingId, this.addNewTraining)
-          .then((response)=>{
+          .then((response) => {
             this.selectedTrainingId = response.data
             this.setTimedOutSuccessMessage("Treening edukalt muudetud")
             Navigation.navigateToTrainingLocationView(this.selectedTrainingId)
           })
 
-          .catch(error=>{
-        this.errorResponse = error.response.data
-        if (error.response.status === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_FOREIGN_KEY) {
-          this.setTimedOutErrorMessage(this.errorResponse.message)
-        }
-      })
+          .catch(error => {
+            this.errorResponse = error.response.data
+            if (error.response.status === 403 && this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_FOREIGN_KEY) {
+              this.setTimedOutErrorMessage(this.errorResponse.message)
+            }
+          })
     },
     saveTraining() {
       if (this.validateUserInput()) {
@@ -148,7 +147,7 @@ export default {
         this.setTimedOutErrorMessage('Tuleb lisada korrektne trenni algus ja lõpuaeg')
       } else if (this.addNewTraining.maxLimit < 1) {
         this.setTimedOutErrorMessage('Trenni peab saama registreerida vähemalt 1 õpilane')
-      }else{
+      } else {
         return true
       }
 
@@ -240,7 +239,7 @@ export default {
   },
 
   beforeMount() {
-    if(!RoleService.isLoggedIn()){
+    if (!RoleService.isLoggedIn()) {
       navigation.navigateToErrorView()
     }
     RoleService.isCoach()
@@ -257,7 +256,16 @@ export default {
             this.addNewTraining = response.data;
             this.selectedSportId = this.addNewTraining.sportId
 
-          }).catch(()=> navigation.navigateToErrorView());
+          }).catch((error) => {
+            this.errorResponse = error.respose.data
+        if (
+            error.response.status === 403 &&
+            this.errorResponse.errorCode === ErrorCodes.CODE_INCORRECT_TRAINING_TIME
+        ) {
+          this.setTimedOutErrorMessage(this.errorResponse.message)}
+          Navigation.navigateToHomeView()
+
+      });
     }
   }
 }
